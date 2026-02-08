@@ -10,34 +10,22 @@ export default function Services() {
   return (
     <section className="section" id="services">
       <div className="section-header">
+        <div className="section-eyebrow">{copy.services.eyebrow}</div>
         <h2>{copy.services.title}</h2>
         <p className="section-sub">{copy.services.subtitle}</p>
       </div>
       <div className="grid-3 services-grid">
-        <div className="info-card service-card">
-          <h3>{copy.services.snowTitle}</h3>
-          <ul className="service-list">
-            {copy.services.snowItems.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="info-card service-card">
-          <h3>{copy.services.lawnTitle}</h3>
-          <ul className="service-list">
-            {copy.services.lawnItems.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="info-card service-card">
-          <h3>{copy.services.maintenanceTitle}</h3>
-          <ul className="service-list">
-            {copy.services.maintenanceItems.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
+        {copy.services.cards.map((card) => (
+          <div key={card.title} className="info-card service-card">
+            <h3>{card.title}</h3>
+            <p className="service-desc">{card.desc}</p>
+            <ul className="service-list">
+              {card.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </section>
   );

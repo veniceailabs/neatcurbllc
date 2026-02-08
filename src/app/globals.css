@@ -548,6 +548,20 @@ main {
   font-size: 2rem;
 }
 
+.section-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(13, 27, 30, 0.5);
+  margin-bottom: 8px;
+}
+
+html.dark .section-eyebrow,
+html.brand .section-eyebrow {
+  color: rgba(233, 242, 238, 0.55);
+}
+
 .grid-3 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -602,6 +616,17 @@ html.brand .service-card::before {
   padding-left: 16px;
   margin: 12px 0 0;
   text-transform: capitalize;
+}
+
+.service-desc {
+  margin: 8px 0 0;
+  color: rgba(13, 27, 30, 0.6);
+  font-size: 0.95rem;
+}
+
+html.dark .service-desc,
+html.brand .service-desc {
+  color: rgba(233, 242, 238, 0.7);
 }
 
 .info-card ul {

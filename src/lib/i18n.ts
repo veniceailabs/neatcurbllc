@@ -27,30 +27,45 @@ export const COPY = {
     },
     services: {
       title: "Our Services",
+      eyebrow: "What We Provide",
       subtitle:
-        "Large jobs get direct coordination with the owner. We keep crews aligned and sites clean.",
-      snowTitle: "❄️ Snow Removal",
-      snowItems: [
-        "Residential Snow Removal",
-        "Commercial Parking Lots",
-        "Sidewalk Clearing",
-        "Ice Management",
-        "Storm Monitoring"
-      ],
-      lawnTitle: "🌱 Lawn & Property Care",
-      lawnItems: [
-        "Lawn Mowing",
-        "Mulch Installation",
-        "Hedge & Bush Trimming",
-        "Fall Leaf Cleanup",
-        "Aeration & Overseeding"
-      ],
-      maintenanceTitle: "🧹 Property Maintenance",
-      maintenanceItems: [
-        "Gutter Cleaning",
-        "Storm Cleanup",
-        "Branch & Debris Removal",
-        "Lot Sweeping (Commercial)"
+        "For larger or complex sites, Corey coordinates directly with you and the crew so the plan is clear and the finish is exact.",
+      cards: [
+        {
+          title: "❄️ Snow Removal",
+          desc:
+            "Storm response built around the 2–3” trigger with proactive monitoring and clean finish standards.",
+          items: [
+            "Residential Snow Removal",
+            "Commercial Parking Lots",
+            "Sidewalk Clearing",
+            "Ice Management",
+            "Storm Monitoring"
+          ]
+        },
+        {
+          title: "🌱 Lawn & Property Care",
+          desc:
+            "Seasonal care that protects curb appeal and keeps properties consistent week to week.",
+          items: [
+            "Lawn Mowing",
+            "Mulch Installation",
+            "Hedge & Bush Trimming",
+            "Fall Leaf Cleanup",
+            "Aeration & Overseeding"
+          ]
+        },
+        {
+          title: "🧹 Property Maintenance",
+          desc:
+            "Detail work handled by a reliable crew so owners stay in the loop and sites stay clean.",
+          items: [
+            "Gutter Cleaning",
+            "Storm Cleanup",
+            "Branch & Debris Removal",
+            "Lot Sweeping (Commercial)"
+          ]
+        }
       ]
     },
     whyUs: {
@@ -397,30 +412,45 @@ export const COPY = {
     },
     services: {
       title: "Nuestros Servicios",
+      eyebrow: "Lo Que Ofrecemos",
       subtitle:
-        "Los trabajos grandes reciben coordinación directa con el dueño. Equipos alineados y sitios limpios.",
-      snowTitle: "❄️ Remoción de Nieve",
-      snowItems: [
-        "Remoción de Nieve Residencial",
-        "Estacionamientos Comerciales",
-        "Limpieza de Acera",
-        "Manejo de Hielo",
-        "Monitoreo de Tormentas"
-      ],
-      lawnTitle: "🌱 Cuidado de Césped y Propiedad",
-      lawnItems: [
-        "Corte de Césped",
-        "Instalación de Mulch",
-        "Poda de Setos y Arbustos",
-        "Limpieza de Hojas",
-        "Aireación y Resiembra"
-      ],
-      maintenanceTitle: "🧹 Mantenimiento de Propiedad",
-      maintenanceItems: [
-        "Limpieza de Canaletas",
-        "Limpieza por Tormenta",
-        "Retiro de Ramas y Escombros",
-        "Barrido de Lotes (Comercial)"
+        "Para sitios grandes o complejos, Corey coordina directamente con usted y la cuadrilla para ejecutar con precisión.",
+      cards: [
+        {
+          title: "❄️ Remoción de Nieve",
+          desc:
+            "Respuesta a tormentas basada en el disparo de 2–3” con monitoreo y acabado limpio.",
+          items: [
+            "Remoción de Nieve Residencial",
+            "Estacionamientos Comerciales",
+            "Limpieza de Acera",
+            "Manejo de Hielo",
+            "Monitoreo de Tormentas"
+          ]
+        },
+        {
+          title: "🌱 Cuidado de Césped y Propiedad",
+          desc:
+            "Cuidado estacional que protege la imagen y mantiene consistencia semanal.",
+          items: [
+            "Corte de Césped",
+            "Instalación de Mulch",
+            "Poda de Setos y Arbustos",
+            "Limpieza de Hojas",
+            "Aireación y Resiembra"
+          ]
+        },
+        {
+          title: "🧹 Mantenimiento de Propiedad",
+          desc:
+            "Trabajo detallado con un equipo confiable y comunicación directa.",
+          items: [
+            "Limpieza de Canaletas",
+            "Limpieza por Tormenta",
+            "Retiro de Ramas y Escombros",
+            "Barrido de Lotes (Comercial)"
+          ]
+        }
       ]
     },
     whyUs: {
