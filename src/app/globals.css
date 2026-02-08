@@ -703,6 +703,18 @@ html.brand .bbb-card {
   font-weight: 700;
 }
 
+.bbb-founded {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(13, 27, 30, 0.55);
+  margin-top: 4px;
+}
+
+html.dark .bbb-founded,
+html.brand .bbb-founded {
+  color: rgba(233, 242, 238, 0.7);
+}
+
 .bbb-rating {
   font-size: 1.05rem;
   font-weight: 800;

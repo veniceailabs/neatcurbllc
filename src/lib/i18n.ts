@@ -103,9 +103,11 @@ export const COPY = {
       ]
     },
     bbb: {
+      eyebrow: "BBB Accredited Business • Founded in 2022",
       title: "BBB Accreditation & Reviews",
       subtitle: "Verified by the Better Business Bureau with customer reviews.",
       accredited: "BBB Accredited Business",
+      founded: "Founded in 2022",
       rating: "A+ Rating",
       accreditedSince: "Accredited since April 23, 2024",
       readReviews: "Read BBB Reviews",
@@ -495,9 +497,11 @@ export const COPY = {
       ]
     },
     bbb: {
+      eyebrow: "Empresa Acreditada por BBB • Fundada en 2022",
       title: "Acreditación BBB y Reseñas",
       subtitle: "Verificado por Better Business Bureau con reseñas de clientes.",
       accredited: "Empresa Acreditada por BBB",
+      founded: "Fundada en 2022",
       rating: "Calificación A+",
       accreditedSince: "Acreditado desde el 23 de abril de 2024",
       readReviews: "Ver reseñas BBB",

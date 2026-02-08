@@ -10,6 +10,7 @@ export default function BbbSection() {
   return (
     <section className="section" id="bbb">
       <div className="section-header">
+        <div className="section-eyebrow">{copy.bbb.eyebrow}</div>
         <h2>{copy.bbb.title}</h2>
         <p className="section-sub">{copy.bbb.subtitle}</p>
       </div>
@@ -24,6 +25,7 @@ export default function BbbSection() {
             />
             <div>
               <div className="bbb-title">{copy.bbb.accredited}</div>
+              <div className="bbb-founded">{copy.bbb.founded}</div>
               <div className="bbb-rating">{copy.bbb.rating}</div>
               <div className="bbb-note">{copy.bbb.accreditedSince}</div>
             </div>
