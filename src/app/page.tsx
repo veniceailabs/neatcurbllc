@@ -14,9 +14,9 @@ export default function LandingPage() {
       <Navbar />
       <main>
         <Hero />
+        <BbbSection />
         <Services />
         <WhyUs />
-        <BbbSection />
         <ServiceAreas />
         <CtaBanner />
         <QuoteForm />
