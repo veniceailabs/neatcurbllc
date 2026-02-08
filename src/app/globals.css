@@ -545,7 +545,7 @@ html.dark .sidebar {
 }
 
 .brand-logo {
-  width: 180px;
+  width: 160px;
   height: auto;
 }
 
@@ -565,7 +565,7 @@ html.dark .brand-sub {
 
 .nav-list {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   margin-top: 16px;
 }
 
@@ -573,22 +573,15 @@ html.dark .brand-sub {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: rgba(35, 176, 75, 0.08);
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(35, 176, 75, 0.06);
   font-weight: 600;
+  font-size: 0.9rem;
 }
 
 .nav-link.active {
-  background: rgba(35, 176, 75, 0.18);
-}
-
-.nav-pill {
-  background: var(--brand-deep);
-  color: #ffffff;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 0.75rem;
+  background: rgba(35, 176, 75, 0.14);
 }
 
 .kpi-grid {

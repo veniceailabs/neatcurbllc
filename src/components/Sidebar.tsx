@@ -8,19 +8,21 @@ import { useAdminRole } from "@/components/admin-context";
 import Tooltip from "@/components/Tooltip";
 
 const navItems = [
-  { href: "/admin", label: "Dashboard", badge: "Live" },
-  { href: "/admin/leads", label: "Leads", badge: "Live" },
-  { href: "/admin/clients", label: "Clients", badge: "CRM" },
-  { href: "/admin/jobs", label: "Jobs", badge: "Schedule" },
-  { href: "/admin/lead-intake", label: "Lead Intake", badge: "Quote" },
-  { href: "/admin/messages", label: "Messages", badge: "Comms" },
-  { href: "/admin/settings", label: "Settings", badge: "Admin" },
-  { href: "/site", label: "Public Site", badge: "SEO" }
+  { href: "/", label: "Home" },
+  { href: "/admin", label: "Dashboard" },
+  { href: "/admin/leads", label: "Leads" },
+  { href: "/admin/clients", label: "Clients" },
+  { href: "/admin/jobs", label: "Jobs" },
+  { href: "/admin/lead-intake", label: "Lead Intake" },
+  { href: "/admin/messages", label: "Messages" },
+  { href: "/admin/settings", label: "Settings" },
+  { href: "/site", label: "Public Site" }
 ];
 
 const staffNavItems = [
-  { href: "/admin/work-orders", label: "Work Orders", badge: "Crew" },
-  { href: "/admin/logout", label: "Logout", badge: "Exit" }
+  { href: "/", label: "Home" },
+  { href: "/admin/work-orders", label: "Work Orders" },
+  { href: "/admin/logout", label: "Logout" }
 ];
 
 export default function Sidebar() {
@@ -54,7 +56,6 @@ export default function Sidebar() {
                 className={`nav-link ${active ? "active" : ""}`}
               >
                 <span>{item.label}</span>
-                <span className="nav-pill">{item.badge}</span>
               </Link>
             </Tooltip>
           );
