@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { AdminProvider, type AdminRole } from "@/components/admin-context";
 
 export default function AdminGate({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [ready, setReady] = useState(false);
+  const [role, setRole] = useState<AdminRole | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -22,7 +25,14 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
           .select("role")
           .eq("id", userId)
           .maybeSingle();
-        if (profile?.role !== "admin") {
+        const nextRole = (profile?.role || "user") as AdminRole;
+        setRole(nextRole);
+        if (nextRole === "staff") {
+          if (pathname !== "/admin/work-orders" && pathname !== "/admin/logout") {
+            router.replace("/admin/work-orders");
+            return;
+          }
+        } else if (nextRole !== "admin") {
           router.replace("/admin/login");
           return;
         }
@@ -52,5 +62,5 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
     );
   }
 
-  return <>{children}</>;
+  return <AdminProvider role={role}>{children}</AdminProvider>;
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "@/components/theme-toggle";
 import LanguageToggle from "@/components/language-toggle";
+import { useAdminRole } from "@/components/admin-context";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", badge: "Live" },
@@ -11,12 +12,20 @@ const navItems = [
   { href: "/admin/clients", label: "Clients", badge: "CRM" },
   { href: "/admin/jobs", label: "Jobs", badge: "Schedule" },
   { href: "/admin/lead-intake", label: "Lead Intake", badge: "Quote" },
+  { href: "/admin/messages", label: "Messages", badge: "Comms" },
   { href: "/admin/settings", label: "Settings", badge: "Admin" },
   { href: "/site", label: "Public Site", badge: "SEO" }
 ];
 
+const staffNavItems = [
+  { href: "/admin/work-orders", label: "Work Orders", badge: "Crew" },
+  { href: "/admin/logout", label: "Logout", badge: "Exit" }
+];
+
 export default function Sidebar() {
   const pathname = usePathname();
+  const { role } = useAdminRole();
+  const items = role === "staff" ? staffNavItems : navItems;
 
   return (
     <aside className="sidebar">
@@ -35,7 +44,7 @@ export default function Sidebar() {
         </div>
       </div>
       <nav className="nav-list">
-        {navItems.map((item) => {
+        {items.map((item) => {
           const active = pathname === item.href;
           return (
             <Link

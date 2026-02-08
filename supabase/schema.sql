@@ -39,6 +39,24 @@ create table jobs (
   price numeric,
   status text,
   scheduled_date date,
+  proof_photo_url text,
+  proof_uploaded_at timestamp,
+  proof_geo jsonb,
+  created_at timestamp default now()
+);
+
+create table messages (
+  id uuid default uuid_generate_v4() primary key,
+  client_id uuid references clients(id),
+  lead_id uuid references leads(id),
+  channel text,
+  to_address text,
+  from_address text,
+  subject text,
+  body text,
+  status text,
+  provider_id text,
+  sent_by uuid references auth.users(id),
   created_at timestamp default now()
 );
 
@@ -58,6 +76,7 @@ alter table leads enable row level security;
 alter table clients enable row level security;
 alter table jobs enable row level security;
 alter table audit_logs enable row level security;
+alter table messages enable row level security;
 
 create policy "Users can read own profile"
   on profiles for select
@@ -88,10 +107,36 @@ create policy "Authenticated can insert jobs"
   on jobs for insert
   with check (auth.role() = 'authenticated');
 
-create policy "Authenticated can read audit logs"
+create policy "Admins can read audit logs"
   on audit_logs for select
-  using (auth.role() = 'authenticated');
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role = 'admin'
+    )
+  );
 
 create policy "Authenticated can insert audit logs"
   on audit_logs for insert
   with check (auth.role() = 'authenticated');
+
+create policy "Admins can read messages"
+  on messages for select
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role = 'admin'
+    )
+  );
+
+create policy "Admins can insert messages"
+  on messages for insert
+  with check (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role = 'admin'
+    )
+  );
