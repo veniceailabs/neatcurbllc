@@ -27,14 +27,14 @@ export const COPY = {
     },
     services: {
       title: "Our Services",
-      eyebrow: "What We Provide",
+      eyebrow: "Your Landscaping And Snow Plowing Partner",
       subtitle:
-        "For larger or complex sites, Corey coordinates directly with you and the crew so the plan is clear and the finish is exact.",
+        "Locally Owned And Operated. For Larger Or Complex Sites, Corey Coordinates Directly With You And The Crew So The Plan Is Clear And The Finish Is Exact.",
       cards: [
         {
           title: "❄️ Snow Removal",
           desc:
-            "Storm response built around the 2–3” trigger with proactive monitoring and clean finish standards.",
+            "Storm Response Built Around The 2–3” Trigger With Proactive Monitoring And Clean Finish Standards.",
           items: [
             "Snow Plowing",
             "Residential Snow Removal",
@@ -47,7 +47,7 @@ export const COPY = {
         {
           title: "🌱 Lawn & Property Care",
           desc:
-            "Seasonal care that protects curb appeal and keeps properties consistent week to week.",
+            "Seasonal Care That Protects Curb Appeal And Keeps Properties Consistent Week To Week.",
           items: [
             "Lawn Mowing",
             "Mulch Installation",
@@ -59,7 +59,7 @@ export const COPY = {
         {
           title: "🧹 Property Maintenance",
           desc:
-            "Detail work handled by a reliable crew so owners stay in the loop and sites stay clean.",
+            "Detail Work Handled By A Reliable Crew So Owners Stay In The Loop And Sites Stay Clean.",
           items: [
             "Gutter Cleaning",
             "Storm Cleanup",
@@ -413,14 +413,14 @@ export const COPY = {
     },
     services: {
       title: "Nuestros Servicios",
-      eyebrow: "Lo Que Ofrecemos",
+      eyebrow: "Su Socio En Paisajismo Y Arado De Nieve",
       subtitle:
-        "Para sitios grandes o complejos, Corey coordina directamente con usted y la cuadrilla para ejecutar con precisión.",
+        "Propiedad Local Y Operada Localmente. Para Sitios Grandes O Complejos, Corey Coordina Directamente Con Usted Y La Cuadrilla Para Ejecutar Con Precisión.",
       cards: [
         {
           title: "❄️ Remoción de Nieve",
           desc:
-            "Respuesta a tormentas basada en el disparo de 2–3” con monitoreo y acabado limpio.",
+            "Respuesta A Tormentas Basada En El Disparo De 2–3” Con Monitoreo Y Acabado Limpio.",
           items: [
             "Arado de Nieve",
             "Remoción de Nieve Residencial",
@@ -433,7 +433,7 @@ export const COPY = {
         {
           title: "🌱 Cuidado de Césped y Propiedad",
           desc:
-            "Cuidado estacional que protege la imagen y mantiene consistencia semanal.",
+            "Cuidado Estacional Que Protege La Imagen Y Mantiene Consistencia Semanal.",
           items: [
             "Corte de Césped",
             "Instalación de Mulch",
@@ -445,7 +445,7 @@ export const COPY = {
         {
           title: "🧹 Mantenimiento de Propiedad",
           desc:
-            "Trabajo detallado con un equipo confiable y comunicación directa.",
+            "Trabajo Detallado Con Un Equipo Confiable Y Comunicación Directa.",
           items: [
             "Limpieza de Canaletas",
             "Limpieza por Tormenta",
