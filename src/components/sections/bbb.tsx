@@ -1,0 +1,51 @@
+"use client";
+
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
+
+export default function BbbSection() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
+
+  return (
+    <section className="section" id="bbb">
+      <div className="section-header">
+        <h2>{copy.bbb.title}</h2>
+        <p className="section-sub">{copy.bbb.subtitle}</p>
+      </div>
+      <div className="bbb-grid">
+        <div className="bbb-card">
+          <div className="bbb-meta">
+            <img
+              src="https://m.bbb.org/terminuscontent/dist/img/ab-seal-vertical.svg?tx=w_74"
+              alt="BBB Accredited Business badge"
+              className="bbb-badge"
+              loading="lazy"
+            />
+            <div>
+              <div className="bbb-title">{copy.bbb.accredited}</div>
+              <div className="bbb-rating">{copy.bbb.rating}</div>
+              <div className="bbb-note">{copy.bbb.accreditedSince}</div>
+            </div>
+          </div>
+          <a
+            className="btn-secondary"
+            href={copy.bbb.profileUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {copy.bbb.readReviews}
+          </a>
+        </div>
+        <div className="bbb-reviews">
+          {copy.bbb.reviews.map((review) => (
+            <div key={review.name} className="review-card">
+              <div className="review-quote">“{review.quote}”</div>
+              <div className="review-name">{review.name}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

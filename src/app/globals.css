@@ -615,6 +615,108 @@ html.brand .service-card::before {
   gap: 12px;
 }
 
+.bbb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.bbb-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid rgba(13, 27, 30, 0.08);
+  box-shadow: 0 18px 36px rgba(13, 27, 30, 0.1);
+  display: grid;
+  gap: 16px;
+}
+
+html.dark .bbb-card {
+  background: rgba(16, 22, 26, 0.88);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #e9f2ee;
+}
+
+html.brand .bbb-card {
+  background: rgba(12, 18, 16, 0.78);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.bbb-meta {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.bbb-badge {
+  width: 64px;
+  height: auto;
+}
+
+.bbb-title {
+  font-weight: 700;
+}
+
+.bbb-rating {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--brand-green);
+}
+
+html.dark .bbb-rating,
+html.brand .bbb-rating {
+  color: var(--brand-sky);
+}
+
+.bbb-note {
+  color: rgba(13, 27, 30, 0.6);
+  font-size: 0.9rem;
+}
+
+html.dark .bbb-note,
+html.brand .bbb-note {
+  color: rgba(233, 242, 238, 0.6);
+}
+
+.bbb-reviews {
+  display: grid;
+  gap: 12px;
+}
+
+.review-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid rgba(13, 27, 30, 0.06);
+}
+
+html.dark .review-card {
+  background: rgba(16, 22, 26, 0.85);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #e9f2ee;
+}
+
+html.brand .review-card {
+  background: rgba(12, 18, 16, 0.78);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.review-quote {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.review-name {
+  color: rgba(13, 27, 30, 0.6);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+html.dark .review-name,
+html.brand .review-name {
+  color: rgba(233, 242, 238, 0.6);
+}
+
 .area-chip {
   background: rgba(35, 176, 75, 0.12);
   border-radius: 999px;

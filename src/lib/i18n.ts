@@ -86,6 +86,20 @@ export const COPY = {
         "Surrounding Areas"
       ]
     },
+    bbb: {
+      title: "BBB Accreditation & Reviews",
+      subtitle: "Verified by the Better Business Bureau with customer reviews.",
+      accredited: "BBB Accredited Business",
+      rating: "A+ Rating",
+      accreditedSince: "Accredited since April 23, 2024",
+      readReviews: "Read BBB Reviews",
+      profileUrl:
+        "https://www.bbb.org/us/ny/buffalo/profile/landscape-contractors/neat-curb-llc-0041-236025395",
+      reviews: [
+        { name: "H.M.", quote: "Neat Curb always gets the job done." },
+        { name: "A.D.", quote: "Outstanding experience! Neat Curb LLC is top tier." }
+      ]
+    },
     cta: {
       title: "Get Ready Before the Next Storm",
       body:
@@ -442,6 +456,20 @@ export const COPY = {
         "West Seneca",
         "Niagara Falls",
         "Áreas Cercanas"
+      ]
+    },
+    bbb: {
+      title: "Acreditación BBB y Reseñas",
+      subtitle: "Verificado por Better Business Bureau con reseñas de clientes.",
+      accredited: "Empresa Acreditada por BBB",
+      rating: "Calificación A+",
+      accreditedSince: "Acreditado desde el 23 de abril de 2024",
+      readReviews: "Ver reseñas BBB",
+      profileUrl:
+        "https://www.bbb.org/us/ny/buffalo/profile/landscape-contractors/neat-curb-llc-0041-236025395",
+      reviews: [
+        { name: "H.M.", quote: "Neat Curb always gets the job done." },
+        { name: "A.D.", quote: "Outstanding experience! Neat Curb LLC is top tier." }
       ]
     },
     cta: {
