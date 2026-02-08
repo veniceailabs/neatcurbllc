@@ -48,7 +48,9 @@ export default function BusinessAIChat() {
       messages: { label: "Messages", href: "/admin/messages" },
       "lead intake": { label: "Lead Intake", href: "/admin/lead-intake" },
       settings: { label: "Settings", href: "/admin/settings" },
-      "work orders": { label: "Work Orders", href: "/admin/work-orders" }
+      "work orders": { label: "Work Orders", href: "/admin/work-orders" },
+      audit: { label: "Audit Logs", href: "/admin/audit" },
+      "audit logs": { label: "Audit Logs", href: "/admin/audit" }
     };
 
     const match = Object.keys(map).find((key) =>
@@ -173,6 +175,9 @@ export default function BusinessAIChat() {
             </button>
             <button onClick={() => handleNavigate("Messages", "/admin/messages")}>
               Messages
+            </button>
+            <button onClick={() => handleNavigate("Audit Logs", "/admin/audit")}>
+              Audit Logs
             </button>
             <button onClick={() => handleNavigate("Work Orders", "/admin/work-orders")}>
               Work Orders

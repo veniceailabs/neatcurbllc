@@ -15,6 +15,10 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let mounted = true;
     const check = async () => {
+      if (pathname === "/admin/login") {
+        setReady(true);
+        return;
+      }
       const { data } = await supabase.auth.getSession();
       if (!mounted) return;
       if (!data.session) {
@@ -42,7 +46,7 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
     };
     check();
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session) {
+      if (!session && pathname !== "/admin/login") {
         router.replace("/admin/login");
       }
     });
