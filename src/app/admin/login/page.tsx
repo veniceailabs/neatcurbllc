@@ -49,16 +49,14 @@ export default function LoginPage() {
 
   return (
     <div className="auth-page">
-      <div className="panel auth-card">
+      <div className="auth-card">
         <img
           src="/brand/neat-curb-logo-full.svg"
           alt="Neat Curb LLC logo"
           className="auth-logo"
         />
-        <div className="section-title">Admin Login</div>
-        <div className="section-sub">
-          Secure access for Neat Curb leadership.
-        </div>
+        <div className="auth-title">Sign in to Neat Curb</div>
+        <div className="auth-sub">Admin access for leadership and ops.</div>
 
         <form onSubmit={handleLogin} className="auth-form">
           <label className="form-field">

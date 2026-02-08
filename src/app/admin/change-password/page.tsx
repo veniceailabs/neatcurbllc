@@ -56,9 +56,9 @@ export default function ChangePasswordPage() {
 
   return (
     <div className="auth-page">
-      <div className="panel auth-card">
-        <div className="section-title">Set a New Password</div>
-        <div className="section-sub">
+      <div className="auth-card">
+        <div className="auth-title">Set a New Password</div>
+        <div className="auth-sub">
           For security, please create a new admin password before continuing.
         </div>
         <form onSubmit={handleUpdate} className="auth-form">
