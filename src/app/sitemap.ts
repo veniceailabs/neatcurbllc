@@ -7,16 +7,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
-      url: `${baseUrl}/site`,
+      url: `${baseUrl}/`,
       lastModified,
       changeFrequency: "weekly",
       priority: 1
     },
     {
-      url: `${baseUrl}/lead-intake`,
+      url: `${baseUrl}/site`,
       lastModified,
       changeFrequency: "weekly",
-      priority: 0.8
+      priority: 0.9
+    },
+    {
+      url: `${baseUrl}/site`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.9
     }
   ];
 }

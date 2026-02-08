@@ -24,3 +24,10 @@ Then open `http://localhost:3000`.
 - Connect Supabase for real data.
 - Wire Stripe, Twilio, and Maps APIs.
 - Add authentication and role-based access control.
+
+## Supabase setup (required for live data)
+1. Create a Supabase project.
+2. Run the SQL in `supabase/schema.sql`.
+3. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to `.env.local`.
+4. Create the admin user `neatcurb@gmail.com` in Supabase Auth.
+5. Run `supabase/seed.sql` to mark the account for a forced password change.

@@ -7,6 +7,7 @@ import {
   type PropertyClass,
   type ServiceType
 } from "@/lib/pricing";
+import { supabase } from "@/lib/supabaseClient";
 
 const currency = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -33,6 +34,12 @@ export default function LeadIntakeForm() {
     ice: false,
     driftReturn: false
   });
+  const [leadName, setLeadName] = useState("");
+  const [leadEmail, setLeadEmail] = useState("");
+  const [leadPhone, setLeadPhone] = useState("");
+  const [leadAddress, setLeadAddress] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
   const sizeOptions = useMemo(() => {
     if (propertyClass === "residential") {
@@ -66,6 +73,39 @@ export default function LeadIntakeForm() {
     serviceType === "seasonal"
       ? "Estimated total for the full season."
       : "Estimated total for this push.";
+
+  const handleSave = async (status: "new" | "draft") => {
+    setSaveMessage(null);
+    if (!leadName || !leadAddress) {
+      setSaveMessage("Lead name and address are required.");
+      return;
+    }
+    setSaving(true);
+    const { error } = await supabase.from("leads").insert({
+      name: leadName,
+      email: leadEmail || null,
+      phone: leadPhone || null,
+      address: leadAddress,
+      property_class: propertyClass,
+      service_type: serviceType,
+      size,
+      accumulation,
+      add_ons: addOns,
+      quote_low: quote.total.low,
+      quote_high: quote.total.high,
+      status
+    });
+    if (error) {
+      setSaveMessage(error.message);
+    } else {
+      setSaveMessage(status === "draft" ? "Draft saved." : "Lead saved.");
+      setLeadName("");
+      setLeadEmail("");
+      setLeadPhone("");
+      setLeadAddress("");
+    }
+    setSaving(false);
+  };
 
   return (
     <div className="grid-2">
@@ -189,20 +229,62 @@ export default function LeadIntakeForm() {
         <div className="grid-2" style={{ marginTop: "16px" }}>
           <label className="form-field">
             Lead name
-            <input placeholder="Client name" />
+            <input
+              placeholder="Client name"
+              value={leadName}
+              onChange={(event) => setLeadName(event.target.value)}
+            />
           </label>
           <label className="form-field">
             Property address
-            <input placeholder="Street address" />
+            <input
+              placeholder="Street address"
+              value={leadAddress}
+              onChange={(event) => setLeadAddress(event.target.value)}
+            />
+          </label>
+        </div>
+        <div className="grid-2" style={{ marginTop: "16px" }}>
+          <label className="form-field">
+            Email
+            <input
+              type="email"
+              placeholder="email@example.com"
+              value={leadEmail}
+              onChange={(event) => setLeadEmail(event.target.value)}
+            />
+          </label>
+          <label className="form-field">
+            Phone
+            <input
+              type="tel"
+              placeholder="(716) 241-1499"
+              value={leadPhone}
+              onChange={(event) => setLeadPhone(event.target.value)}
+            />
           </label>
         </div>
 
         <div style={{ marginTop: "18px", display: "flex", gap: "12px" }}>
-          <button className="button-primary">Save Lead + Send Quote</button>
-          <button className="button-primary" style={{ background: "#016B37" }}>
+          <button
+            className="button-primary"
+            type="button"
+            onClick={() => handleSave("new")}
+            disabled={saving}
+          >
+            {saving ? "Saving..." : "Save Lead + Send Quote"}
+          </button>
+          <button
+            className="button-primary"
+            type="button"
+            style={{ background: "#016B37" }}
+            onClick={() => handleSave("draft")}
+            disabled={saving}
+          >
             Save Draft
           </button>
         </div>
+        {saveMessage ? <div className="note">{saveMessage}</div> : null}
       </div>
 
       <div className="quote-card">

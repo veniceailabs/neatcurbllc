@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { ReactNode } from "react";
-import Sidebar from "@/components/Sidebar";
-import BusinessAIChat from "@/components/BusinessAIChat";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 export const metadata = {
   title: "Neat Curb Admin Command Center",
@@ -16,13 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="app-bg">
-          <div className="app-shell">
-            <Sidebar />
-            <main className="main-panel">{children}</main>
-          </div>
-          <BusinessAIChat />
-        </div>
+        <ThemeProvider>
+          <LanguageProvider>{children}</LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
