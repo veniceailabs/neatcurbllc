@@ -83,7 +83,6 @@ export default function LeadIntakeForm() {
     setSaving(true);
 
     const message = [
-      `Address: ${leadAddress || "--"}`,
       `Property class: ${propertyClass}`,
       `Service type: ${serviceType}`,
       `Size: ${size}`,
@@ -101,6 +100,7 @@ export default function LeadIntakeForm() {
       name: leadName,
       email: leadEmail || null,
       phone: leadPhone || null,
+      address: leadAddress || null,
       service: "Snow Removal",
       message
     });

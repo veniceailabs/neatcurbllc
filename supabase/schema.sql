@@ -13,6 +13,7 @@ create table leads (
   name text,
   email text,
   phone text,
+  address text,
   service text,
   message text,
   created_at timestamp default now()
@@ -46,6 +47,11 @@ alter table jobs enable row level security;
 create policy "Users can read own profile"
   on profiles for select
   using (auth.uid() = id);
+
+create policy "Users can update own profile"
+  on profiles for update
+  using (auth.uid() = id)
+  with check (auth.uid() = id);
 
 create policy "Authenticated can read leads"
   on leads for select

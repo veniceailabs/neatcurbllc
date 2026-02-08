@@ -15,6 +15,7 @@ type QuoteFormData = {
   name: string;
   email: string;
   phone: string;
+  address?: string;
   service: string;
   message: string;
 };
@@ -31,6 +32,7 @@ export default function QuoteForm() {
       name: data.name,
       email: data.email,
       phone: data.phone,
+      address: data.address || null,
       service: data.service,
       message: data.message
     });
@@ -71,6 +73,10 @@ export default function QuoteForm() {
               </option>
             ))}
           </select>
+        </label>
+        <label>
+          Address
+          <input {...register("address")} placeholder="Service address" />
         </label>
         <label className="full">
           Message
