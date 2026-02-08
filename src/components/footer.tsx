@@ -13,7 +13,7 @@ export default function Footer() {
       </div>
       <div>
         <h4>Contact</h4>
-        <p>Phone: (716) XXX-XXXX</p>
+        <p>Phone: (716) 241-1499</p>
         <p>Email: neatcurb@gmail.com</p>
         <p>Service Area: Western NY</p>
       </div>
