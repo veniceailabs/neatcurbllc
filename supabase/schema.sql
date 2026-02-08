@@ -19,6 +19,9 @@ create table leads (
   estimated_low numeric,
   estimated_high numeric,
   pricing_meta jsonb,
+  lead_status text default 'new',
+  converted_at timestamp,
+  client_id uuid references clients(id),
   created_at timestamp default now()
 );
 
