@@ -164,8 +164,8 @@ a {
 }
 
 html.dark .navbar {
-  background: rgba(13, 20, 24, 0.9);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(11, 16, 19, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .navbar-brand img {
@@ -460,6 +460,12 @@ html.dark .onboarding-card {
   font-weight: 600;
 }
 
+html.dark .trust-item {
+  background: rgba(16, 22, 26, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e9f2ee;
+}
+
 .section {
   padding: 0 6vw;
   display: grid;
@@ -496,6 +502,12 @@ html.dark .onboarding-card {
   box-shadow: 0 16px 30px rgba(13, 27, 30, 0.08);
 }
 
+html.dark .info-card {
+  background: rgba(16, 22, 26, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e9f2ee;
+}
+
 .info-card ul {
   padding-left: 16px;
   margin: 12px 0 0;
@@ -513,6 +525,11 @@ html.dark .onboarding-card {
   padding: 10px 16px;
   text-align: center;
   font-weight: 600;
+}
+
+html.dark .area-chip {
+  background: rgba(35, 176, 75, 0.16);
+  color: #e9f2ee;
 }
 
 .cta-banner {
@@ -537,6 +554,12 @@ html.dark .onboarding-card {
   border-radius: 24px;
 }
 
+html.dark .quote-form {
+  background: rgba(16, 22, 26, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e9f2ee;
+}
+
 .quote-form label {
   display: flex;
   flex-direction: column;
@@ -551,6 +574,14 @@ html.dark .onboarding-card {
   border-radius: 12px;
   border: 1px solid rgba(13, 27, 30, 0.16);
   font-family: inherit;
+}
+
+html.dark .quote-form input,
+html.dark .quote-form select,
+html.dark .quote-form textarea {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #e9f2ee;
 }
 
 .quote-form .full {
