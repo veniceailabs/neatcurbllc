@@ -3,9 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 
 export default function ChangePasswordPage() {
   const router = useRouter();
+  const { language } = useLanguage();
+  const copy = getCopy(language);
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -26,11 +30,11 @@ export default function ChangePasswordPage() {
     setError(null);
 
     if (password.length < 10) {
-      setError("Use at least 10 characters for a strong password.");
+      setError(copy.auth.passwordMin);
       return;
     }
     if (password !== confirm) {
-      setError("Passwords do not match.");
+      setError(copy.auth.passwordMismatch);
       return;
     }
 
@@ -57,13 +61,11 @@ export default function ChangePasswordPage() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <div className="auth-title">Set a New Password</div>
-        <div className="auth-sub">
-          For security, please create a new admin password before continuing.
-        </div>
+        <div className="auth-title">{copy.auth.changePasswordTitle}</div>
+        <div className="auth-sub">{copy.auth.changePasswordSub}</div>
         <form onSubmit={handleUpdate} className="auth-form">
           <label className="form-field">
-            New password
+            {copy.auth.newPassword}
             <input
               type="password"
               value={password}
@@ -72,7 +74,7 @@ export default function ChangePasswordPage() {
             />
           </label>
           <label className="form-field">
-            Confirm password
+            {copy.auth.confirmPassword}
             <input
               type="password"
               value={confirm}
@@ -82,7 +84,7 @@ export default function ChangePasswordPage() {
           </label>
           {error ? <div className="auth-error">{error}</div> : null}
           <button className="button-primary" type="submit" disabled={loading}>
-            {loading ? "Updating..." : "Update Password"}
+            {loading ? copy.auth.updating : copy.auth.updatePassword}
           </button>
         </form>
       </div>

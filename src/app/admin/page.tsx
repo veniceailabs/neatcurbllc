@@ -6,11 +6,15 @@ import SectionHeader from "@/components/SectionHeader";
 import OnboardingPanel from "@/components/OnboardingPanel";
 import Tooltip from "@/components/Tooltip";
 import { supabase } from "@/lib/supabaseClient";
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 
 type Lead = { id: string; created_at: string };
 type Job = { id: string; status: string };
 
 export default function DashboardPage() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [snowReadyLoading, setSnowReadyLoading] = useState(false);
@@ -70,7 +74,7 @@ export default function DashboardPage() {
           scheduled_date: today
         }
       });
-      setSnowReadyMessage("Snow Ready batch created.");
+      setSnowReadyMessage(copy.admin.dashboard.snowReady.success);
     }
     setSnowReadyLoading(false);
   };
@@ -78,36 +82,48 @@ export default function DashboardPage() {
   return (
     <div>
       <SectionHeader
-        title="Master Admin Dashboard"
-        subtitle="Unified operations, revenue, and lead intelligence."
-        action={<span className="pill">2-3 in trigger standard</span>}
+        title={copy.admin.dashboard.title}
+        subtitle={copy.admin.dashboard.subtitle}
+        action={<span className="pill">{copy.admin.dashboard.pill}</span>}
       />
 
       <div className="kpi-grid">
         <KpiCard
-          label="Leads"
+          label={copy.admin.dashboard.kpis.leads}
           value={`${leads.length}`}
-          trend="New requests"
+          trend={copy.admin.dashboard.kpis.newRequests}
         />
-        <KpiCard label="Active Jobs" value={`${activeJobs}`} trend="In progress" />
-        <KpiCard label="Total Jobs" value={`${jobs.length}`} trend="Scheduled + complete" />
-        <KpiCard label="Admin Status" value="Live" trend="Secure access" />
+        <KpiCard
+          label={copy.admin.dashboard.kpis.activeJobs}
+          value={`${activeJobs}`}
+          trend={copy.admin.dashboard.kpis.inProgress}
+        />
+        <KpiCard
+          label={copy.admin.dashboard.kpis.totalJobs}
+          value={`${jobs.length}`}
+          trend={copy.admin.dashboard.kpis.scheduled}
+        />
+        <KpiCard
+          label={copy.admin.dashboard.kpis.adminStatus}
+          value="Live"
+          trend={copy.admin.dashboard.kpis.secureAccess}
+        />
       </div>
 
       <div className="panel" style={{ marginTop: "16px" }}>
-        <div className="section-title">Snow Ready Control</div>
-        <div className="section-sub">
-          Prepare dispatch batches and tie them to the jobs table.
-        </div>
+        <div className="section-title">{copy.admin.dashboard.snowReady.title}</div>
+        <div className="section-sub">{copy.admin.dashboard.snowReady.subtitle}</div>
         <div style={{ marginTop: "16px", display: "flex", gap: "12px" }}>
-          <Tooltip label="Create a queued snow batch for today's date">
+          <Tooltip label={copy.admin.dashboard.snowReady.tooltip}>
             <button
               className="button-primary"
               type="button"
               onClick={handleSnowReady}
               disabled={snowReadyLoading}
             >
-              {snowReadyLoading ? "Preparing..." : "Activate Snow Ready"}
+              {snowReadyLoading
+                ? copy.admin.dashboard.snowReady.preparing
+                : copy.admin.dashboard.snowReady.activate}
             </button>
           </Tooltip>
           {snowReadyMessage ? <div className="note">{snowReadyMessage}</div> : null}

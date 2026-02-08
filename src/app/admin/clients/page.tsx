@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import SectionHeader from "@/components/SectionHeader";
 import { supabase } from "@/lib/supabaseClient";
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 
 type Client = {
   id: string;
@@ -12,6 +14,8 @@ type Client = {
 };
 
 export default function ClientsPage() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
   const [clients, setClients] = useState<Client[]>([]);
 
   useEffect(() => {
@@ -28,21 +32,23 @@ export default function ClientsPage() {
   return (
     <div className="panel">
       <SectionHeader
-        title="Clients CRM"
-        subtitle="Full relationship history, cards-on-file, and proof of work."
-        action={<span className="pill">{clients.length} total</span>}
+        title={copy.admin.clients.title}
+        subtitle={copy.admin.clients.subtitle}
+        action={<span className="pill">{clients.length} {copy.admin.clients.total}</span>}
       />
       <div style={{ marginTop: "18px", display: "grid", gap: "12px" }}>
         {clients.length === 0 ? (
           <div className="kpi-card">
-            <div style={{ fontWeight: 700 }}>No clients yet</div>
-            <div className="note">Add a client to begin tracking service history.</div>
+            <div style={{ fontWeight: 700 }}>{copy.admin.clients.emptyTitle}</div>
+            <div className="note">{copy.admin.clients.emptyBody}</div>
           </div>
         ) : (
           clients.map((client) => (
             <div key={client.id} className="kpi-card">
               <div style={{ fontWeight: 700 }}>{client.name}</div>
-              <div className="note">Type: {client.type || "--"}</div>
+              <div className="note">
+                {copy.admin.clients.type}: {client.type || "--"}
+              </div>
               <div className="note">{client.address}</div>
             </div>
           ))

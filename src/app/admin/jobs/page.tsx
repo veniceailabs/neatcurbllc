@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import SectionHeader from "@/components/SectionHeader";
 import { supabase } from "@/lib/supabaseClient";
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 
 type Job = {
   id: string;
@@ -13,6 +15,8 @@ type Job = {
 };
 
 export default function JobsPage() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
   const [jobs, setJobs] = useState<Job[]>([]);
 
   useEffect(() => {
@@ -29,26 +33,28 @@ export default function JobsPage() {
   return (
     <div className="panel">
       <SectionHeader
-        title="Jobs"
-        subtitle="Scheduling, tracking, and service delivery."
-        action={<span className="pill">{jobs.length} jobs</span>}
+        title={copy.admin.jobs.title}
+        subtitle={copy.admin.jobs.subtitle}
+        action={<span className="pill">{jobs.length} {copy.admin.jobs.jobs}</span>}
       />
       <div style={{ marginTop: "18px", display: "grid", gap: "12px" }}>
         {jobs.length === 0 ? (
           <div className="kpi-card">
-            <div style={{ fontWeight: 700 }}>No jobs yet</div>
-            <div className="note">Create jobs to track upcoming service.</div>
+            <div style={{ fontWeight: 700 }}>{copy.admin.jobs.emptyTitle}</div>
+            <div className="note">{copy.admin.jobs.emptyBody}</div>
           </div>
         ) : (
           jobs.map((job) => (
             <div key={job.id} className="kpi-card">
               <div style={{ fontWeight: 700 }}>{job.service}</div>
-              <div className="note">Status: {job.status}</div>
               <div className="note">
-                Scheduled: {job.scheduled_date ?? "--"}
+                {copy.admin.jobs.status}: {job.status}
               </div>
               <div className="note">
-                Price: {job.price ? `$${job.price}` : "--"}
+                {copy.admin.jobs.scheduled}: {job.scheduled_date ?? "--"}
+              </div>
+              <div className="note">
+                {copy.admin.jobs.price}: {job.price ? `$${job.price}` : "--"}
               </div>
             </div>
           ))

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import SectionHeader from "@/components/SectionHeader";
 import { supabase } from "@/lib/supabaseClient";
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 
 type Job = {
   id: string;
@@ -13,6 +15,8 @@ type Job = {
 };
 
 export default function WorkOrdersPage() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [busyId, setBusyId] = useState<string | null>(null);
 
@@ -93,23 +97,26 @@ export default function WorkOrdersPage() {
   return (
     <div className="panel">
       <SectionHeader
-        title="Work Orders"
-        subtitle="Crew view for starting, finishing, and uploading proof of work."
+        title={copy.admin.workOrders.title}
+        subtitle={copy.admin.workOrders.subtitle}
       />
       <div style={{ display: "grid", gap: "12px", marginTop: "16px" }}>
         {jobs.length === 0 ? (
           <div className="kpi-card">
-            <div style={{ fontWeight: 700 }}>No jobs scheduled</div>
-            <div className="note">Jobs will appear here once queued.</div>
+            <div style={{ fontWeight: 700 }}>{copy.admin.workOrders.emptyTitle}</div>
+            <div className="note">{copy.admin.workOrders.emptyBody}</div>
           </div>
         ) : (
           jobs.map((job) => (
             <div key={job.id} className="kpi-card">
               <div style={{ fontWeight: 700 }}>{job.service || "Job"}</div>
               <div className="note">
-                Date: {job.scheduled_date || "Unscheduled"}
+                {copy.admin.workOrders.date}:{" "}
+                {job.scheduled_date || copy.admin.workOrders.unscheduled}
               </div>
-              <div className="note">Status: {job.status || "queued"}</div>
+              <div className="note">
+                {copy.admin.workOrders.status}: {job.status || "queued"}
+              </div>
               {job.proof_photo_url ? (
                 <a
                   className="note"
@@ -117,7 +124,7 @@ export default function WorkOrdersPage() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  View proof of work
+                  {copy.admin.workOrders.viewProof}
                 </a>
               ) : null}
               <div style={{ marginTop: "12px", display: "flex", gap: "8px" }}>
@@ -127,7 +134,7 @@ export default function WorkOrdersPage() {
                   disabled={busyId === job.id}
                   onClick={() => updateStatus(job.id, "in_progress")}
                 >
-                  Start Job
+                  {copy.admin.workOrders.start}
                 </button>
                 <button
                   className="button-primary"
@@ -135,10 +142,10 @@ export default function WorkOrdersPage() {
                   disabled={busyId === job.id}
                   onClick={() => updateStatus(job.id, "complete")}
                 >
-                  Finish Job
+                  {copy.admin.workOrders.finish}
                 </button>
                 <label className="button-secondary" style={{ cursor: "pointer" }}>
-                  Upload Photo
+                  {copy.admin.workOrders.upload}
                   <input
                     type="file"
                     accept="image/*"

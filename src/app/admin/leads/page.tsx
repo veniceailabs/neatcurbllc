@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import SectionHeader from "@/components/SectionHeader";
 import { supabase } from "@/lib/supabaseClient";
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 
 type Lead = {
   id: string;
@@ -19,6 +21,8 @@ type Lead = {
 };
 
 export default function LeadsPage() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
   const [leads, setLeads] = useState<Lead[]>([]);
 
   useEffect(() => {
@@ -37,36 +41,42 @@ export default function LeadsPage() {
   return (
     <div className="panel">
       <SectionHeader
-        title="Leads & Sales"
-        subtitle="Live lead intake with automated follow-ups and conversion tracking."
-        action={<span className="pill">{leads.length} active</span>}
+        title={copy.admin.leads.title}
+        subtitle={copy.admin.leads.subtitle}
+        action={<span className="pill">{leads.length} {copy.admin.leads.active}</span>}
       />
       <div style={{ marginTop: "18px", display: "grid", gap: "12px" }}>
         {leads.length === 0 ? (
           <div className="kpi-card">
-            <div style={{ fontWeight: 700 }}>No leads yet</div>
-            <div className="note">New leads will appear here in real time.</div>
+            <div style={{ fontWeight: 700 }}>{copy.admin.leads.emptyTitle}</div>
+            <div className="note">{copy.admin.leads.emptyBody}</div>
           </div>
         ) : (
           leads.map((lead) => (
             <div key={lead.id} className="kpi-card">
               <div style={{ fontWeight: 700 }}>{lead.name}</div>
-              <div className="note">Service: {lead.service || "--"}</div>
+              <div className="note">
+                {copy.admin.leads.service}: {lead.service || "--"}
+              </div>
               {lead.pricing_meta?.serviceDetail ? (
                 <div className="note">
-                  Detail: {lead.pricing_meta.serviceDetail}
+                  {copy.admin.leads.detail}: {lead.pricing_meta.serviceDetail}
                 </div>
               ) : null}
-              <div className="note">Address: {lead.address || "--"}</div>
+              <div className="note">
+                {copy.admin.leads.address}: {lead.address || "--"}
+              </div>
               {lead.estimated_low !== null ? (
                 <div className="note">
-                  Estimate: ${lead.estimated_low}
+                  {copy.admin.leads.estimate}: ${lead.estimated_low}
                   {lead.estimated_high && lead.estimated_high !== lead.estimated_low
                     ? ` - $${lead.estimated_high}`
                     : ""}
                 </div>
               ) : null}
-              <div className="note">Message: {lead.message || "--"}</div>
+              <div className="note">
+                {copy.admin.leads.message}: {lead.message || "--"}
+              </div>
             </div>
           ))
         )}

@@ -1,30 +1,19 @@
-const items = [
-  {
-    title: "Reliable Service",
-    body: "We monitor storms and respond quickly to keep properties safe and accessible."
-  },
-  {
-    title: "Commercial Ready",
-    body: "Trusted by offices, plazas, apartments, and businesses across Western NY."
-  },
-  {
-    title: "Year-Round Care",
-    body: "Snow removal in winter. Lawn and property care the rest of the year."
-  },
-  {
-    title: "Local & Responsive",
-    body: "Western New York based and ready when you need us."
-  }
-];
+"use client";
+
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 
 export default function WhyUs() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
+
   return (
     <section className="section">
       <div className="section-header">
-        <h2>Why Property Owners Choose Neat Curb</h2>
+        <h2>{copy.whyUs.title}</h2>
       </div>
       <div className="grid-4">
-        {items.map((item) => (
+        {copy.whyUs.items.map((item) => (
           <div key={item.title} className="info-card">
             <h3>{item.title}</h3>
             <p>{item.body}</p>

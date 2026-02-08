@@ -1,40 +1,37 @@
+"use client";
+
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
+
 export default function Hero() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
+
   return (
     <section className="hero" id="top">
       <div className="hero-content">
-        <h1>Western New York’s Reliable Snow & Property Maintenance</h1>
-        <p>
-          Residential and Commercial Snow Removal, Lawn Care, and Property Services you can
-          count on year-round.
-        </p>
+        <h1>{copy.hero.title}</h1>
+        <p>{copy.hero.subtitle}</p>
         <div className="hero-actions">
           <a className="btn-primary" href="/request-quote">
-            Request a Quote
+            {copy.hero.primaryCta}
           </a>
           <a className="btn-secondary" href="tel:7162411499">
-            Call Now
+            {copy.hero.secondaryCta}
           </a>
         </div>
-        <div className="hero-phone">(716) XXX-XXXX</div>
+        <div className="hero-phone">{copy.hero.phone}</div>
       </div>
       <div className="hero-card">
-        <div className="hero-card-title">Storm-Ready Operations</div>
-        <p>
-          Real-time dispatch, proactive monitoring, and reliable crews across Western NY.
-        </p>
+        <div className="hero-card-title">{copy.hero.cardTitle}</div>
+        <p>{copy.hero.cardBody}</p>
         <div className="hero-card-metrics">
-          <div>
-            <strong>24/7</strong>
-            <span>Monitoring</span>
-          </div>
-          <div>
-            <strong>2-3"</strong>
-            <span>Snow Trigger</span>
-          </div>
-          <div>
-            <strong>Net-15</strong>
-            <span>Commercial</span>
-          </div>
+          {copy.hero.metrics.map((metric) => (
+            <div key={metric.label}>
+              <strong>{metric.value}</strong>
+              <span>{metric.label}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

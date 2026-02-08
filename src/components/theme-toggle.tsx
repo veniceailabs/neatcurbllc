@@ -49,34 +49,37 @@ export default function ThemeToggle({ variant = "nav" }: { variant?: ThemeVarian
   }
 
   return (
-    <div className="theme-toggle">
+    <div className="theme-toggle" data-variant={variant}>
       <button
         type="button"
         className={`theme-pill ${current === "light" ? "active" : ""}`}
         onClick={() => setTheme("light")}
         aria-label="Light mode"
+        data-theme="light"
       >
         <Sun size={14} />
-        <span>Light</span>
+        <span className="theme-pill-label">Light</span>
       </button>
       <button
         type="button"
         className={`theme-pill ${current === "dark" ? "active" : ""}`}
         onClick={() => setTheme("dark")}
         aria-label="Dark mode"
+        data-theme="dark"
       >
         <Moon size={14} />
-        <span>Dark</span>
+        <span className="theme-pill-label">Dark</span>
       </button>
       <button
         type="button"
         className={`theme-pill ${current === "brand" ? "active" : ""}`}
         onClick={() => setTheme("brand")}
         aria-label="Brand mode"
+        data-theme="brand"
       >
         <Snowflake size={14} />
         <Leaf size={14} />
-        <span>Brand</span>
+        <span className="theme-pill-label">Brand</span>
       </button>
     </div>
   );

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import SectionHeader from "@/components/SectionHeader";
 import Tooltip from "@/components/Tooltip";
 import { supabase } from "@/lib/supabaseClient";
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 
 type Client = {
   id: string;
@@ -13,6 +15,8 @@ type Client = {
 };
 
 export default function MessagesPage() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
   const [clients, setClients] = useState<Client[]>([]);
   const [clientId, setClientId] = useState("");
   const [channel, setChannel] = useState<"email" | "sms">("email");
@@ -35,22 +39,22 @@ export default function MessagesPage() {
     setStatus(null);
     const client = clients.find((c) => c.id === clientId);
     if (!client) {
-      setStatus("Pick a client first.");
+      setStatus(copy.admin.messages.statusClient);
       return;
     }
     if (channel === "email" && !client.email) {
-      setStatus("Client email is missing.");
+      setStatus(copy.admin.messages.statusEmail);
       return;
     }
     if (channel === "sms" && !client.phone) {
-      setStatus("Client phone is missing.");
+      setStatus(copy.admin.messages.statusPhone);
       return;
     }
 
     const { data: session } = await supabase.auth.getSession();
     const token = session.session?.access_token;
     if (!token) {
-      setStatus("You are not authenticated.");
+      setStatus(copy.admin.messages.statusAuth);
       return;
     }
 
@@ -71,11 +75,11 @@ export default function MessagesPage() {
 
     const data = await response.json();
     if (!response.ok) {
-      setStatus(data?.error || "Failed to send message.");
+      setStatus(data?.error || copy.admin.messages.statusFail);
       return;
     }
 
-    setStatus("Message sent.");
+    setStatus(copy.admin.messages.statusSent);
     setSubject("");
     setBody("");
   };
@@ -83,15 +87,15 @@ export default function MessagesPage() {
   return (
     <div className="panel">
       <SectionHeader
-        title="Messages"
-        subtitle="Send email or SMS updates directly from the hub."
-        action={<span className="pill">Admin Only</span>}
+        title={copy.admin.messages.title}
+        subtitle={copy.admin.messages.subtitle}
+        action={<span className="pill">{copy.admin.messages.adminOnly}</span>}
       />
       <div style={{ display: "grid", gap: "12px", marginTop: "16px" }}>
         <label className="form-field">
-          Client
+          {copy.admin.messages.client}
           <select value={clientId} onChange={(e) => setClientId(e.target.value)}>
-            <option value="">Select a client</option>
+            <option value="">{copy.admin.messages.selectClient}</option>
             {clients.map((client) => (
               <option key={client.id} value={client.id}>
                 {client.name || client.email || client.phone || client.id}
@@ -100,28 +104,28 @@ export default function MessagesPage() {
           </select>
         </label>
         <label className="form-field">
-          Channel
+          {copy.admin.messages.channel}
           <select
             value={channel}
             onChange={(e) => setChannel(e.target.value as "email" | "sms")}
           >
-            <option value="email">Email</option>
-            <option value="sms">SMS</option>
+            <option value="email">{copy.admin.messages.email}</option>
+            <option value="sms">{copy.admin.messages.sms}</option>
           </select>
         </label>
         {channel === "email" ? (
           <label className="form-field">
-            Subject
+            {copy.admin.messages.subject}
             <input value={subject} onChange={(e) => setSubject(e.target.value)} />
           </label>
         ) : null}
         <label className="form-field">
-          Message
+          {copy.admin.messages.message}
           <textarea rows={4} value={body} onChange={(e) => setBody(e.target.value)} />
         </label>
-        <Tooltip label="Send email or SMS and log it in Messages + Audit">
+        <Tooltip label={copy.admin.messages.tooltip}>
           <button className="button-primary" type="button" onClick={handleSend}>
-            Send Message
+            {copy.admin.messages.send}
           </button>
         </Tooltip>
         {status ? <div className="note">{status}</div> : null}

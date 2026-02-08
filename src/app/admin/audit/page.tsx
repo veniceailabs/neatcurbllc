@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { createAuditBundle, type AuditRecord } from "@/lib/audit";
 import SectionHeader from "@/components/SectionHeader";
 import { supabase } from "@/lib/supabaseClient";
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 
 type AuditRow = {
   id: string;
@@ -14,6 +16,8 @@ type AuditRow = {
 };
 
 export default function AuditPage() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
   const [records, setRecords] = useState<AuditRecord[]>([]);
 
   useEffect(() => {
@@ -48,20 +52,17 @@ export default function AuditPage() {
   return (
     <div className="panel">
       <SectionHeader
-        title="Merkle Audit Security"
-        subtitle="Tamper-proof session and financial logs with cryptographic verification."
-        action={<span className="pill">Root Locked</span>}
+        title={copy.admin.audit.title}
+        subtitle={copy.admin.audit.subtitle}
+        action={<span className="pill">{copy.admin.audit.badge}</span>}
       />
       <div style={{ marginTop: "16px" }}>
         {records.length === 0 ? (
-          <div className="note">
-            No audit entries yet. Actions like lead creation and Snow Ready will
-            appear here.
-          </div>
+          <div className="note">{copy.admin.audit.empty}</div>
         ) : (
           <>
             <div className="kpi-card" style={{ marginBottom: "16px" }}>
-              <div className="kpi-label">Current Merkle Root</div>
+              <div className="kpi-label">{copy.admin.audit.currentRoot}</div>
               <div style={{ fontFamily: "monospace", fontSize: "0.85rem" }}>
                 {audit.root}
               </div>
@@ -70,9 +71,15 @@ export default function AuditPage() {
               {records.map((record, index) => (
                 <div key={record.id} className="kpi-card">
                   <div style={{ fontWeight: 700 }}>{record.action}</div>
-                  <div className="note">Actor: {record.actor}</div>
-                  <div className="note">Timestamp: {record.timestamp}</div>
-                  <div className="note">Leaf hash: {audit.leaves[index]}</div>
+                  <div className="note">
+                    {copy.admin.audit.actor}: {record.actor}
+                  </div>
+                  <div className="note">
+                    {copy.admin.audit.timestamp}: {record.timestamp}
+                  </div>
+                  <div className="note">
+                    {copy.admin.audit.leaf}: {audit.leaves[index]}
+                  </div>
                 </div>
               ))}
             </div>

@@ -1,21 +1,29 @@
+"use client";
+
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
+
 export default function Footer() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
+
   return (
     <footer className="footer">
       <div>
-        <h3>Neat Curb</h3>
-        <p>Reliable Snow & Property Maintenance in Western NY.</p>
+        <h3>{copy.footer.name}</h3>
+        <p>{copy.footer.tagline}</p>
       </div>
       <div>
-        <h4>Quick Links</h4>
-        <a href="/services">Services</a>
-        <a href="/request-quote">Request Quote</a>
-        <a href="/login">Login</a>
+        <h4>{copy.footer.quickLinks}</h4>
+        <a href="/services">{copy.footer.links.services}</a>
+        <a href="/request-quote">{copy.footer.links.requestQuote}</a>
+        <a href="/admin/login">{copy.footer.links.login}</a>
       </div>
       <div>
-        <h4>Contact</h4>
-        <p>Phone: (716) 241-1499</p>
-        <p>Email: neatcurb@gmail.com</p>
-        <p>Service Area: Western NY</p>
+        <h4>{copy.footer.contact}</h4>
+        <p>Phone: {copy.footer.phone}</p>
+        <p>Email: {copy.footer.email}</p>
+        <p>Service Area: {copy.footer.serviceArea}</p>
       </div>
     </footer>
   );

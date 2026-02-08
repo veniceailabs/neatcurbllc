@@ -3,6 +3,8 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 import {
   getPublicEstimate,
   type Accumulation,
@@ -13,20 +15,6 @@ import {
   type PublicService,
   type ResidentialSize
 } from "@/lib/pricing";
-
-const services: PublicService[] = [
-  "Snow Removal",
-  "Lawn Care",
-  "Property Maintenance",
-  "Commercial Services"
-];
-
-const accumulationOptions: { value: Accumulation; label: string }[] = [
-  { value: "2-3", label: "2-3 inches (Standard)" },
-  { value: "3-6", label: "3-6 inches (+50%)" },
-  { value: "6-12", label: "6-12 inches (+75%)" },
-  { value: "12+", label: "12+ inches (+100%)" }
-];
 
 type QuoteFormData = {
   name: string;
@@ -42,6 +30,8 @@ type QuoteFormData = {
 };
 
 export default function QuoteForm() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
   const { register, handleSubmit, reset, setValue } = useForm<QuoteFormData>({
     defaultValues: { service: "Snow Removal" }
   });
@@ -93,26 +83,40 @@ export default function QuoteForm() {
     reset();
   };
 
+  const services: { value: PublicService; label: string }[] = [
+    { value: "Snow Removal", label: copy.quote.services[0] },
+    { value: "Lawn Care", label: copy.quote.services[1] },
+    { value: "Property Maintenance", label: copy.quote.services[2] },
+    { value: "Commercial Services", label: copy.quote.services[3] }
+  ];
+
+  const accumulationOptions: { value: Accumulation; label: string }[] = [
+    { value: "2-3", label: copy.quote.accumulationOptions[0] },
+    { value: "3-6", label: copy.quote.accumulationOptions[1] },
+    { value: "6-12", label: copy.quote.accumulationOptions[2] },
+    { value: "12+", label: copy.quote.accumulationOptions[3] }
+  ];
+
   return (
     <section className="section" id="quote">
       <div className="section-header">
-        <h2>Request a Quote</h2>
+        <h2>{copy.quote.title}</h2>
       </div>
       <form className="quote-form" onSubmit={handleSubmit(onSubmit)}>
         <label>
-          Full Name
+          {copy.quote.name}
           <input {...register("name", { required: true })} />
         </label>
         <label>
-          Email
+          {copy.quote.email}
           <input type="email" {...register("email", { required: true })} />
         </label>
         <label>
-          Phone
+          {copy.quote.phone}
           <input type="tel" {...register("phone", { required: true })} />
         </label>
         <label>
-          Service Needed
+          {copy.quote.serviceNeeded}
           <select
             {...register("service", { required: true })}
             value={service}
@@ -129,8 +133,8 @@ export default function QuoteForm() {
             }}
           >
             {services.map((serviceOption) => (
-              <option key={serviceOption} value={serviceOption}>
-                {serviceOption}
+              <option key={serviceOption.value} value={serviceOption.value}>
+                {serviceOption.label}
               </option>
             ))}
           </select>
@@ -138,19 +142,23 @@ export default function QuoteForm() {
         {service === "Snow Removal" ? (
           <>
             <label>
-              Property Class
+              {copy.quote.propertyClass}
               <select
                 value={propertyClass}
                 onChange={(event) =>
                   setPropertyClass(event.target.value as "residential" | "commercial")
                 }
               >
-                <option value="residential">Residential</option>
-                <option value="commercial">Commercial</option>
+                <option value="residential">
+                  {copy.quote.propertyClassOptions.residential}
+                </option>
+                <option value="commercial">
+                  {copy.quote.propertyClassOptions.commercial}
+                </option>
               </select>
             </label>
             <label>
-              Property Size
+              {copy.quote.propertySize}
               <select
                 value={size}
                 onChange={(event) =>
@@ -159,20 +167,20 @@ export default function QuoteForm() {
               >
                 {propertyClass === "residential" ? (
                   <>
-                    <option value="small">Small driveway</option>
-                    <option value="medium">Medium driveway</option>
-                    <option value="large">Large driveway</option>
+                    <option value="small">{copy.quote.residentialSizes[0]}</option>
+                    <option value="medium">{copy.quote.residentialSizes[1]}</option>
+                    <option value="large">{copy.quote.residentialSizes[2]}</option>
                   </>
                 ) : (
                   <>
-                    <option value="small">Small commercial</option>
-                    <option value="plaza">Plaza / multi-suite</option>
+                    <option value="small">{copy.quote.commercialSizes[0]}</option>
+                    <option value="plaza">{copy.quote.commercialSizes[1]}</option>
                   </>
                 )}
               </select>
             </label>
             <label>
-              Snowfall Forecast
+              {copy.quote.snowfall}
               <select
                 value={accumulation}
                 onChange={(event) =>
@@ -190,7 +198,7 @@ export default function QuoteForm() {
         ) : null}
         {service === "Lawn Care" ? (
           <label>
-            Service Detail
+            {copy.quote.serviceDetail}
             <select
               value={serviceDetail}
               onChange={(event) => {
@@ -199,20 +207,22 @@ export default function QuoteForm() {
                 setValue("serviceDetail", next, { shouldValidate: true });
               }}
             >
-              <option value="">Select service</option>
-              <option value="Lawn Mowing">Lawn Mowing</option>
-              <option value="Fall Leaf Cleanup">Fall Leaf Cleanup</option>
-              <option value="Mulch Install">Mulch Install</option>
-              <option value="Hedge Trimming">Hedge & Bush Trimming</option>
-              <option value="Gutter Cleaning">Gutter Cleaning</option>
-              <option value="Aeration & Overseeding">Aeration & Overseeding</option>
-              <option value="Storm Cleanup">Storm Cleanup</option>
+              <option value="">{copy.quote.selectService}</option>
+              <option value="Lawn Mowing">{copy.quote.lawnOptions[0]}</option>
+              <option value="Fall Leaf Cleanup">{copy.quote.lawnOptions[1]}</option>
+              <option value="Mulch Install">{copy.quote.lawnOptions[2]}</option>
+              <option value="Hedge Trimming">{copy.quote.lawnOptions[3]}</option>
+              <option value="Gutter Cleaning">{copy.quote.lawnOptions[4]}</option>
+              <option value="Aeration & Overseeding">
+                {copy.quote.lawnOptions[5]}
+              </option>
+              <option value="Storm Cleanup">{copy.quote.lawnOptions[6]}</option>
             </select>
           </label>
         ) : null}
         {service === "Property Maintenance" ? (
           <label>
-            Service Detail
+            {copy.quote.serviceDetail}
             <select
               value={serviceDetail}
               onChange={(event) => {
@@ -221,17 +231,19 @@ export default function QuoteForm() {
                 setValue("serviceDetail", next, { shouldValidate: true });
               }}
             >
-              <option value="">Select service</option>
-              <option value="Gutter Cleaning">Gutter Cleaning</option>
-              <option value="Storm Cleanup">Storm Cleanup</option>
-              <option value="Branch & Debris Removal">Branch & Debris Removal</option>
-              <option value="Lot Sweeping">Lot Sweeping</option>
+              <option value="">{copy.quote.selectService}</option>
+              <option value="Gutter Cleaning">{copy.quote.maintenanceOptions[0]}</option>
+              <option value="Storm Cleanup">{copy.quote.maintenanceOptions[1]}</option>
+              <option value="Branch & Debris Removal">
+                {copy.quote.maintenanceOptions[2]}
+              </option>
+              <option value="Lot Sweeping">{copy.quote.maintenanceOptions[3]}</option>
             </select>
           </label>
         ) : null}
         {service === "Commercial Services" ? (
           <label>
-            Service Detail
+            {copy.quote.serviceDetail}
             <select
               value={serviceDetail}
               onChange={(event) => {
@@ -240,31 +252,39 @@ export default function QuoteForm() {
                 setValue("serviceDetail", next, { shouldValidate: true });
               }}
             >
-              <option value="">Select service</option>
-              <option value="Monthly Lawn Maintenance">Monthly Lawn Maintenance</option>
-              <option value="Lot Sweeping">Lot Sweeping</option>
-              <option value="Fall Leaf Cleanup">Fall Leaf Cleanup</option>
-              <option value="Commercial Mulching">Commercial Mulching</option>
-              <option value="Debris / Storm Removal">Debris / Storm Removal</option>
+              <option value="">{copy.quote.selectService}</option>
+              <option value="Monthly Lawn Maintenance">
+                {copy.quote.commercialOptions[0]}
+              </option>
+              <option value="Lot Sweeping">{copy.quote.commercialOptions[1]}</option>
+              <option value="Fall Leaf Cleanup">
+                {copy.quote.commercialOptions[2]}
+              </option>
+              <option value="Commercial Mulching">
+                {copy.quote.commercialOptions[3]}
+              </option>
+              <option value="Debris / Storm Removal">
+                {copy.quote.commercialOptions[4]}
+              </option>
             </select>
           </label>
         ) : null}
         <label>
-          Address
-          <input {...register("address")} placeholder="Service address" />
+          {copy.quote.address}
+          <input {...register("address")} placeholder={copy.quote.addressPlaceholder} />
         </label>
         <label className="full">
-          Message
+          {copy.quote.message}
           <textarea rows={4} {...register("message")} />
         </label>
         <button className="btn-primary" type="submit" disabled={status === "sending"}>
-          {status === "sending" ? "Sending..." : "Submit"}
+          {status === "sending" ? copy.quote.sending : copy.quote.submit}
         </button>
         {status === "success" ? (
-          <p className="form-success">Thank you! We’ll contact you shortly.</p>
+          <p className="form-success">{copy.quote.success}</p>
         ) : null}
         {status === "error" ? (
-          <p className="form-error">Something went wrong. Please try again.</p>
+          <p className="form-error">{copy.quote.error}</p>
         ) : null}
       </form>
     </section>

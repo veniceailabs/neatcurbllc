@@ -12,14 +12,14 @@ export default function LanguageToggle() {
         className={`lang-pill ${language === "en" ? "active" : ""}`}
         onClick={() => setLanguage("en")}
       >
-        🇺🇸 EN
+        EN
       </button>
       <button
         type="button"
         className={`lang-pill ${language === "es" ? "active" : ""}`}
         onClick={() => setLanguage("es")}
       >
-        🇪🇸 ES
+        ES
       </button>
     </div>
   );

@@ -3,9 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { language } = useLanguage();
+  const copy = getCopy(language);
   const [email, setEmail] = useState("neatcurb@gmail.com");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -55,12 +59,12 @@ export default function LoginPage() {
           alt="Neat Curb LLC logo"
           className="auth-logo"
         />
-        <div className="auth-title">Sign in</div>
-        <div className="auth-sub">Admin access for leadership and ops.</div>
+        <div className="auth-title">{copy.auth.signIn}</div>
+        <div className="auth-sub">{copy.auth.adminAccess}</div>
 
         <form onSubmit={handleLogin} className="auth-form">
           <label className="form-field">
-            Email
+            {copy.auth.email}
             <input
               type="email"
               value={email}
@@ -69,7 +73,7 @@ export default function LoginPage() {
             />
           </label>
           <label className="form-field">
-            Password
+            {copy.auth.password}
             <input
               type="password"
               value={password}
@@ -79,10 +83,10 @@ export default function LoginPage() {
           </label>
           {error ? <div className="auth-error">{error}</div> : null}
           <button className="button-primary" type="submit" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? copy.auth.signingIn : copy.auth.signInButton}
           </button>
           <a className="auth-home" href="/">
-            ← Back to Home
+            {copy.auth.backHome}
           </a>
         </form>
       </div>

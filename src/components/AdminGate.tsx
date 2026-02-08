@@ -15,6 +15,7 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let mounted = true;
     const check = async () => {
+      setReady(false);
       if (pathname === "/admin/login") {
         setReady(true);
         return;
@@ -54,7 +55,7 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
       mounted = false;
       sub?.subscription.unsubscribe();
     };
-  }, [router]);
+  }, [router, pathname]);
 
   if (!ready) {
     return (

@@ -5,30 +5,38 @@ import { usePathname } from "next/navigation";
 import ThemeToggle from "@/components/theme-toggle";
 import LanguageToggle from "@/components/language-toggle";
 import { useAdminRole } from "@/components/admin-context";
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 import Tooltip from "@/components/Tooltip";
 
 const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/admin", label: "Dashboard" },
-  { href: "/admin/leads", label: "Leads" },
-  { href: "/admin/clients", label: "Clients" },
-  { href: "/admin/jobs", label: "Jobs" },
-  { href: "/admin/lead-intake", label: "Lead Intake" },
-  { href: "/admin/messages", label: "Messages" },
-  { href: "/admin/settings", label: "Settings" },
-  { href: "/", label: "Public Site" }
+  { href: "/", key: "home" },
+  { href: "/admin", key: "dashboard" },
+  { href: "/admin/leads", key: "leads" },
+  { href: "/admin/clients", key: "clients" },
+  { href: "/admin/jobs", key: "jobs" },
+  { href: "/admin/invoices", key: "invoices" },
+  { href: "/admin/lead-intake", key: "leadIntake" },
+  { href: "/admin/messages", key: "messages" },
+  { href: "/admin/settings", key: "settings" }
 ];
 
 const staffNavItems = [
-  { href: "/", label: "Home" },
-  { href: "/admin/work-orders", label: "Work Orders" },
-  { href: "/admin/logout", label: "Logout" }
+  { href: "/", key: "home" },
+  { href: "/admin/work-orders", key: "workOrders" },
+  { href: "/admin/logout", key: "logout" }
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
   const { role } = useAdminRole();
+  const { language } = useLanguage();
+  const copy = getCopy(language);
   const items = role === "staff" ? staffNavItems : navItems;
+
+  if (pathname === "/admin/login" || pathname === "/admin/change-password") {
+    return null;
+  }
 
   return (
     <aside className="sidebar">
@@ -45,13 +53,14 @@ export default function Sidebar() {
       <nav className="nav-list">
         {items.map((item) => {
           const active = pathname === item.href;
+          const label = copy.adminNav[item.key as keyof typeof copy.adminNav];
           return (
-            <Tooltip key={item.href} label={`Open ${item.label}`}>
+            <Tooltip key={item.href} label={`Open ${label}`}>
               <Link
                 href={item.href}
                 className={`nav-link ${active ? "active" : ""}`}
               >
-                <span>{item.label}</span>
+                <span>{label}</span>
               </Link>
             </Tooltip>
           );
