@@ -21,9 +21,15 @@ export default function Footer() {
       </div>
       <div>
         <h4>{copy.footer.contact}</h4>
-        <p>Phone: {copy.footer.phone}</p>
-        <p>Email: {copy.footer.email}</p>
-        <p>Service Area: {copy.footer.serviceArea}</p>
+        <p>
+          {copy.footer.phoneLabel}: {copy.footer.phone}
+        </p>
+        <p>
+          {copy.footer.emailLabel}: {copy.footer.email}
+        </p>
+        <p>
+          {copy.footer.serviceAreaLabel}: {copy.footer.serviceArea}
+        </p>
       </div>
     </footer>
   );
