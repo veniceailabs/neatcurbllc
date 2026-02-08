@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import KpiCard from "@/components/KpiCard";
 import SectionHeader from "@/components/SectionHeader";
+import OnboardingPanel from "@/components/OnboardingPanel";
+import Tooltip from "@/components/Tooltip";
 import { supabase } from "@/lib/supabaseClient";
 
 type Lead = { id: string; created_at: string };
@@ -98,17 +100,21 @@ export default function DashboardPage() {
           Prepare dispatch batches and tie them to the jobs table.
         </div>
         <div style={{ marginTop: "16px", display: "flex", gap: "12px" }}>
-          <button
-            className="button-primary"
-            type="button"
-            onClick={handleSnowReady}
-            disabled={snowReadyLoading}
-          >
-            {snowReadyLoading ? "Preparing..." : "Activate Snow Ready"}
-          </button>
+          <Tooltip label="Create a queued snow batch for today's date">
+            <button
+              className="button-primary"
+              type="button"
+              onClick={handleSnowReady}
+              disabled={snowReadyLoading}
+            >
+              {snowReadyLoading ? "Preparing..." : "Activate Snow Ready"}
+            </button>
+          </Tooltip>
           {snowReadyMessage ? <div className="note">{snowReadyMessage}</div> : null}
         </div>
       </div>
+
+      <OnboardingPanel />
     </div>
   );
 }

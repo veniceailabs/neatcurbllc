@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import ThemeToggle from "@/components/theme-toggle";
 import LanguageToggle from "@/components/language-toggle";
 import { useAdminRole } from "@/components/admin-context";
+import Tooltip from "@/components/Tooltip";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", badge: "Live" },
@@ -47,14 +48,15 @@ export default function Sidebar() {
         {items.map((item) => {
           const active = pathname === item.href;
           return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`nav-link ${active ? "active" : ""}`}
-            >
-              <span>{item.label}</span>
-              <span className="nav-pill">{item.badge}</span>
-            </Link>
+            <Tooltip key={item.href} label={`Open ${item.label}`}>
+              <Link
+                href={item.href}
+                className={`nav-link ${active ? "active" : ""}`}
+              >
+                <span>{item.label}</span>
+                <span className="nav-pill">{item.badge}</span>
+              </Link>
+            </Tooltip>
           );
         })}
       </nav>

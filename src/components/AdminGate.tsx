@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { AdminProvider, type AdminRole } from "@/components/admin-context";
+import { TooltipProvider } from "@/components/tooltip-context";
 
 export default function AdminGate({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -62,5 +63,9 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
     );
   }
 
-  return <AdminProvider role={role}>{children}</AdminProvider>;
+  return (
+    <AdminProvider role={role}>
+      <TooltipProvider>{children}</TooltipProvider>
+    </AdminProvider>
+  );
 }

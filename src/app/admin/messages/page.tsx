@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import SectionHeader from "@/components/SectionHeader";
+import Tooltip from "@/components/Tooltip";
 import { supabase } from "@/lib/supabaseClient";
 
 type Client = {
@@ -118,9 +119,11 @@ export default function MessagesPage() {
           Message
           <textarea rows={4} value={body} onChange={(e) => setBody(e.target.value)} />
         </label>
-        <button className="button-primary" type="button" onClick={handleSend}>
-          Send Message
-        </button>
+        <Tooltip label="Send email or SMS and log it in Messages + Audit">
+          <button className="button-primary" type="button" onClick={handleSend}>
+            Send Message
+          </button>
+        </Tooltip>
         {status ? <div className="note">{status}</div> : null}
       </div>
     </div>

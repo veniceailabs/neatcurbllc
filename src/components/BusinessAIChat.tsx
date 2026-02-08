@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
@@ -19,13 +20,51 @@ const seedMessages: ChatMessage[] = [
 ];
 
 export default function BusinessAIChat() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>(seedMessages);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleNavigate = (label: string, href: string) => {
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: `ai-nav-${Date.now()}`,
+        role: "assistant",
+        content: `Opening ${label}...`
+      }
+    ]);
+    router.push(href);
+  };
+
+  const commandRoute = (text: string) => {
+    const normalized = text.trim().toLowerCase();
+    const map: Record<string, { label: string; href: string }> = {
+      dashboard: { label: "Dashboard", href: "/admin" },
+      leads: { label: "Leads", href: "/admin/leads" },
+      clients: { label: "Clients", href: "/admin/clients" },
+      jobs: { label: "Jobs", href: "/admin/jobs" },
+      messages: { label: "Messages", href: "/admin/messages" },
+      "lead intake": { label: "Lead Intake", href: "/admin/lead-intake" },
+      settings: { label: "Settings", href: "/admin/settings" },
+      "work orders": { label: "Work Orders", href: "/admin/work-orders" }
+    };
+
+    const match = Object.keys(map).find((key) =>
+      normalized.includes(key)
+    );
+    return match ? map[match] : null;
+  };
+
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
+    const navTarget = commandRoute(input);
+    if (navTarget) {
+      handleNavigate(navTarget.label, navTarget.href);
+      setInput("");
+      return;
+    }
     const userMessage: ChatMessage = {
       id: `user-${Date.now()}`,
       role: "user",
@@ -121,6 +160,23 @@ export default function BusinessAIChat() {
                 {message.content}
               </div>
             ))}
+          </div>
+          <div className="nexus-quick">
+            <button onClick={() => handleNavigate("Dashboard", "/admin")}>
+              Dashboard
+            </button>
+            <button onClick={() => handleNavigate("Leads", "/admin/leads")}>
+              Leads
+            </button>
+            <button onClick={() => handleNavigate("Clients", "/admin/clients")}>
+              Clients
+            </button>
+            <button onClick={() => handleNavigate("Messages", "/admin/messages")}>
+              Messages
+            </button>
+            <button onClick={() => handleNavigate("Work Orders", "/admin/work-orders")}>
+              Work Orders
+            </button>
           </div>
           <div className="nexus-input">
             <input

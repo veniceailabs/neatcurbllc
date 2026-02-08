@@ -146,6 +146,50 @@ html.dark .theme-toggle {
   border-color: var(--brand-yellow);
 }
 
+.tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tooltip[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  background: rgba(15, 24, 28, 0.95);
+  color: #ffffff;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 50;
+}
+
+.tooltip[data-tooltip]::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  transform: translateX(-50%);
+  border-width: 6px 6px 0 6px;
+  border-style: solid;
+  border-color: rgba(15, 24, 28, 0.95) transparent transparent transparent;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 50;
+}
+
+.tooltip[data-tooltip]:hover::after,
+.tooltip[data-tooltip]:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
+}
+
 .hero {
   min-height: 80vh;
   display: grid;
@@ -201,6 +245,33 @@ html.dark .hero-card {
   border-radius: 12px;
   padding: 12px;
   text-align: center;
+}
+
+.onboarding-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.onboarding-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 12px 30px rgba(13, 27, 30, 0.12);
+}
+
+html.dark .onboarding-card {
+  background: rgba(16, 22, 26, 0.85);
+}
+
+.onboarding-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.onboarding-action {
+  margin-top: 12px;
+  display: inline-flex;
 }
 
 .trust-bar {
@@ -598,6 +669,23 @@ html.dark .quote-card {
 .nexus-input {
   display: flex;
   gap: 8px;
+}
+
+.nexus-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.nexus-quick button {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(15, 24, 28, 0.7);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  cursor: pointer;
 }
 
 .nexus-input input {

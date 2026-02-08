@@ -87,9 +87,15 @@ create policy "Users can update own profile"
   using (auth.uid() = id)
   with check (auth.uid() = id);
 
-create policy "Authenticated can read leads"
+create policy "Admins can read leads"
   on leads for select
-  using (auth.role() = 'authenticated');
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role = 'admin'
+    )
+  );
 
 create policy "Public can insert leads"
   on leads for insert
