@@ -7,6 +7,9 @@ import {
   getPublicEstimate,
   type Accumulation,
   type CommercialSize,
+  type CommercialServiceDetail,
+  type LawnCareDetail,
+  type PropertyMaintenanceDetail,
   type PublicService,
   type ResidentialSize
 } from "@/lib/pricing";
@@ -31,6 +34,7 @@ type QuoteFormData = {
   phone: string;
   address?: string;
   service: PublicService;
+  serviceDetail?: LawnCareDetail | PropertyMaintenanceDetail | CommercialServiceDetail;
   message: string;
   propertyClass?: "residential" | "commercial";
   size?: ResidentialSize | CommercialSize;
@@ -45,6 +49,9 @@ export default function QuoteForm() {
     "idle"
   );
   const [service, setService] = useState<PublicService>("Snow Removal");
+  const [serviceDetail, setServiceDetail] = useState<
+    LawnCareDetail | PropertyMaintenanceDetail | CommercialServiceDetail | ""
+  >("");
   const [propertyClass, setPropertyClass] = useState<
     "residential" | "commercial"
   >("residential");
@@ -55,6 +62,7 @@ export default function QuoteForm() {
     setStatus("sending");
     const estimate = getPublicEstimate({
       service,
+      serviceDetail: serviceDetail || undefined,
       propertyClass,
       size,
       accumulation
@@ -71,7 +79,8 @@ export default function QuoteForm() {
       pricing_meta: {
         propertyClass,
         size,
-        accumulation
+        accumulation,
+        serviceDetail: serviceDetail || null
       }
     });
 
@@ -79,18 +88,6 @@ export default function QuoteForm() {
       setStatus("error");
       return;
     }
-
-    await supabase.from("audit_logs").insert({
-      actor: "public",
-      action: "lead_created",
-      entity: "lead",
-      metadata: {
-        name: data.name,
-        service: data.service,
-        estimated_low: estimate.low,
-        estimated_high: estimate.high
-      }
-    });
 
     setStatus("success");
     reset();
@@ -123,6 +120,8 @@ export default function QuoteForm() {
               const next = event.target.value as PublicService;
               setService(next);
               setValue("service", next, { shouldValidate: true });
+              setServiceDetail("");
+              setValue("serviceDetail", undefined);
               if (next === "Commercial Services") {
                 setPropertyClass("commercial");
                 setSize("small");
@@ -188,6 +187,67 @@ export default function QuoteForm() {
               </select>
             </label>
           </>
+        ) : null}
+        {service === "Lawn Care" ? (
+          <label>
+            Service Detail
+            <select
+              value={serviceDetail}
+              onChange={(event) => {
+                const next = event.target.value as LawnCareDetail;
+                setServiceDetail(next);
+                setValue("serviceDetail", next, { shouldValidate: true });
+              }}
+            >
+              <option value="">Select service</option>
+              <option value="Lawn Mowing">Lawn Mowing</option>
+              <option value="Fall Leaf Cleanup">Fall Leaf Cleanup</option>
+              <option value="Mulch Install">Mulch Install</option>
+              <option value="Hedge Trimming">Hedge & Bush Trimming</option>
+              <option value="Gutter Cleaning">Gutter Cleaning</option>
+              <option value="Aeration & Overseeding">Aeration & Overseeding</option>
+              <option value="Storm Cleanup">Storm Cleanup</option>
+            </select>
+          </label>
+        ) : null}
+        {service === "Property Maintenance" ? (
+          <label>
+            Service Detail
+            <select
+              value={serviceDetail}
+              onChange={(event) => {
+                const next = event.target.value as PropertyMaintenanceDetail;
+                setServiceDetail(next);
+                setValue("serviceDetail", next, { shouldValidate: true });
+              }}
+            >
+              <option value="">Select service</option>
+              <option value="Gutter Cleaning">Gutter Cleaning</option>
+              <option value="Storm Cleanup">Storm Cleanup</option>
+              <option value="Branch & Debris Removal">Branch & Debris Removal</option>
+              <option value="Lot Sweeping">Lot Sweeping</option>
+            </select>
+          </label>
+        ) : null}
+        {service === "Commercial Services" ? (
+          <label>
+            Service Detail
+            <select
+              value={serviceDetail}
+              onChange={(event) => {
+                const next = event.target.value as CommercialServiceDetail;
+                setServiceDetail(next);
+                setValue("serviceDetail", next, { shouldValidate: true });
+              }}
+            >
+              <option value="">Select service</option>
+              <option value="Monthly Lawn Maintenance">Monthly Lawn Maintenance</option>
+              <option value="Lot Sweeping">Lot Sweeping</option>
+              <option value="Fall Leaf Cleanup">Fall Leaf Cleanup</option>
+              <option value="Commercial Mulching">Commercial Mulching</option>
+              <option value="Debris / Storm Removal">Debris / Storm Removal</option>
+            </select>
+          </label>
         ) : null}
         <label>
           Address

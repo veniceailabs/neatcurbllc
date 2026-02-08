@@ -37,6 +37,12 @@ export default function BusinessAIChat() {
     setIsLoading(true);
 
     try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session?.access_token;
+      if (!token) {
+        throw new Error("No active session.");
+      }
+
       const weekAgo = new Date();
       weekAgo.setDate(weekAgo.getDate() - 7);
       const weekAgoISO = weekAgo.toISOString().slice(0, 10);
@@ -55,7 +61,10 @@ export default function BusinessAIChat() {
 
       const response = await fetch("/api/business-ai/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify({
           messages: [
             { role: "user", content: contextNote },

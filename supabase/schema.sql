@@ -95,7 +95,3 @@ create policy "Authenticated can read audit logs"
 create policy "Authenticated can insert audit logs"
   on audit_logs for insert
   with check (auth.role() = 'authenticated');
-
-create policy "Public can insert audit logs"
-  on audit_logs for insert
-  with check (actor_id is null);

@@ -24,8 +24,31 @@ export type PublicService =
   | "Property Maintenance"
   | "Commercial Services";
 
+export type LawnCareDetail =
+  | "Lawn Mowing"
+  | "Fall Leaf Cleanup"
+  | "Mulch Install"
+  | "Hedge Trimming"
+  | "Gutter Cleaning"
+  | "Aeration & Overseeding"
+  | "Storm Cleanup";
+
+export type PropertyMaintenanceDetail =
+  | "Gutter Cleaning"
+  | "Storm Cleanup"
+  | "Branch & Debris Removal"
+  | "Lot Sweeping";
+
+export type CommercialServiceDetail =
+  | "Monthly Lawn Maintenance"
+  | "Lot Sweeping"
+  | "Fall Leaf Cleanup"
+  | "Commercial Mulching"
+  | "Debris / Storm Removal";
+
 export type PublicQuoteInput = {
   service: PublicService;
+  serviceDetail?: LawnCareDetail | PropertyMaintenanceDetail | CommercialServiceDetail;
   propertyClass?: PropertyClass;
   size?: ResidentialSize | CommercialSize;
   accumulation?: Accumulation;
@@ -167,12 +190,51 @@ export function getPublicEstimate(input: PublicQuoteInput): Range {
   }
 
   if (input.service === "Lawn Care") {
-    return { low: 70, high: 85 };
+    switch (input.serviceDetail) {
+      case "Fall Leaf Cleanup":
+        return { low: 250, high: 450 };
+      case "Mulch Install":
+        return { low: 300, high: 700 };
+      case "Hedge Trimming":
+        return { low: 120, high: 250 };
+      case "Gutter Cleaning":
+        return { low: 150, high: 300 };
+      case "Aeration & Overseeding":
+        return { low: 120, high: 300 };
+      case "Storm Cleanup":
+        return { low: 150, high: 400 };
+      default:
+        return { low: 70, high: 85 };
+    }
   }
 
   if (input.service === "Property Maintenance") {
-    return { low: 150, high: 400 };
+    switch (input.serviceDetail) {
+      case "Gutter Cleaning":
+        return { low: 150, high: 300 };
+      case "Storm Cleanup":
+        return { low: 150, high: 400 };
+      case "Branch & Debris Removal":
+        return { low: 150, high: 400 };
+      case "Lot Sweeping":
+        return { low: 400, high: 900 };
+      default:
+        return { low: 150, high: 400 };
+    }
   }
 
-  return { low: 400, high: 1500 };
+  switch (input.serviceDetail) {
+    case "Monthly Lawn Maintenance":
+      return { low: 700, high: 1800 };
+    case "Lot Sweeping":
+      return { low: 400, high: 900 };
+    case "Fall Leaf Cleanup":
+      return { low: 600, high: 1500 };
+    case "Commercial Mulching":
+      return { low: 900, high: 2500 };
+    case "Debris / Storm Removal":
+      return { low: 400, high: 1500 };
+    default:
+      return { low: 400, high: 1500 };
+  }
 }

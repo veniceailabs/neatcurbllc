@@ -14,6 +14,25 @@ export default function DashboardPage() {
   const [snowReadyLoading, setSnowReadyLoading] = useState(false);
   const [snowReadyMessage, setSnowReadyMessage] = useState<string | null>(null);
 
+  const postAudit = async (payload: {
+    action: string;
+    entity?: string;
+    entity_id?: string;
+    metadata?: Record<string, unknown>;
+  }) => {
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+    if (!token) return;
+    await fetch("/api/audit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
+  };
+
   useEffect(() => {
     const load = async () => {
       const [leadRes, jobRes] = await Promise.all([
@@ -42,10 +61,7 @@ export default function DashboardPage() {
     if (error) {
       setSnowReadyMessage(error.message);
     } else {
-      const { data: user } = await supabase.auth.getUser();
-      await supabase.from("audit_logs").insert({
-        actor_id: user.user?.id ?? null,
-        actor: user.user?.email ?? "admin",
+      await postAudit({
         action: "snow_ready_activated",
         entity: "job_batch",
         metadata: {
