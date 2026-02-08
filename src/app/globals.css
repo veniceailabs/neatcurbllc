@@ -777,7 +777,7 @@ html.brand .area-chip {
 
 .quote-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
   background: rgba(255, 255, 255, 0.9);
   padding: 24px;
@@ -798,15 +798,26 @@ html.dark .quote-form {
   flex-direction: column;
   gap: 6px;
   font-weight: 600;
+  min-width: 0;
 }
 
 .quote-form input,
 .quote-form select,
 .quote-form textarea {
-  padding: 10px 12px;
+  padding: 12px 14px;
   border-radius: 12px;
   border: 1px solid rgba(13, 27, 30, 0.16);
   font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+.quote-form select {
+  min-height: 44px;
+}
+
+.quote-form option {
+  white-space: normal;
 }
 
 html.dark .quote-form input,
