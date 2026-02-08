@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
 
 type ChatMessage = {
   id: string;
@@ -36,11 +37,30 @@ export default function BusinessAIChat() {
     setIsLoading(true);
 
     try {
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      const weekAgoISO = weekAgo.toISOString().slice(0, 10);
+
+      const [{ count: leadsCount }, { count: jobsCount }, { count: jobsWeek }] =
+        await Promise.all([
+          supabase.from("leads").select("id", { count: "exact", head: true }),
+          supabase.from("jobs").select("id", { count: "exact", head: true }),
+          supabase
+            .from("jobs")
+            .select("id", { count: "exact", head: true })
+            .gte("scheduled_date", weekAgoISO)
+        ]);
+
+      const contextNote = `Context: leads=${leadsCount ?? 0}, jobs=${jobsCount ?? 0}, jobs_last_7_days=${jobsWeek ?? 0}.`;
+
       const response = await fetch("/api/business-ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: nextMessages.map(({ role, content }) => ({ role, content }))
+          messages: [
+            { role: "user", content: contextNote },
+            ...nextMessages.map(({ role, content }) => ({ role, content }))
+          ]
         })
       });
       const data = await response.json();
