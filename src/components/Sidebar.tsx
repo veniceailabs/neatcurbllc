@@ -16,7 +16,7 @@ const navItems = [
   { href: "/admin/lead-intake", label: "Lead Intake" },
   { href: "/admin/messages", label: "Messages" },
   { href: "/admin/settings", label: "Settings" },
-  { href: "/site", label: "Public Site" }
+  { href: "/", label: "Public Site" }
 ];
 
 const staffNavItems = [
