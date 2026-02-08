@@ -6,7 +6,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme="brand"
+      defaultTheme="dark"
       themes={["light", "dark", "brand"]}
       enableSystem={false}
     >

@@ -168,6 +168,16 @@ html.dark .navbar {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+html.brand .navbar {
+  background: rgba(54, 38, 26, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+html.brand .navbar-links a,
+html.brand .navbar-links .btn-secondary {
+  color: rgba(255, 247, 240, 0.9);
+}
+
 .navbar-brand img {
   width: 180px;
   height: auto;
@@ -472,6 +482,11 @@ html.dark .trust-item {
   gap: 24px;
 }
 
+main {
+  display: grid;
+  gap: 40px;
+}
+
 .section-header h2 {
   margin: 0;
   font-size: 2rem;
@@ -543,6 +558,7 @@ html.dark .area-chip {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
+  margin-top: 48px;
 }
 
 .quote-form {
@@ -1032,6 +1048,26 @@ textarea:focus {
   .navbar-links {
     width: 100%;
     justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    gap: 28px;
+  }
+
+  .cta-banner {
+    margin-top: 32px;
+    padding: 22px;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: 24px;
+  }
+
+  .navbar-links.open {
+    width: 86vw;
   }
 }
 .btn-primary:hover,

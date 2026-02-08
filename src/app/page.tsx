@@ -14,7 +14,6 @@ export default function LandingPage() {
       <Navbar />
       <main>
         <Hero />
-        <TrustBar />
         <Services />
         <WhyUs />
         <ServiceAreas />
