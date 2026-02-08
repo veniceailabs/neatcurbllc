@@ -45,7 +45,7 @@ export default function ChangePasswordPage() {
     const userId = data.user?.id;
     if (userId) {
       await supabase
-        .from("user_profiles")
+        .from("profiles")
         .update({ must_change_password: false })
         .eq("id", userId);
     }

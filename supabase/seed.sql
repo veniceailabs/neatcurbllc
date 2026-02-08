@@ -1,10 +1,4 @@
-insert into public.user_profiles (id, email, full_name, role, must_change_password)
-select id, email, 'Corey', 'admin', true
+insert into profiles (id, email, role, must_change_password)
+select id, email, 'admin', true
 from auth.users
-where email = 'neatcurb@gmail.com'
-on conflict (id)
-  do update set
-    email = excluded.email,
-    full_name = excluded.full_name,
-    role = excluded.role,
-    must_change_password = excluded.must_change_password;
+where email = 'neatcurb@gmail.com';

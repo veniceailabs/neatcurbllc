@@ -31,3 +31,5 @@ Then open `http://localhost:3000`.
 3. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to `.env.local`.
 4. Create the admin user `neatcurb@gmail.com` in Supabase Auth.
 5. Run `supabase/seed.sql` to mark the account for a forced password change.
+
+Schema uses these tables: `profiles`, `leads`, `clients`, `jobs`.

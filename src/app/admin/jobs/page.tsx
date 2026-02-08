@@ -6,21 +6,21 @@ import { supabase } from "@/lib/supabaseClient";
 
 type Job = {
   id: string;
-  scheduled_at: string;
-  route_name: string;
-  crew: string;
+  service: string;
   status: string;
+  price: number | null;
+  scheduled_date: string | null;
 };
 
-export default function SchedulePage() {
+export default function JobsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
 
   useEffect(() => {
     const load = async () => {
       const { data } = await supabase
         .from("jobs")
-        .select("id,scheduled_at,route_name,crew,status")
-        .order("scheduled_at", { ascending: true });
+        .select("id,service,status,price,scheduled_date")
+        .order("created_at", { ascending: false });
       if (data) setJobs(data);
     };
     load();
@@ -29,25 +29,27 @@ export default function SchedulePage() {
   return (
     <div className="panel">
       <SectionHeader
-        title="Schedule"
-        subtitle="Crew scheduling for live and upcoming jobs."
-        action={<span className="pill">{jobs.length} scheduled</span>}
+        title="Jobs"
+        subtitle="Scheduling, tracking, and service delivery."
+        action={<span className="pill">{jobs.length} jobs</span>}
       />
       <div style={{ marginTop: "18px", display: "grid", gap: "12px" }}>
         {jobs.length === 0 ? (
           <div className="kpi-card">
-            <div style={{ fontWeight: 700 }}>No scheduled jobs</div>
-            <div className="note">Add routes and jobs to populate the calendar.</div>
+            <div style={{ fontWeight: 700 }}>No jobs yet</div>
+            <div className="note">Create jobs to track upcoming service.</div>
           </div>
         ) : (
           jobs.map((job) => (
             <div key={job.id} className="kpi-card">
-              <div style={{ fontWeight: 700 }}>
-                {new Date(job.scheduled_at).toLocaleString()}
-              </div>
-              <div className="note">Route: {job.route_name}</div>
-              <div className="note">Crew: {job.crew}</div>
+              <div style={{ fontWeight: 700 }}>{job.service}</div>
               <div className="note">Status: {job.status}</div>
+              <div className="note">
+                Scheduled: {job.scheduled_date ?? "--"}
+              </div>
+              <div className="note">
+                Price: {job.price ? `$${job.price}` : "--"}
+              </div>
             </div>
           ))
         )}

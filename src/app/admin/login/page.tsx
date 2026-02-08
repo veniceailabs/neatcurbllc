@@ -29,8 +29,8 @@ export default function LoginPage() {
 
     const userId = data.user?.id;
     if (userId) {
-      const { data: profile } = await supabase
-        .from("user_profiles")
+    const { data: profile } = await supabase
+        .from("profiles")
         .select("must_change_password")
         .eq("id", userId)
         .maybeSingle();

@@ -7,8 +7,8 @@ import { supabase } from "@/lib/supabaseClient";
 type Client = {
   id: string;
   name: string;
-  status: string;
   address: string;
+  type: string;
 };
 
 export default function ClientsPage() {
@@ -18,7 +18,7 @@ export default function ClientsPage() {
     const load = async () => {
       const { data } = await supabase
         .from("clients")
-        .select("id,name,status,address")
+        .select("id,name,address,type")
         .order("created_at", { ascending: false });
       if (data) setClients(data);
     };
@@ -42,7 +42,7 @@ export default function ClientsPage() {
           clients.map((client) => (
             <div key={client.id} className="kpi-card">
               <div style={{ fontWeight: 700 }}>{client.name}</div>
-              <div className="note">Status: {client.status}</div>
+              <div className="note">Type: {client.type || "--"}</div>
               <div className="note">{client.address}</div>
             </div>
           ))

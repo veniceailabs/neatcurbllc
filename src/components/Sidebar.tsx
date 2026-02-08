@@ -7,14 +7,11 @@ import LanguageToggle from "@/components/language-toggle";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", badge: "Live" },
-  { href: "/admin/leads", label: "Leads & Sales", badge: "Live" },
+  { href: "/admin/leads", label: "Leads", badge: "Live" },
   { href: "/admin/clients", label: "Clients", badge: "CRM" },
-  { href: "/admin/schedule", label: "Schedule", badge: "Week" },
-  { href: "/admin/routes", label: "Routes", badge: "Dispatch" },
-  { href: "/admin/invoices", label: "Invoices", badge: "Net-15" },
-  { href: "/admin/marketing", label: "Marketing", badge: "SMS" },
+  { href: "/admin/jobs", label: "Jobs", badge: "Schedule" },
   { href: "/admin/lead-intake", label: "Lead Intake", badge: "Quote" },
-  { href: "/admin/audit", label: "Audit", badge: "Merkle" },
+  { href: "/admin/settings", label: "Settings", badge: "Admin" },
   { href: "/site", label: "Public Site", badge: "SEO" }
 ];
 

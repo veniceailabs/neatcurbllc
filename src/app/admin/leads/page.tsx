@@ -7,9 +7,9 @@ import { supabase } from "@/lib/supabaseClient";
 type Lead = {
   id: string;
   name: string;
-  status: string;
-  service_type: string;
+  service: string | null;
   created_at: string;
+  message: string | null;
 };
 
 export default function LeadsPage() {
@@ -19,7 +19,7 @@ export default function LeadsPage() {
     const load = async () => {
       const { data } = await supabase
         .from("leads")
-        .select("id,name,status,service_type,created_at")
+        .select("id,name,service,created_at,message")
         .order("created_at", { ascending: false });
       if (data) setLeads(data);
     };
@@ -43,8 +43,8 @@ export default function LeadsPage() {
           leads.map((lead) => (
             <div key={lead.id} className="kpi-card">
               <div style={{ fontWeight: 700 }}>{lead.name}</div>
-              <div className="note">Service: {lead.service_type}</div>
-              <div className="note">Status: {lead.status}</div>
+              <div className="note">Service: {lead.service || "--"}</div>
+              <div className="note">Message: {lead.message || "--"}</div>
             </div>
           ))
         )}

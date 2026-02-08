@@ -76,25 +76,35 @@ export default function LeadIntakeForm() {
 
   const handleSave = async (status: "new" | "draft") => {
     setSaveMessage(null);
-    if (!leadName || !leadAddress) {
-      setSaveMessage("Lead name and address are required.");
+    if (!leadName) {
+      setSaveMessage("Lead name is required.");
       return;
     }
     setSaving(true);
+
+    const message = [
+      `Address: ${leadAddress || "--"}`,
+      `Property class: ${propertyClass}`,
+      `Service type: ${serviceType}`,
+      `Size: ${size}`,
+      `Accumulation: ${accumulation}`,
+      `Add-ons: sidewalk=${addOns.sidewalk}, ice=${addOns.ice}, drift=${addOns.driftReturn}`,
+      `Quote: ${currency.format(quote.total.low)}${
+        quote.total.high !== quote.total.low
+          ? ` - ${currency.format(quote.total.high)}`
+          : ""
+      }`,
+      `Status: ${status}`
+    ].join(" | ");
+
     const { error } = await supabase.from("leads").insert({
       name: leadName,
       email: leadEmail || null,
       phone: leadPhone || null,
-      address: leadAddress,
-      property_class: propertyClass,
-      service_type: serviceType,
-      size,
-      accumulation,
-      add_ons: addOns,
-      quote_low: quote.total.low,
-      quote_high: quote.total.high,
-      status
+      service: "Snow Removal",
+      message
     });
+
     if (error) {
       setSaveMessage(error.message);
     } else {

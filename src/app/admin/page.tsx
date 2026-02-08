@@ -1,40 +1,28 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import DispatchPanel from "@/components/DispatchPanel";
 import KpiCard from "@/components/KpiCard";
 import SectionHeader from "@/components/SectionHeader";
-import WeatherCard from "@/components/WeatherCard";
 import { supabase } from "@/lib/supabaseClient";
 
 type Lead = { id: string; created_at: string };
-
-type Invoice = { id: string; amount: number; status: string };
-
 type Job = { id: string; status: string };
 
 export default function DashboardPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [jobs, setJobs] = useState<Job[]>([]);
 
   useEffect(() => {
     const load = async () => {
-      const [leadRes, invoiceRes, jobRes] = await Promise.all([
+      const [leadRes, jobRes] = await Promise.all([
         supabase.from("leads").select("id,created_at"),
-        supabase.from("invoices").select("id,amount,status"),
         supabase.from("jobs").select("id,status")
       ]);
       if (leadRes.data) setLeads(leadRes.data);
-      if (invoiceRes.data) setInvoices(invoiceRes.data);
       if (jobRes.data) setJobs(jobRes.data);
     };
     load();
   }, []);
-
-  const totalRevenue = useMemo(() => {
-    return invoices.reduce((sum, invoice) => sum + (invoice.amount || 0), 0);
-  }, [invoices]);
 
   const activeJobs = useMemo(() => {
     return jobs.filter((job) => job.status === "in_progress").length;
@@ -50,18 +38,13 @@ export default function DashboardPage() {
 
       <div className="kpi-grid">
         <KpiCard
-          label="Total Revenue"
-          value={`$${totalRevenue.toLocaleString()}`}
-          trend="All invoices"
+          label="Leads"
+          value={`${leads.length}`}
+          trend="New requests"
         />
-        <KpiCard label="Active Jobs" value={`${activeJobs}`} trend="Live routes" />
-        <KpiCard label="Leads" value={`${leads.length}`} trend="Total intake" />
-        <KpiCard label="Snow Ready" value="ON" trend="Weather synced" />
-      </div>
-
-      <div className="grid-2">
-        <WeatherCard />
-        <DispatchPanel />
+        <KpiCard label="Active Jobs" value={`${activeJobs}`} trend="In progress" />
+        <KpiCard label="Total Jobs" value={`${jobs.length}`} trend="Scheduled + complete" />
+        <KpiCard label="Admin Status" value="Live" trend="Secure access" />
       </div>
     </div>
   );

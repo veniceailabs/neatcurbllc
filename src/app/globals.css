@@ -457,6 +457,31 @@ html.dark .kpi-card {
   background: rgba(16, 22, 26, 0.9);
 }
 
+.kpi-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(13, 27, 30, 0.6);
+  font-weight: 700;
+}
+
+html.dark .kpi-label {
+  color: rgba(242, 247, 249, 0.6);
+}
+
+.kpi-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+.kpi-trend {
+  font-size: 0.9rem;
+  color: var(--brand-deep);
+  margin-top: 6px;
+  font-weight: 600;
+}
+
 .section-title {
   font-weight: 800;
   font-size: 1.2rem;
@@ -479,6 +504,51 @@ html.dark .section-sub {
   border-radius: 999px;
   background: rgba(78, 199, 236, 0.2);
   font-weight: 600;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(13, 27, 30, 0.16);
+  font-family: inherit;
+}
+
+.button-primary {
+  background: var(--brand-green);
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  padding: 12px 18px;
+  font-weight: 700;
+}
+
+.note {
+  font-size: 0.85rem;
+  color: rgba(13, 27, 30, 0.6);
+}
+
+html.dark .note {
+  color: rgba(242, 247, 249, 0.6);
+}
+
+.quote-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 16px 30px rgba(13, 27, 30, 0.08);
+}
+
+html.dark .quote-card {
+  background: rgba(16, 22, 26, 0.9);
 }
 
 .nexus {
