@@ -81,6 +81,9 @@ export default function LoginPage() {
           <button className="button-primary" type="submit" disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </button>
+          <a className="auth-home" href="/">
+            ← Back to Home
+          </a>
         </form>
       </div>
     </div>

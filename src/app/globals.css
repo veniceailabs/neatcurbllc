@@ -844,6 +844,14 @@ html.dark .quote-card {
   font-weight: 600;
 }
 
+.auth-home {
+  display: inline-flex;
+  justify-content: center;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: rgba(233, 242, 238, 0.8);
+}
+
 /* Liquid UI refinements */
 input,
 select,
