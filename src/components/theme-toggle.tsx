@@ -5,11 +5,15 @@ import { Leaf, Moon, Snowflake, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type ThemeMode = "light" | "dark" | "brand";
+type ThemeVariant = "nav" | "sidebar";
 
 const nextTheme = (theme: ThemeMode) =>
   theme === "light" ? "dark" : theme === "dark" ? "brand" : "light";
 
-export default function ThemeToggle() {
+const labelFor = (theme: ThemeMode) =>
+  theme === "light" ? "Light" : theme === "dark" ? "Dark" : "Brand";
+
+export default function ThemeToggle({ variant = "nav" }: { variant?: ThemeVariant }) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -20,6 +24,30 @@ export default function ThemeToggle() {
   if (!mounted) return null;
 
   const current = (theme as ThemeMode) || "brand";
+
+  if (variant === "sidebar") {
+    const next = nextTheme(current);
+    const label = `Switch to ${labelFor(next)} mode`;
+    return (
+      <button
+        className="theme-switch"
+        type="button"
+        onClick={() => setTheme(next)}
+        aria-label={label}
+      >
+        {next === "light" ? <Sun size={16} /> : null}
+        {next === "dark" ? <Moon size={16} /> : null}
+        {next === "brand" ? (
+          <span className="theme-switch-icons">
+            <Snowflake size={14} />
+            <Leaf size={14} />
+          </span>
+        ) : null}
+        <span>{label}</span>
+      </button>
+    );
+  }
+
   return (
     <div className="theme-toggle">
       <button
@@ -28,7 +56,7 @@ export default function ThemeToggle() {
         onClick={() => setTheme("light")}
         aria-label="Light mode"
       >
-        <Sun size={16} />
+        <Sun size={14} />
         <span>Light</span>
       </button>
       <button
@@ -37,7 +65,7 @@ export default function ThemeToggle() {
         onClick={() => setTheme("dark")}
         aria-label="Dark mode"
       >
-        <Moon size={16} />
+        <Moon size={14} />
         <span>Dark</span>
       </button>
       <button
@@ -46,8 +74,8 @@ export default function ThemeToggle() {
         onClick={() => setTheme("brand")}
         aria-label="Brand mode"
       >
-        <Snowflake size={16} />
-        <Leaf size={16} />
+        <Snowflake size={14} />
+        <Leaf size={14} />
         <span>Brand</span>
       </button>
     </div>

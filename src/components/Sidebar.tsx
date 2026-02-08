@@ -41,10 +41,6 @@ export default function Sidebar() {
         <span className="pill">Snow Ready</span>
         <div className="brand-title">Neat Curb Command</div>
         <div className="brand-sub">Unified Ops + Lead Engine</div>
-        <div className="sidebar-controls">
-          <LanguageToggle />
-          <ThemeToggle />
-        </div>
       </div>
       <nav className="nav-list">
         {items.map((item) => {
@@ -61,6 +57,10 @@ export default function Sidebar() {
           );
         })}
       </nav>
+      <div className="sidebar-footer">
+        <LanguageToggle />
+        <ThemeToggle variant="sidebar" />
+      </div>
     </aside>
   );
 }

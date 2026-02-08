@@ -138,8 +138,8 @@ html.dark .btn-secondary {
 .theme-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px;
+  gap: 4px;
+  padding: 4px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(13, 27, 30, 0.1);
@@ -152,10 +152,10 @@ html.dark .btn-secondary {
   gap: 6px;
   border: 1px solid transparent;
   background: transparent;
-  padding: 6px 10px;
+  padding: 5px 8px;
   border-radius: 999px;
   font-weight: 600;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
 }
 
 .theme-pill.active {
@@ -905,4 +905,27 @@ textarea:focus {
 .btn-secondary:hover,
 .button-primary:hover {
   transform: translateY(-1px);
+}
+.theme-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(13, 27, 30, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.theme-switch-icons {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.sidebar-footer {
+  margin-top: 16px;
+  display: grid;
+  gap: 10px;
 }
