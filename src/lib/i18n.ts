@@ -10,7 +10,7 @@ export const COPY = {
       login: "Login"
     },
     hero: {
-      title: "Western New York’s Reliable Snow & Property Maintenance",
+      title: "WNY's Reliable Landscape, Snow & Property Maintenance",
       subtitle:
         "Residential and Commercial Snow Removal, Lawn Care, and Property Services you can count on year-round.",
       primaryCta: "Request a Quote",
