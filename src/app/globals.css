@@ -788,39 +788,39 @@ html.dark .quote-card {
   display: grid;
   place-items: center;
   padding: 40px 6vw;
-  background: radial-gradient(circle at 20% 20%, rgba(1, 107, 55, 0.15), transparent 45%),
-    radial-gradient(circle at 80% 10%, rgba(78, 199, 236, 0.12), transparent 40%),
-    #0b1210;
+  background: radial-gradient(circle at 20% 20%, rgba(35, 176, 75, 0.12), transparent 45%),
+    radial-gradient(circle at 70% 0%, rgba(78, 199, 236, 0.08), transparent 40%),
+    #0a0d0a;
   color: #e9f2ee;
 }
 
 .auth-card {
-  width: min(420px, 100%);
-  padding: 28px;
-  border-radius: 18px;
-  background: rgba(10, 16, 14, 0.85);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  width: min(380px, 100%);
+  padding: 26px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(12, 16, 12, 0.92), rgba(9, 12, 9, 0.92));
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 }
 
 .auth-logo {
-  width: 160px;
-  margin: 0 auto 16px;
+  width: 120px;
+  margin: 0 auto 14px;
   display: block;
 }
 
 .auth-title {
-  font-size: 1.4rem;
-  font-weight: 800;
+  font-size: 1.35rem;
+  font-weight: 700;
   text-align: center;
   margin-bottom: 6px;
 }
 
 .auth-sub {
   text-align: center;
-  font-size: 0.95rem;
-  color: rgba(233, 242, 238, 0.7);
+  font-size: 0.9rem;
+  color: rgba(233, 242, 238, 0.68);
   margin-bottom: 18px;
 }
 
@@ -830,13 +830,14 @@ html.dark .quote-card {
 }
 
 .auth-form .form-field input {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #e9f2ee;
+  height: 40px;
 }
 
 .auth-form .form-field input::placeholder {
-  color: rgba(233, 242, 238, 0.5);
+  color: rgba(233, 242, 238, 0.45);
 }
 
 .auth-error {

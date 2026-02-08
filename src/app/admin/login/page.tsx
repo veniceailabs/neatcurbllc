@@ -55,7 +55,7 @@ export default function LoginPage() {
           alt="Neat Curb LLC logo"
           className="auth-logo"
         />
-        <div className="auth-title">Sign in to Neat Curb</div>
+        <div className="auth-title">Sign in</div>
         <div className="auth-sub">Admin access for leadership and ops.</div>
 
         <form onSubmit={handleLogin} className="auth-form">
