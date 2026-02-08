@@ -40,9 +40,102 @@ html.dark body {
 }
 
 html.brand body {
-  background: linear-gradient(120deg, rgba(78, 199, 236, 0.25), transparent 50%),
-    #eff7f4;
-  color: #0b1d16;
+  position: relative;
+  background: radial-gradient(circle at 20% 20%, rgba(78, 199, 236, 0.16), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(35, 176, 75, 0.12), transparent 40%),
+    linear-gradient(160deg, #0a1412 0%, #0e1915 55%, #0b1512 100%);
+  color: #e9f2ee;
+}
+
+html.brand body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.04), transparent 60%),
+    radial-gradient(circle at 70% 60%, rgba(78, 199, 236, 0.06), transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+html.brand .panel,
+html.brand .sidebar,
+html.brand .kpi-card,
+html.brand .quote-form,
+html.brand .info-card,
+html.brand .trust-item,
+html.brand .hero-card {
+  background: rgba(12, 16, 14, 0.7);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #e9f2ee;
+}
+
+html.brand .nav-link {
+  background: rgba(35, 176, 75, 0.1);
+}
+
+html.brand .nav-link.active {
+  background: rgba(35, 176, 75, 0.2);
+}
+
+html.brand .note,
+html.brand .section-sub,
+html.brand .brand-sub {
+  color: rgba(233, 242, 238, 0.65);
+}
+
+html.brand .hero-phone {
+  color: rgba(78, 199, 236, 0.9);
+}
+
+html.brand .theme-toggle,
+html.brand .lang-pill {
+  background: rgba(12, 16, 14, 0.7);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #e9f2ee;
+}
+
+html.brand .theme-pill.active,
+html.brand .lang-pill.active {
+  background: rgba(35, 176, 75, 0.9);
+  border-color: rgba(35, 176, 75, 0.9);
+}
+
+.weather-snow,
+.weather-leaf {
+  position: fixed;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 60;
+  animation: weather-fall 1.8s ease-out forwards;
+}
+
+.weather-snow {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 6px rgba(78, 199, 236, 0.8);
+}
+
+.weather-leaf {
+  width: 10px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(246, 140, 30, 0.9);
+  box-shadow: 0 0 6px rgba(246, 140, 30, 0.6);
+  transform: rotate(20deg);
+}
+
+@keyframes weather-fall {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.9);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(60px) translateX(8px) scale(1.05);
+    opacity: 0;
+  }
 }
 
 a {
