@@ -61,6 +61,13 @@ export default function SitePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
+        <img
+          src="/brand/neat-curb-logo-full.svg"
+          alt="Neat Curb LLC full color logo"
+          style={{ width: "240px", height: "auto" }}
+        />
+      </div>
       <h1 className="section-title">Neat Curb LLC | Snow & Lawn Services</h1>
       <p className="section-sub">
         The official pricing and service standard for residential and commercial snow
