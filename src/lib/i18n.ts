@@ -36,6 +36,7 @@ export const COPY = {
           desc:
             "Storm response built around the 2–3” trigger with proactive monitoring and clean finish standards.",
           items: [
+            "Snow Plowing",
             "Residential Snow Removal",
             "Commercial Parking Lots",
             "Sidewalk Clearing",
@@ -421,6 +422,7 @@ export const COPY = {
           desc:
             "Respuesta a tormentas basada en el disparo de 2–3” con monitoreo y acabado limpio.",
           items: [
+            "Arado de Nieve",
             "Remoción de Nieve Residencial",
             "Estacionamientos Comerciales",
             "Limpieza de Acera",
