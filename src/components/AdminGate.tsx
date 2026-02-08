@@ -16,6 +16,16 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
       if (!data.session) {
         router.replace("/admin/login");
       } else {
+        const userId = data.session.user.id;
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", userId)
+          .maybeSingle();
+        if (profile?.role !== "admin") {
+          router.replace("/admin/login");
+          return;
+        }
         setReady(true);
       }
     };

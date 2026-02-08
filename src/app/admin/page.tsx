@@ -42,6 +42,16 @@ export default function DashboardPage() {
     if (error) {
       setSnowReadyMessage(error.message);
     } else {
+      const { data: user } = await supabase.auth.getUser();
+      await supabase.from("audit_logs").insert({
+        actor_id: user.user?.id ?? null,
+        actor: user.user?.email ?? "admin",
+        action: "snow_ready_activated",
+        entity: "job_batch",
+        metadata: {
+          scheduled_date: today
+        }
+      });
       setSnowReadyMessage("Snow Ready batch created.");
     }
     setSnowReadyLoading(false);

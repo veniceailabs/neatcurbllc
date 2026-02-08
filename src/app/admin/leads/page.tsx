@@ -10,6 +10,9 @@ type Lead = {
   service: string | null;
   created_at: string;
   message: string | null;
+  address: string | null;
+  estimated_low: number | null;
+  estimated_high: number | null;
 };
 
 export default function LeadsPage() {
@@ -19,7 +22,7 @@ export default function LeadsPage() {
     const load = async () => {
       const { data } = await supabase
         .from("leads")
-        .select("id,name,service,created_at,message")
+        .select("id,name,service,created_at,message,address,estimated_low,estimated_high")
         .order("created_at", { ascending: false });
       if (data) setLeads(data);
     };
@@ -44,6 +47,15 @@ export default function LeadsPage() {
             <div key={lead.id} className="kpi-card">
               <div style={{ fontWeight: 700 }}>{lead.name}</div>
               <div className="note">Service: {lead.service || "--"}</div>
+              <div className="note">Address: {lead.address || "--"}</div>
+              {lead.estimated_low !== null ? (
+                <div className="note">
+                  Estimate: ${lead.estimated_low}
+                  {lead.estimated_high && lead.estimated_high !== lead.estimated_low
+                    ? ` - $${lead.estimated_high}`
+                    : ""}
+                </div>
+              ) : null}
               <div className="note">Message: {lead.message || "--"}</div>
             </div>
           ))

@@ -102,12 +102,35 @@ export default function LeadIntakeForm() {
       phone: leadPhone || null,
       address: leadAddress || null,
       service: "Snow Removal",
-      message
+      message,
+      estimated_low: quote.total.low,
+      estimated_high: quote.total.high,
+      pricing_meta: {
+        propertyClass,
+        serviceType,
+        size,
+        accumulation,
+        addOns
+      }
     });
 
     if (error) {
       setSaveMessage(error.message);
     } else {
+      const { data: user } = await supabase.auth.getUser();
+      await supabase.from("audit_logs").insert({
+        actor_id: user.user?.id ?? null,
+        actor: user.user?.email ?? "admin",
+        action: status === "draft" ? "lead_draft_saved" : "lead_created",
+        entity: "lead",
+        metadata: {
+          name: leadName,
+          address: leadAddress,
+          quote_low: quote.total.low,
+          quote_high: quote.total.high
+        }
+      });
+
       setSaveMessage(status === "draft" ? "Draft saved." : "Lead saved.");
       setLeadName("");
       setLeadEmail("");

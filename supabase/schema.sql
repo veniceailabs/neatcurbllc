@@ -16,6 +16,9 @@ create table leads (
   address text,
   service text,
   message text,
+  estimated_low numeric,
+  estimated_high numeric,
+  pricing_meta jsonb,
   created_at timestamp default now()
 );
 
@@ -39,10 +42,22 @@ create table jobs (
   created_at timestamp default now()
 );
 
+create table audit_logs (
+  id uuid default uuid_generate_v4() primary key,
+  occurred_at timestamp default now(),
+  actor_id uuid,
+  actor text,
+  action text not null,
+  entity text,
+  entity_id uuid,
+  metadata jsonb
+);
+
 alter table profiles enable row level security;
 alter table leads enable row level security;
 alter table clients enable row level security;
 alter table jobs enable row level security;
+alter table audit_logs enable row level security;
 
 create policy "Users can read own profile"
   on profiles for select
@@ -68,3 +83,19 @@ create policy "Authenticated can read clients"
 create policy "Authenticated can read jobs"
   on jobs for select
   using (auth.role() = 'authenticated');
+
+create policy "Authenticated can insert jobs"
+  on jobs for insert
+  with check (auth.role() = 'authenticated');
+
+create policy "Authenticated can read audit logs"
+  on audit_logs for select
+  using (auth.role() = 'authenticated');
+
+create policy "Authenticated can insert audit logs"
+  on audit_logs for insert
+  with check (auth.role() = 'authenticated');
+
+create policy "Public can insert audit logs"
+  on audit_logs for insert
+  with check (actor_id is null);

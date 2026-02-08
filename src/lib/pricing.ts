@@ -18,6 +18,18 @@ export type QuoteInput = {
 
 export type Range = { low: number; high: number };
 export type QuoteLine = { label: string; range: Range; note?: string };
+export type PublicService =
+  | "Snow Removal"
+  | "Lawn Care"
+  | "Property Maintenance"
+  | "Commercial Services";
+
+export type PublicQuoteInput = {
+  service: PublicService;
+  propertyClass?: PropertyClass;
+  size?: ResidentialSize | CommercialSize;
+  accumulation?: Accumulation;
+};
 
 const RES_PER_PUSH: Record<ResidentialSize, Range> = {
   small: { low: 70, high: 70 },
@@ -140,4 +152,27 @@ export function getSnowQuote(input: QuoteInput) {
     surchargeRate,
     notes
   };
+}
+
+export function getPublicEstimate(input: PublicQuoteInput): Range {
+  if (input.service === "Snow Removal") {
+    const quote = getSnowQuote({
+      propertyClass: input.propertyClass ?? "residential",
+      serviceType: "per_push",
+      size: (input.size ?? "medium") as ResidentialSize | CommercialSize,
+      accumulation: input.accumulation ?? "2-3",
+      addOns: { sidewalk: true, ice: false, driftReturn: false }
+    });
+    return quote.total;
+  }
+
+  if (input.service === "Lawn Care") {
+    return { low: 70, high: 85 };
+  }
+
+  if (input.service === "Property Maintenance") {
+    return { low: 150, high: 400 };
+  }
+
+  return { low: 400, high: 1500 };
 }
