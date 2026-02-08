@@ -37,7 +37,7 @@ export const COPY = {
             "Storm Response Built Around The 2–3” Trigger With Proactive Monitoring And Clean Finish Standards.",
           items: [
             "Snow Plowing",
-            "Residential Snow Removal",
+            "Residential Snow Removal (Driveways Or Sidewalks)",
             "Commercial Parking Lots",
             "Sidewalk Clearing",
             "Ice Management",
@@ -140,7 +140,11 @@ export const COPY = {
       error: "Something went wrong. Please try again.",
       services: ["Snow Removal", "Lawn Care", "Property Maintenance", "Commercial Services"],
       propertyClassOptions: { residential: "Residential", commercial: "Commercial" },
-      residentialSizes: ["Small Driveway", "Medium Driveway", "Large Driveway"],
+      residentialSizes: [
+        "Small Driveway Or Sidewalks",
+        "Medium Driveway Or Sidewalks",
+        "Large Driveway Or Sidewalks"
+      ],
       commercialSizes: ["Small Commercial", "Plaza / Multi-suite"],
       accumulationOptions: [
         "2-3 inches (Standard)",
@@ -423,7 +427,7 @@ export const COPY = {
             "Respuesta A Tormentas Basada En El Disparo De 2–3” Con Monitoreo Y Acabado Limpio.",
           items: [
             "Arado de Nieve",
-            "Remoción de Nieve Residencial",
+            "Remoción de Nieve Residencial (Entradas O Aceras)",
             "Estacionamientos Comerciales",
             "Limpieza de Acera",
             "Manejo de Hielo",
@@ -533,7 +537,11 @@ export const COPY = {
         "Servicios Comerciales"
       ],
       propertyClassOptions: { residential: "Residencial", commercial: "Comercial" },
-      residentialSizes: ["Entrada Pequeña", "Entrada Mediana", "Entrada Grande"],
+      residentialSizes: [
+        "Entrada Pequeña O Aceras",
+        "Entrada Mediana O Aceras",
+        "Entrada Grande O Aceras"
+      ],
       commercialSizes: ["Comercial Pequeño", "Plaza / Multi‑suite"],
       accumulationOptions: [
         "2-3 pulgadas (Estándar)",
