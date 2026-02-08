@@ -17,25 +17,32 @@ const LanguageContext = createContext<LanguageContextValue>({
 const STORAGE_KEY = "neatcurb-language";
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("en");
+  const [language, setLanguageState] = useState<Language>(() => {
+    if (typeof window === "undefined") return "en";
+    const stored = window.localStorage.getItem(STORAGE_KEY) as Language | null;
+    return stored === "en" || stored === "es" ? stored : "en";
+  });
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY) as Language | null;
-    if (stored) {
-      setLanguageState(stored);
-      document.documentElement.lang = stored;
-      document.documentElement.dataset.lang = stored;
-    } else {
-      document.documentElement.lang = "en";
-      document.documentElement.dataset.lang = "en";
-    }
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(STORAGE_KEY, language);
+    document.documentElement.lang = language;
+    document.documentElement.dataset.lang = language;
+  }, [language]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === STORAGE_KEY && (event.newValue === "en" || event.newValue === "es")) {
+        setLanguageState(event.newValue);
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   const setLanguage = (value: Language) => {
     setLanguageState(value);
-    window.localStorage.setItem(STORAGE_KEY, value);
-    document.documentElement.lang = value;
-    document.documentElement.dataset.lang = value;
   };
 
   return (
