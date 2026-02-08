@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { ReactNode } from "react";
-import { ThemeProvider } from "@/components/theme-provider";
+import AppProviders from "@/components/app-providers";
 
 const localBusinessSchema = {
   "@context": "https://schema.org",
@@ -64,7 +64,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );

@@ -1,35 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-type Language = "en" | "es";
+import { useLanguage } from "@/components/language-context";
 
 export default function LanguageToggle() {
-  const [language, setLanguage] = useState<Language>("en");
-
-  useEffect(() => {
-    const stored = localStorage.getItem("neatcurb-language") as Language | null;
-    if (stored) setLanguage(stored);
-  }, []);
-
-  const handleChange = (next: Language) => {
-    setLanguage(next);
-    localStorage.setItem("neatcurb-language", next);
-  };
+  const { language, setLanguage } = useLanguage();
 
   return (
     <div className="language-toggle">
       <button
         type="button"
         className={`lang-pill ${language === "en" ? "active" : ""}`}
-        onClick={() => handleChange("en")}
+        onClick={() => setLanguage("en")}
       >
         🇺🇸 EN
       </button>
       <button
         type="button"
         className={`lang-pill ${language === "es" ? "active" : ""}`}
-        onClick={() => handleChange("es")}
+        onClick={() => setLanguage("es")}
       >
         🇪🇸 ES
       </button>
