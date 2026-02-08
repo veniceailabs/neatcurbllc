@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { ReactNode } from "react";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import { LanguageProvider } from "@/contexts/LanguageContext";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata = {
   title: "Neat Curb Admin Command Center",
@@ -16,9 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeProvider>
-          <LanguageProvider>{children}</LanguageProvider>
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

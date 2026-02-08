@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import ThemeToggle from "@/components/ThemeToggle";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
+import ThemeToggle from "@/components/theme-toggle";
+import LanguageToggle from "@/components/language-toggle";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", badge: "Live" },
@@ -33,7 +33,7 @@ export default function Sidebar() {
         <div className="brand-title">Neat Curb Command</div>
         <div className="brand-sub">Unified Ops + Lead Engine</div>
         <div className="sidebar-controls">
-          <LanguageSwitcher />
+          <LanguageToggle />
           <ThemeToggle />
         </div>
       </div>
