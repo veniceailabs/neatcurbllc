@@ -18,6 +18,7 @@ Then open `http://localhost:3000`.
 - Merkle-audit security utilities with an audit demo page.
 - Public SEO/GEO page with JSON-LD LocalBusiness schema at `/site`.
 - CRM, Schedule, Routes, Invoices, and Marketing placeholder modules ready for data wiring.
+- Brand assets (RGB + CMYK) archived in `brand-assets/`.
 
 ## Next steps
 - Connect Supabase for real data.

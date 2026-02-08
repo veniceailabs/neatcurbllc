@@ -23,8 +23,8 @@ export default function Sidebar() {
     <aside className="sidebar">
       <div className="brand-block">
         <img
-          src="/brand/neat-curb-logo.svg"
-          alt="Neat Curb LLC logo"
+          src="/brand/neat-curb-logo-full.svg"
+          alt="Neat Curb LLC full color logo"
           className="brand-logo"
         />
         <span className="pill">Snow Ready</span>

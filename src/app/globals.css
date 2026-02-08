@@ -13,6 +13,13 @@
   --stroke: rgba(13, 27, 30, 0.08);
   --glass: rgba(255, 255, 255, 0.75);
   --focus: rgba(78, 199, 236, 0.4);
+  --brand-attention: #ffb71b;
+  --brand-spring: #23b04b;
+  --brand-trust: #016b37;
+  --brand-snow: #4ec7ec;
+  --brand-winter: #4776ba;
+  --brand-fall: #f68c1e;
+  --brand-action: #ef4e23;
 }
 
 * {
@@ -27,6 +34,7 @@ body {
 body {
   margin: 0;
   font-family: "Avenir Next", "Avenir", "Sora", sans-serif;
+  font-weight: 300;
   color: var(--ink);
   background: linear-gradient(120deg, rgba(78, 199, 236, 0.18), transparent 45%),
     radial-gradient(circle at 80% 10%, rgba(1, 107, 55, 0.12), transparent 55%),
@@ -81,13 +89,14 @@ a {
 
 .section-title {
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 4px;
 }
 
 .section-sub {
   color: var(--muted);
   font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .kpi-grid {
@@ -120,7 +129,7 @@ a {
 
 .kpi-trend {
   font-size: 0.9rem;
-  color: #016b37;
+  color: var(--brand-trust);
   margin-top: 8px;
   font-weight: 600;
 }
@@ -156,7 +165,7 @@ a {
 }
 
 .brand-logo {
-  width: 160px;
+  width: 190px;
   height: auto;
   margin-bottom: 4px;
 }
@@ -266,7 +275,7 @@ a {
   border-radius: 16px;
   font-weight: 700;
   color: #ffffff;
-  background: linear-gradient(135deg, #ef4e23, #f68c1e);
+  background: linear-gradient(135deg, var(--brand-action), var(--brand-fall));
   box-shadow: 0 18px 30px rgba(239, 78, 35, 0.25);
   cursor: pointer;
 }
