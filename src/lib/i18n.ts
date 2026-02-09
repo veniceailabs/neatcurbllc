@@ -206,6 +206,8 @@ export const COPY = {
       password: "Password",
       signInButton: "Sign In",
       signingIn: "Signing in...",
+      resendConfirm: "Resend confirmation email",
+      confirmSent: "Confirmation email sent. Check your inbox.",
       backHome: "← Back to Home",
       changePasswordTitle: "Set a New Password",
       changePasswordSub:
@@ -608,6 +610,8 @@ export const COPY = {
       password: "Contraseña",
       signInButton: "Ingresar",
       signingIn: "Ingresando...",
+      resendConfirm: "Reenviar correo de confirmación",
+      confirmSent: "Correo enviado. Revisa tu bandeja de entrada.",
       backHome: "← Volver al Inicio",
       changePasswordTitle: "Configurar Nueva Contraseña",
       changePasswordSub:

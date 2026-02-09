@@ -13,11 +13,17 @@ export default function LoginPage() {
   const [email, setEmail] = useState("neatcurb@gmail.com");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
+
+  const needsConfirm = (errorMessage: string | null) =>
+    Boolean(errorMessage && errorMessage.toLowerCase().includes("not confirmed"));
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
+    setNotice(null);
     setLoading(true);
 
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -51,6 +57,26 @@ export default function LoginPage() {
     setLoading(false);
   };
 
+  const handleResend = async () => {
+    setError(null);
+    setNotice(null);
+    setResending(true);
+
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email
+    });
+
+    if (error) {
+      setError(error.message);
+      setResending(false);
+      return;
+    }
+
+    setNotice(copy.auth.confirmSent);
+    setResending(false);
+  };
+
   return (
     <div className="auth-page">
       <div className="auth-card">
@@ -82,9 +108,21 @@ export default function LoginPage() {
             />
           </label>
           {error ? <div className="auth-error">{error}</div> : null}
+          {notice ? <div className="auth-notice">{notice}</div> : null}
           <button className="button-primary" type="submit" disabled={loading}>
             {loading ? copy.auth.signingIn : copy.auth.signInButton}
           </button>
+          {needsConfirm(error) ? (
+            <button
+              className="btn-secondary"
+              type="button"
+              disabled={resending}
+              onClick={handleResend}
+              style={{ width: "100%", justifyContent: "center" }}
+            >
+              {resending ? copy.auth.signingIn : copy.auth.resendConfirm}
+            </button>
+          ) : null}
           <a className="auth-home" href="/">
             {copy.auth.backHome}
           </a>
