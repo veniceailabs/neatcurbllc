@@ -21,6 +21,7 @@ type QuoteFormData = {
   email: string;
   phone: string;
   address?: string;
+  zip?: string;
   service: PublicService;
   serviceDetail?: LawnCareDetail | PropertyMaintenanceDetail | CommercialServiceDetail;
   message: string;
@@ -33,7 +34,7 @@ export default function QuoteForm() {
   const { language } = useLanguage();
   const copy = getCopy(language);
   const { register, handleSubmit, reset, setValue } = useForm<QuoteFormData>({
-    defaultValues: { service: "Snow Removal" }
+    defaultValues: { service: "Snow Removal", zip: "" }
   });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
     "idle"
@@ -66,13 +67,14 @@ export default function QuoteForm() {
       message: data.message,
       estimated_low: estimate.low,
       estimated_high: estimate.high,
-      pricing_meta: {
-        propertyClass,
-        size,
-        accumulation,
-        serviceDetail: serviceDetail || null
-      }
-    });
+        pricing_meta: {
+          propertyClass,
+          size,
+          accumulation,
+        serviceDetail: serviceDetail || null,
+        zip: data.zip || null
+        }
+      });
 
     if (error) {
       setStatus("error");
@@ -271,7 +273,22 @@ export default function QuoteForm() {
         ) : null}
         <label>
           {copy.quote.address}
-          <input {...register("address")} placeholder={copy.quote.addressPlaceholder} />
+          <input
+            {...register("address", {
+              onChange: (event) => {
+                const value = event.target.value as string;
+                const match = value.match(/\b\d{5}(?:-\d{4})?\b/);
+                if (match) {
+                  setValue("zip", match[0], { shouldDirty: true });
+                }
+              }
+            })}
+            placeholder={copy.quote.addressPlaceholder}
+          />
+        </label>
+        <label>
+          {copy.quote.zip}
+          <input {...register("zip")} placeholder={copy.quote.zipPlaceholder} />
         </label>
         <label className="full">
           {copy.quote.message}

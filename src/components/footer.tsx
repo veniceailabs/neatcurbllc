@@ -1,7 +1,9 @@
 "use client";
 
+import { Instagram } from "lucide-react";
 import { useLanguage } from "@/components/language-context";
 import { getCopy } from "@/lib/i18n";
+import { SITE } from "@/lib/site";
 
 export default function Footer() {
   const { language } = useLanguage();
@@ -30,6 +32,15 @@ export default function Footer() {
         <p>
           {copy.footer.serviceAreaLabel}: {copy.footer.serviceArea}
         </p>
+        <a
+          className="social-link"
+          href={SITE.instagram.url}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Instagram size={16} />
+          {copy.footer.instagramLabel} @{SITE.instagram.handle}
+        </a>
       </div>
     </footer>
   );

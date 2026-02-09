@@ -46,7 +46,10 @@ const localBusinessSchema = {
 };
 
 export const metadata = {
-  title: "Neat Curb Admin Command Center",
+  title: {
+    default: "Neat Curb",
+    template: "%s | Neat Curb"
+  },
   description: "Unified operations dashboard for Neat Curb LLC."
 };
 

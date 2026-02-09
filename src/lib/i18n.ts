@@ -177,7 +177,9 @@ export const COPY = {
         "Debris / Storm Removal"
       ],
       selectService: "Select service",
-      addressPlaceholder: "Service address"
+      addressPlaceholder: "Service address",
+      zip: "Zip Code",
+      zipPlaceholder: "ZIP"
     },
     footer: {
       name: "Neat Curb",
@@ -190,6 +192,7 @@ export const COPY = {
       phone: "(716) 241-1499",
       email: "neatcurb@gmail.com",
       serviceArea: "Western NY",
+      instagramLabel: "Instagram",
       links: {
         services: "Services",
         requestQuote: "Request Quote",
@@ -576,7 +579,9 @@ export const COPY = {
         "Retiro de Escombros / Tormenta"
       ],
       selectService: "Seleccionar servicio",
-      addressPlaceholder: "Dirección del servicio"
+      addressPlaceholder: "Dirección del servicio",
+      zip: "Código Postal",
+      zipPlaceholder: "Código Postal"
     },
     footer: {
       name: "Neat Curb",
@@ -589,6 +594,7 @@ export const COPY = {
       phone: "(716) 241-1499",
       email: "neatcurb@gmail.com",
       serviceArea: "Western NY",
+      instagramLabel: "Instagram",
       links: {
         services: "Servicios",
         requestQuote: "Solicitar Cotización",
