@@ -16,7 +16,10 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
     let mounted = true;
     const check = async () => {
       setReady(false);
-      if (pathname === "/admin/login") {
+      // These routes must be reachable without an existing session:
+      // - login: obvious
+      // - change-password: recovery links hydrate a session from the URL after load
+      if (pathname === "/admin/login" || pathname === "/admin/change-password") {
         setReady(true);
         return;
       }

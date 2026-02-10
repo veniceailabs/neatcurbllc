@@ -91,13 +91,9 @@ export default function LoginPage() {
     setNotice(null);
     setRecovering(true);
 
-    const origin = window.location.origin;
-    const canonicalOrigin =
-      window.location.hostname.endsWith("neatcurbllc.com") &&
-      !window.location.hostname.includes("localhost")
-        ? `${window.location.protocol}//neatcurbllc.com`
-        : origin;
-    const redirectTo = `${canonicalOrigin}/admin/change-password`;
+    // Use the current origin so Supabase redirects back to the exact host
+    // the user is on (www vs apex). Make sure both are in Supabase Redirect URLs.
+    const redirectTo = `${window.location.origin}/admin/change-password`;
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo
     });
