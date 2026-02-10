@@ -50,7 +50,13 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
     };
     check();
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session && pathname !== "/admin/login") {
+      // Don't bounce users off password recovery/change-password while the session
+      // is hydrating from the recovery URL.
+      if (
+        !session &&
+        pathname !== "/admin/login" &&
+        pathname !== "/admin/change-password"
+      ) {
         router.replace("/admin/login");
       }
     });

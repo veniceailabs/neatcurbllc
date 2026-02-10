@@ -15,11 +15,23 @@ export default function ChangePasswordPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
+  const [recoveryExpired, setRecoveryExpired] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
 
     const check = async () => {
+      // If the URL hash indicates an expired/invalid recovery link, do not bounce away.
+      // Let the user see a clear message and go request a fresh link.
+      if (typeof window !== "undefined") {
+        const hash = window.location.hash || "";
+        if (hash.toLowerCase().includes("error_code=otp_expired")) {
+          setRecoveryExpired(true);
+          setChecking(false);
+          return;
+        }
+      }
+
       const { data } = await supabase.auth.getSession();
       if (cancelled) return;
 
@@ -36,7 +48,8 @@ export default function ChangePasswordPage() {
           setChecking(false);
           return;
         }
-        router.replace("/admin/login");
+        // Don't auto-redirect; it hides useful context from the user (expired links, etc).
+        setChecking(false);
       }, 800);
     };
 
@@ -92,8 +105,23 @@ export default function ChangePasswordPage() {
       <div className="auth-card">
         <div className="auth-title">{copy.auth.changePasswordTitle}</div>
         <div className="auth-sub">{copy.auth.changePasswordSub}</div>
-        {checking ? <div className="auth-notice">Checking secure session…</div> : null}
+        {checking ? (
+          <div className="auth-notice">Checking secure session…</div>
+        ) : null}
+        {recoveryExpired ? (
+          <div className="auth-error">
+            Recovery link expired. Go back to Sign In and send a fresh reset email.
+          </div>
+        ) : null}
         <form onSubmit={handleUpdate} className="auth-form">
+          {/* a11y: hidden username field to help password managers */}
+          <input
+            type="email"
+            autoComplete="email"
+            style={{ position: "absolute", left: "-9999px", height: 0, width: 0, opacity: 0 }}
+            tabIndex={-1}
+            aria-hidden="true"
+          />
           <label className="form-field">
             {copy.auth.newPassword}
             <input
@@ -117,6 +145,14 @@ export default function ChangePasswordPage() {
           {error ? <div className="auth-error">{error}</div> : null}
           <button className="button-primary" type="submit" disabled={loading}>
             {loading ? copy.auth.updating : copy.auth.updatePassword}
+          </button>
+          <button
+            className="btn-secondary"
+            type="button"
+            onClick={() => router.replace("/admin/login")}
+            style={{ width: "100%", justifyContent: "center", marginTop: "10px" }}
+          >
+            Back to Sign In
           </button>
         </form>
       </div>
