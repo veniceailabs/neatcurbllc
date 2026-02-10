@@ -208,6 +208,11 @@ export const COPY = {
       signingIn: "Signing in...",
       resendConfirm: "Resend confirmation email",
       confirmSent: "Confirmation email sent. Check your inbox.",
+      forgotPassword: "Forgot password?",
+      sendRecovery: "Send password reset email",
+      recoverySent: "Password reset email sent. Open it and set a new password.",
+      recoveryExpired:
+        "That reset link is invalid or expired. Send a new password reset email.",
       backHome: "← Back to Home",
       changePasswordTitle: "Set a New Password",
       changePasswordSub:
@@ -612,6 +617,12 @@ export const COPY = {
       signingIn: "Ingresando...",
       resendConfirm: "Reenviar correo de confirmación",
       confirmSent: "Correo enviado. Revisa tu bandeja de entrada.",
+      forgotPassword: "¿Olvidaste tu contraseña?",
+      sendRecovery: "Enviar correo para restablecer contraseña",
+      recoverySent:
+        "Correo de restablecimiento enviado. Ábrelo y crea una nueva contraseña.",
+      recoveryExpired:
+        "El enlace es inválido o expiró. Envía un nuevo correo de restablecimiento.",
       backHome: "← Volver al Inicio",
       changePasswordTitle: "Configurar Nueva Contraseña",
       changePasswordSub:
