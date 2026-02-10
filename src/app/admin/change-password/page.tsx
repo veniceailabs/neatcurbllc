@@ -14,15 +14,44 @@ export default function ChangePasswordPage() {
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    const checkSession = async () => {
+    let cancelled = false;
+
+    const check = async () => {
       const { data } = await supabase.auth.getSession();
-      if (!data.session) {
-        router.replace("/admin/login");
+      if (cancelled) return;
+
+      if (data.session) {
+        setChecking(false);
+        return;
       }
+
+      // Recovery links can take a moment to hydrate the session from the URL.
+      setTimeout(async () => {
+        const { data: retry } = await supabase.auth.getSession();
+        if (cancelled) return;
+        if (retry.session) {
+          setChecking(false);
+          return;
+        }
+        router.replace("/admin/login");
+      }, 800);
     };
-    checkSession();
+
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (cancelled) return;
+      if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") {
+        setChecking(false);
+      }
+    });
+
+    check();
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
   }, [router]);
 
   const handleUpdate = async (event: React.FormEvent) => {
@@ -63,6 +92,7 @@ export default function ChangePasswordPage() {
       <div className="auth-card">
         <div className="auth-title">{copy.auth.changePasswordTitle}</div>
         <div className="auth-sub">{copy.auth.changePasswordSub}</div>
+        {checking ? <div className="auth-notice">Checking secure session…</div> : null}
         <form onSubmit={handleUpdate} className="auth-form">
           <label className="form-field">
             {copy.auth.newPassword}
@@ -70,6 +100,7 @@ export default function ChangePasswordPage() {
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              autoComplete="new-password"
               required
             />
           </label>
@@ -79,6 +110,7 @@ export default function ChangePasswordPage() {
               type="password"
               value={confirm}
               onChange={(event) => setConfirm(event.target.value)}
+              autoComplete="new-password"
               required
             />
           </label>

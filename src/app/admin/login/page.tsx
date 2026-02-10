@@ -91,7 +91,13 @@ export default function LoginPage() {
     setNotice(null);
     setRecovering(true);
 
-    const redirectTo = `${window.location.origin}/admin/change-password`;
+    const origin = window.location.origin;
+    const canonicalOrigin =
+      window.location.hostname.endsWith("neatcurbllc.com") &&
+      !window.location.hostname.includes("localhost")
+        ? `${window.location.protocol}//neatcurbllc.com`
+        : origin;
+    const redirectTo = `${canonicalOrigin}/admin/change-password`;
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo
     });
