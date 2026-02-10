@@ -42,6 +42,9 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
             return;
           }
         } else if (nextRole !== "admin") {
+          // Avoid a confusing loop where a logged-in-but-unprovisioned user
+          // keeps flashing the dashboard and bouncing back.
+          await supabase.auth.signOut();
           router.replace("/admin/login");
           return;
         }

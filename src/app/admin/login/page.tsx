@@ -41,18 +41,37 @@ export default function LoginPage() {
     });
 
     if (error) {
-      setError(error.message);
+      const status = (error as unknown as { status?: number }).status;
+      setError(status ? `${error.message} (${status})` : error.message);
       setLoading(false);
       return;
     }
 
     const userId = data.user?.id;
     if (userId) {
-    const { data: profile } = await supabase
+      const { data: profile, error: profileError } = await supabase
         .from("profiles")
-        .select("must_change_password")
+        .select("role,must_change_password")
         .eq("id", userId)
         .maybeSingle();
+
+      // If the profile row isn't linked yet, the admin gate will bounce the user.
+      // Fail fast with a clear message instead of "flashing" the dashboard.
+      if (profileError || !profile) {
+        await supabase.auth.signOut();
+        setError(
+          "Account is not provisioned yet (missing profile). Link this auth user to the profiles table as admin."
+        );
+        setLoading(false);
+        return;
+      }
+
+      if (profile.role && profile.role !== "admin" && profile.role !== "staff") {
+        await supabase.auth.signOut();
+        setError("This account is not authorized for the admin dashboard.");
+        setLoading(false);
+        return;
+      }
 
       if (profile?.must_change_password) {
         router.replace("/admin/change-password");
