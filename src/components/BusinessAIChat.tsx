@@ -1,13 +1,21 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
 type ChatMessage = {
   id: string;
   role: "assistant" | "user";
   content: string;
+};
+
+type ChatApiData = {
+  message?: { role?: string; content?: string } | string;
+  degraded?: boolean;
+  details?: string | null;
+  requestId?: string;
+  circuitOpen?: boolean;
 };
 
 const seedMessages: ChatMessage[] = [
@@ -19,22 +27,53 @@ const seedMessages: ChatMessage[] = [
   }
 ];
 
+const HISTORY_KEY = "neatcurb_business_ai_history_v1";
+const OPEN_KEY = "neatcurb_business_ai_open_v1";
+const MAX_LOCAL_MESSAGES = 24;
+
 export default function BusinessAIChat() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>(seedMessages);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [lastError, setLastError] = useState<string | null>(null);
 
-  const handleNavigate = (label: string, href: string) => {
+  useEffect(() => {
+    try {
+      const storedOpen = window.localStorage.getItem(OPEN_KEY);
+      if (storedOpen !== null) setOpen(storedOpen === "1");
+      const raw = window.localStorage.getItem(HISTORY_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as ChatMessage[];
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        setMessages(parsed.slice(-MAX_LOCAL_MESSAGES));
+      }
+    } catch {
+      // Ignore local storage parse issues.
+    }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(OPEN_KEY, open ? "1" : "0");
+  }, [open]);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      HISTORY_KEY,
+      JSON.stringify(messages.slice(-MAX_LOCAL_MESSAGES))
+    );
+  }, [messages]);
+
+  const setAssistantMessage = (content: string) => {
     setMessages((prev) => [
       ...prev,
-      {
-        id: `ai-nav-${Date.now()}`,
-        role: "assistant",
-        content: `Opening ${label}...`
-      }
+      { id: `ai-${Date.now()}`, role: "assistant", content }
     ]);
+  };
+
+  const handleNavigate = (label: string, href: string) => {
+    setAssistantMessage(`Opening ${label}...`);
     router.push(href);
   };
 
@@ -53,14 +92,36 @@ export default function BusinessAIChat() {
       "audit logs": { label: "Audit Logs", href: "/admin/audit" }
     };
 
+    const trimmed = normalized.replace(/^\//, "");
     const match = Object.keys(map).find((key) =>
-      normalized.includes(key)
+      trimmed === key || trimmed.includes(key)
     );
     return match ? map[match] : null;
   };
 
+  const quickActions = useMemo(
+    () => [
+      { label: "Dashboard", href: "/admin" },
+      { label: "Leads", href: "/admin/leads" },
+      { label: "Clients", href: "/admin/clients" },
+      { label: "Messages", href: "/admin/messages" },
+      { label: "Audit Logs", href: "/admin/audit" },
+      { label: "Work Orders", href: "/admin/work-orders" }
+    ],
+    []
+  );
+
+  const extractAssistantContent = (payload: unknown) => {
+    if (!payload || typeof payload !== "object") return null;
+    const maybe = payload as { content?: unknown };
+    if (typeof maybe.content === "string") return maybe.content;
+    return null;
+  };
+
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
+    setLastError(null);
+
     const navTarget = commandRoute(input);
     if (navTarget) {
       handleNavigate(navTarget.label, navTarget.href);
@@ -84,22 +145,6 @@ export default function BusinessAIChat() {
         throw new Error("No active session.");
       }
 
-      const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      const weekAgoISO = weekAgo.toISOString().slice(0, 10);
-
-      const [{ count: leadsCount }, { count: jobsCount }, { count: jobsWeek }] =
-        await Promise.all([
-          supabase.from("leads").select("id", { count: "exact", head: true }),
-          supabase.from("jobs").select("id", { count: "exact", head: true }),
-          supabase
-            .from("jobs")
-            .select("id", { count: "exact", head: true })
-            .gte("scheduled_date", weekAgoISO)
-        ]);
-
-      const contextNote = `Context: leads=${leadsCount ?? 0}, jobs=${jobsCount ?? 0}, jobs_last_7_days=${jobsWeek ?? 0}.`;
-
       const response = await fetch("/api/business-ai/chat", {
         method: "POST",
         headers: {
@@ -107,33 +152,43 @@ export default function BusinessAIChat() {
           Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
-          messages: [
-            { role: "user", content: contextNote },
-            ...nextMessages.map(({ role, content }) => ({ role, content }))
-          ]
+          messages: nextMessages.map(({ role, content }) => ({ role, content }))
         })
       });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data?.error || "Business AI unavailable.");
+
+      const payload = await response.json().catch(() => null);
+      if (!payload || typeof payload !== "object") {
+        throw new Error("Business AI returned an unreadable response.");
       }
-      const assistantMessage: ChatMessage = {
-        id: `ai-${Date.now()}`,
-        role: "assistant",
-        content:
-          data?.message?.content ||
-          data?.response ||
-          "Business AI responded, but no message was returned."
+
+      const result = payload as {
+        ok?: boolean;
+        message?: string;
+        errorCode?: string;
+        data?: ChatApiData;
       };
-      setMessages((prev) => [...prev, assistantMessage]);
+
+      if (!response.ok) {
+        throw new Error(result.message || "Business AI unavailable.");
+      }
+
+      const data = result.data;
+      const content =
+        extractAssistantContent(data?.message) ||
+        (typeof data?.message === "string" ? data.message : null) ||
+        "Business AI responded, but no message was returned.";
+
+      setAssistantMessage(content);
+      if (data?.degraded) {
+        setLastError("Business AI is in fallback mode. Metrics are still available.");
+      }
     } catch (error) {
-      const assistantMessage: ChatMessage = {
-        id: `ai-${Date.now()}`,
-        role: "assistant",
-        content:
-          "Business AI engine offline. Start the Going Digital engine and set BUSINESS_AI_ENGINE_URL."
-      };
-      setMessages((prev) => [...prev, assistantMessage]);
+      const errorMessage =
+        error instanceof Error ? error.message : "Business AI request failed.";
+      setLastError(errorMessage);
+      setAssistantMessage(
+        "Business AI is temporarily unavailable. You can still use quick actions while it reconnects."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -163,24 +218,26 @@ export default function BusinessAIChat() {
               </div>
             ))}
           </div>
+          {lastError ? (
+            <div className="nexus-error" role="status">
+              {lastError}
+            </div>
+          ) : null}
           <div className="nexus-quick">
-            <button onClick={() => handleNavigate("Dashboard", "/admin")}>
-              Dashboard
-            </button>
-            <button onClick={() => handleNavigate("Leads", "/admin/leads")}>
-              Leads
-            </button>
-            <button onClick={() => handleNavigate("Clients", "/admin/clients")}>
-              Clients
-            </button>
-            <button onClick={() => handleNavigate("Messages", "/admin/messages")}>
-              Messages
-            </button>
-            <button onClick={() => handleNavigate("Audit Logs", "/admin/audit")}>
-              Audit Logs
-            </button>
-            <button onClick={() => handleNavigate("Work Orders", "/admin/work-orders")}>
-              Work Orders
+            {quickActions.map((action) => (
+              <button
+                key={action.href}
+                onClick={() => handleNavigate(action.label, action.href)}
+              >
+                {action.label}
+              </button>
+            ))}
+            <button
+              onClick={() => setMessages(seedMessages)}
+              type="button"
+              aria-label="Reset AI conversation"
+            >
+              Reset
             </button>
           </div>
           <div className="nexus-input">
@@ -188,6 +245,7 @@ export default function BusinessAIChat() {
               value={input}
               onChange={(event) => setInput(event.target.value)}
               placeholder="Ask Business AI..."
+              autoComplete="off"
               onKeyDown={(event) => {
                 if (event.key === "Enter") handleSend();
               }}

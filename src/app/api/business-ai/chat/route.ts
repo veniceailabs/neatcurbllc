@@ -15,6 +15,14 @@ const BUSINESS_CONTEXT =
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+const MAX_HISTORY_MESSAGES = 20;
+const ENGINE_TIMEOUT_MS = 12000;
+const ENGINE_MAX_ATTEMPTS = 2;
+const CIRCUIT_BREAKER_MAX_FAILURES = 3;
+const CIRCUIT_BREAKER_COOLDOWN_MS = 60000;
+
+let consecutiveEngineFailures = 0;
+let circuitOpenUntil = 0;
 
 const getBearer = (request: Request) => {
   const auth = request.headers.get("authorization");
@@ -35,6 +43,40 @@ const fetchWithTimeout = async (url: string, init: RequestInit, ms: number) => {
 };
 
 const isoDate = (date: Date) => date.toISOString();
+
+const nowMs = () => Date.now();
+
+const normalizeMessage = (value: unknown) => {
+  if (typeof value === "string") return value;
+  if (value && typeof value === "object") {
+    const maybe = value as Record<string, unknown>;
+    if (typeof maybe.content === "string") return maybe.content;
+    if (typeof maybe.text === "string") return maybe.text;
+  }
+  return "";
+};
+
+const parseEngineMessage = (raw: unknown) => {
+  if (!raw || typeof raw !== "object") return "";
+  const data = raw as Record<string, unknown>;
+  const direct =
+    normalizeMessage(data.message) ||
+    normalizeMessage(data.response) ||
+    normalizeMessage(data.output);
+
+  if (direct) return direct;
+
+  const choices = data.choices;
+  if (Array.isArray(choices) && choices.length > 0) {
+    const first = choices[0] as Record<string, unknown>;
+    const fromMessage = normalizeMessage(first.message);
+    if (fromMessage) return fromMessage;
+    const fromText = normalizeMessage(first.text);
+    if (fromText) return fromText;
+  }
+
+  return "";
+};
 
 export async function POST(request: Request) {
   const requestId = safeRequestId();
@@ -88,6 +130,14 @@ export async function POST(request: Request) {
       );
     }
 
+    const history = parsed.data.messages
+      .slice(-MAX_HISTORY_MESSAGES)
+      .map((message) => ({
+        role: message.role,
+        content: message.content.trim()
+      }))
+      .filter((message) => message.content.length > 0);
+
     const now = new Date();
     const last7Start = new Date(now);
     last7Start.setDate(now.getDate() - 7);
@@ -125,8 +175,29 @@ Metrics:
 - Lead velocity delta: ${leadVelocity.toFixed(2)}%
 - Unsigned contract pipeline value (estimated_high sum): $${unsignedContractValue.toFixed(2)}`;
 
+    const circuitOpen = circuitOpenUntil > nowMs();
+    if (circuitOpen) {
+      const cooldownSeconds = Math.ceil((circuitOpenUntil - nowMs()) / 1000);
+      return NextResponse.json(
+        ok(
+          {
+            requestId,
+            degraded: true,
+            circuitOpen: true,
+            message: {
+              role: "assistant",
+              content:
+                `Business AI is reconnecting. Please retry in about ${cooldownSeconds}s.\n` +
+                `Leads(7d): ${last7Leads} | Velocity: ${leadVelocity.toFixed(2)}% | Pipeline: $${unsignedContractValue.toFixed(2)}`
+            }
+          },
+          "Business AI cooling down after repeated upstream failures."
+        )
+      );
+    }
+
     const enginePayload = {
-      messages: [{ role: "user", content: dynamicContext }, ...parsed.data.messages],
+      messages: [{ role: "system", content: dynamicContext }, ...history],
       stream: false,
       max_tokens: parsed.data.settings?.maxTokens ?? 512,
       temperature: parsed.data.settings?.temperature ?? 0.25,
@@ -136,7 +207,7 @@ Metrics:
     let response: Response | null = null;
     let lastError: string | null = null;
 
-    for (let attempt = 1; attempt <= 2; attempt += 1) {
+    for (let attempt = 1; attempt <= ENGINE_MAX_ATTEMPTS; attempt += 1) {
       try {
         response = await fetchWithTimeout(
           ENGINE_URL,
@@ -145,7 +216,7 @@ Metrics:
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(enginePayload)
           },
-          10000
+          ENGINE_TIMEOUT_MS
         );
         if (response.ok) break;
         lastError = await response.text();
@@ -155,6 +226,11 @@ Metrics:
     }
 
     if (!response || !response.ok) {
+      consecutiveEngineFailures += 1;
+      if (consecutiveEngineFailures >= CIRCUIT_BREAKER_MAX_FAILURES) {
+        circuitOpenUntil = nowMs() + CIRCUIT_BREAKER_COOLDOWN_MS;
+      }
+
       const fallbackContent = [
         "Business AI is temporarily in fallback mode.",
         `Leads last 7 days: ${last7Leads}`,
@@ -173,6 +249,7 @@ Metrics:
               content: fallbackContent
             },
             degraded: true,
+            circuitOpen: circuitOpenUntil > nowMs(),
             details: lastError
           },
           "Business AI fallback response."
@@ -180,10 +257,25 @@ Metrics:
       );
     }
 
-    const data = await response.json().catch(() => ({}));
-    const message = data?.message || data?.response || null;
+    consecutiveEngineFailures = 0;
+    circuitOpenUntil = 0;
 
-    return NextResponse.json(ok({ requestId, message }, "Business AI response ready."));
+    const data = await response.json().catch(() => ({}));
+    const content = parseEngineMessage(data);
+    const message = content
+      ? { role: "assistant", content }
+      : {
+          role: "assistant",
+          content:
+            "Business AI responded but returned an empty payload. Try rephrasing or use quick actions."
+        };
+
+    return NextResponse.json(
+      ok(
+        { requestId, degraded: false, circuitOpen: false, message },
+        "Business AI response ready."
+      )
+    );
   } catch (error) {
     return NextResponse.json(
       fail("UNEXPECTED_ERROR", "Business AI request failed.", {

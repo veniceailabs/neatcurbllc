@@ -1346,6 +1346,16 @@ html.dark .quote-card {
   cursor: pointer;
 }
 
+.nexus-error {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(246, 140, 30, 0.36);
+  background: rgba(246, 140, 30, 0.12);
+  color: #ffd9b2;
+  font-size: 0.8rem;
+}
+
 .nexus-input input {
   flex: 1;
   padding: 8px 10px;
