@@ -67,7 +67,7 @@ export async function POST(request: Request) {
     metadata: {
       lead_id: lead.id
     },
-    success_url: `${baseUrl}/request-quote?deposit=success`,
+    success_url: `${baseUrl}/request-quote/success`,
     cancel_url: `${baseUrl}/request-quote?deposit=cancel`
   });
 

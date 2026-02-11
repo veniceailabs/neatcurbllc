@@ -9,9 +9,52 @@ const localBusinessSchema = {
   "@type": "LocalBusiness",
   name: "Neat Curb LLC",
   url: "https://www.neatcurbllc.com",
+  hasMap: "https://maps.google.com/?q=229+West+Genesee+St+Buffalo+NY+14202",
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 42.8864,
+    longitude: -78.8784
+  },
   description:
     "Snow removal and property maintenance in Western New York with reliable seasonal and commercial service.",
-  areaServed: ["Buffalo, NY", "Western New York"],
+  areaServed: [
+    {
+      "@type": "City",
+      name: "Buffalo",
+      geo: { "@type": "GeoCoordinates", latitude: 42.8864, longitude: -78.8784 }
+    },
+    {
+      "@type": "City",
+      name: "Amherst",
+      geo: { "@type": "GeoCoordinates", latitude: 42.9785, longitude: -78.7998 }
+    },
+    {
+      "@type": "City",
+      name: "Cheektowaga",
+      geo: { "@type": "GeoCoordinates", latitude: 42.9034, longitude: -78.7548 }
+    },
+    {
+      "@type": "City",
+      name: "Tonawanda",
+      geo: { "@type": "GeoCoordinates", latitude: 43.0209, longitude: -78.8798 }
+    },
+    {
+      "@type": "City",
+      name: "West Seneca",
+      geo: { "@type": "GeoCoordinates", latitude: 42.8501, longitude: -78.7998 }
+    },
+    {
+      "@type": "City",
+      name: "Niagara Falls",
+      geo: { "@type": "GeoCoordinates", latitude: 43.0962, longitude: -79.0377 }
+    },
+    {
+      "@type": "GeoShape",
+      name: "Western New York Coverage Zone",
+      polygon:
+        "43.20 -79.20 43.20 -78.45 42.60 -78.45 42.60 -79.20 43.20 -79.20"
+    }
+  ],
   serviceType: [
     "Snow removal",
     "Ice management",

@@ -34,6 +34,8 @@ const fetchWithTimeout = async (url: string, init: RequestInit, ms: number) => {
   }
 };
 
+const isoDate = (date: Date) => date.toISOString();
+
 export async function POST(request: Request) {
   const requestId = safeRequestId();
   try {
@@ -86,8 +88,45 @@ export async function POST(request: Request) {
       );
     }
 
+    const now = new Date();
+    const last7Start = new Date(now);
+    last7Start.setDate(now.getDate() - 7);
+    const prev7Start = new Date(now);
+    prev7Start.setDate(now.getDate() - 14);
+
+    const [last7LeadsRes, prev7LeadsRes, unsignedValueRes] = await Promise.all([
+      supabase
+        .from("leads")
+        .select("id", { count: "exact", head: true })
+        .gte("created_at", isoDate(last7Start))
+        .lte("created_at", isoDate(now)),
+      supabase
+        .from("leads")
+        .select("id", { count: "exact", head: true })
+        .gte("created_at", isoDate(prev7Start))
+        .lt("created_at", isoDate(last7Start)),
+      supabase
+        .from("leads")
+        .select("estimated_high,lead_status")
+        .in("lead_status", ["new", "draft"])
+    ]);
+
+    const last7Leads = last7LeadsRes.count || 0;
+    const prev7Leads = prev7LeadsRes.count || 0;
+    const unsignedContractValue =
+      unsignedValueRes.data?.reduce((sum, row) => sum + Number(row.estimated_high || 0), 0) ||
+      0;
+    const leadVelocity = prev7Leads === 0 ? (last7Leads > 0 ? 100 : 0) : ((last7Leads - prev7Leads) / prev7Leads) * 100;
+
+    const dynamicContext = `${BUSINESS_CONTEXT}
+Metrics:
+- Leads (last 7 days): ${last7Leads}
+- Leads (previous 7 days): ${prev7Leads}
+- Lead velocity delta: ${leadVelocity.toFixed(2)}%
+- Unsigned contract pipeline value (estimated_high sum): $${unsignedContractValue.toFixed(2)}`;
+
     const enginePayload = {
-      messages: [{ role: "user", content: BUSINESS_CONTEXT }, ...parsed.data.messages],
+      messages: [{ role: "user", content: dynamicContext }, ...parsed.data.messages],
       stream: false,
       max_tokens: parsed.data.settings?.maxTokens ?? 512,
       temperature: parsed.data.settings?.temperature ?? 0.25,
