@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useLanguage } from "@/components/language-context";
 import { getCopy } from "@/lib/i18n";
@@ -11,7 +11,6 @@ export const dynamic = "force-dynamic";
 
 export default function LoginPage() {
   const router = useRouter();
-  const params = useSearchParams();
   const { language } = useLanguage();
   const copy = getCopy(language);
   const [email, setEmail] = useState("neatcurb@gmail.com");
@@ -29,11 +28,13 @@ export default function LoginPage() {
     Boolean(errorMessage && errorMessage.toLowerCase().includes("not confirmed"));
 
   useEffect(() => {
-    const err = params.get("error_code") || params.get("error");
+    const query =
+      typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+    const err = query?.get("error_code") || query?.get("error");
     if (err && String(err).toLowerCase().includes("otp_expired")) {
       setError(copy.auth.recoveryExpired);
     }
-    const reason = params.get("reason");
+    const reason = query?.get("reason");
     if (reason === "profile_missing") {
       setError(
         "Account exists but is not provisioned. Link this user in profiles as admin or staff."
@@ -41,7 +42,7 @@ export default function LoginPage() {
     } else if (reason === "forbidden") {
       setError("This account is not authorized for the admin dashboard.");
     }
-  }, [params, copy.auth.recoveryExpired]);
+  }, [copy.auth.recoveryExpired]);
 
   useEffect(() => {
     const checkExistingSession = async () => {
