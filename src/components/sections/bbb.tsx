@@ -17,23 +17,31 @@ export default function BbbSection() {
       </div>
       <div className="bbb-grid">
         <div className="bbb-card">
-          <div className="bbb-meta">
-            <Image
-              src="https://m.bbb.org/terminuscontent/dist/img/ab-seal-vertical.svg?tx=w_74"
-              alt="BBB Accredited Business badge"
-              className="bbb-badge"
-              width={74}
-              height={112}
-              loading="lazy"
-              unoptimized
-            />
-            <div>
-              <div className="bbb-title">{copy.bbb.accredited}</div>
-              <div className="bbb-founded">{copy.bbb.founded}</div>
-              <div className="bbb-rating">{copy.bbb.rating}</div>
-              <div className="bbb-note">{copy.bbb.accreditedSince}</div>
+          <a
+            className="bbb-link"
+            href={copy.bbb.profileUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open Better Business Bureau profile"
+          >
+            <div className="bbb-meta">
+              <Image
+                src="https://m.bbb.org/terminuscontent/dist/img/ab-seal-vertical.svg?tx=w_74"
+                alt="BBB Accredited Business badge"
+                className="bbb-badge"
+                width={74}
+                height={112}
+                loading="lazy"
+                unoptimized
+              />
+              <div>
+                <div className="bbb-title">{copy.bbb.accredited}</div>
+                <div className="bbb-founded">{copy.bbb.founded}</div>
+                <div className="bbb-rating">{copy.bbb.rating}</div>
+                <div className="bbb-note">{copy.bbb.accreditedSince}</div>
+              </div>
             </div>
-          </div>
+          </a>
           <a
             className="btn-secondary"
             href={copy.bbb.profileUrl}
