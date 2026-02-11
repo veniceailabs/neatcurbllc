@@ -219,6 +219,11 @@ export const COPY = {
       recoverySent: "Password reset email sent. Open it and set a new password.",
       recoveryExpired:
         "That reset link is invalid or expired. Send a new password reset email.",
+      checkingAccess: "Checking access...",
+      redirecting: "Redirecting...",
+      profileMissing:
+        "Account is not provisioned yet (missing profile). Link this auth user to the profiles table as admin.",
+      unauthorized: "This account is not authorized for the admin dashboard.",
       backHome: "← Back to Home",
       changePasswordTitle: "Set a New Password",
       changePasswordSub:
@@ -354,6 +359,10 @@ export const COPY = {
         tooltipsOn: "Tooltips are on by default for quick guidance.",
         turnOff: "Turn Tooltips Off",
         turnOn: "Turn Tooltips On",
+        onboarding: "Onboarding Walkthrough",
+        onboardingOn: "Walkthrough is visible on Dashboard.",
+        hideOnboarding: "Hide Walkthrough",
+        showOnboarding: "Show Walkthrough",
         integrations: "Integrations",
         integrationsNote: "Supabase, Stripe, and Business AI engine."
       },
@@ -407,6 +416,23 @@ export const COPY = {
       settings: "Settings",
       workOrders: "Work Orders",
       logout: "Logout"
+    },
+    adminShell: {
+      snowReady: "Snow Ready",
+      title: "Neat Curb Command",
+      subtitle: "Unified Ops + Lead Engine"
+    },
+    success: {
+      title: "Deposit Confirmed. You're on the route.",
+      subtitle:
+        "Your request is locked in. We’ll follow up with timing and next steps.",
+      steps: [
+        "Lead Confirmed",
+        "Crew Dispatched (Upon Storm)",
+        "Proof Of Work Delivered"
+      ],
+      login: "Open Admin Login",
+      home: "Back To Site"
     }
   },
   es: {
@@ -635,6 +661,11 @@ export const COPY = {
         "Correo de restablecimiento enviado. Ábrelo y crea una nueva contraseña.",
       recoveryExpired:
         "El enlace es inválido o expiró. Envía un nuevo correo de restablecimiento.",
+      checkingAccess: "Verificando acceso...",
+      redirecting: "Redirigiendo...",
+      profileMissing:
+        "La cuenta no está aprovisionada (falta perfil). Vincula este usuario de auth en profiles como admin.",
+      unauthorized: "Esta cuenta no está autorizada para el panel admin.",
       backHome: "← Volver al Inicio",
       changePasswordTitle: "Configurar Nueva Contraseña",
       changePasswordSub:
@@ -772,6 +803,10 @@ export const COPY = {
         tooltipsOn: "Los tooltips están activos por defecto.",
         turnOff: "Desactivar Tooltips",
         turnOn: "Activar Tooltips",
+        onboarding: "Guía De Onboarding",
+        onboardingOn: "La guía está visible en el Dashboard.",
+        hideOnboarding: "Ocultar Guía",
+        showOnboarding: "Mostrar Guía",
         integrations: "Integraciones",
         integrationsNote: "Supabase, Stripe y Business AI."
       },
@@ -825,6 +860,23 @@ export const COPY = {
       settings: "Ajustes",
       workOrders: "Órdenes",
       logout: "Salir"
+    },
+    adminShell: {
+      snowReady: "Listo Para Nieve",
+      title: "Centro De Mando Neat Curb",
+      subtitle: "Operaciones + Motor De Prospectos"
+    },
+    success: {
+      title: "Depósito Confirmado. Ya Estás En La Ruta.",
+      subtitle:
+        "Tu solicitud quedó asegurada. Te contactaremos con tiempos y próximos pasos.",
+      steps: [
+        "Prospecto Confirmado",
+        "Cuadrilla Despachada (Con Tormenta)",
+        "Prueba De Trabajo Entregada"
+      ],
+      login: "Abrir Login Admin",
+      home: "Volver Al Sitio"
     }
   }
 } satisfies Record<Language, unknown>;

@@ -19,6 +19,7 @@ export default function DashboardPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [snowReadyLoading, setSnowReadyLoading] = useState(false);
   const [snowReadyMessage, setSnowReadyMessage] = useState<string | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(true);
 
   const postAudit = async (payload: {
     action: string;
@@ -49,6 +50,18 @@ export default function DashboardPage() {
       if (jobRes.data) setJobs(jobRes.data);
     };
     load();
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const sync = () => {
+      const stored = window.localStorage.getItem("neatcurb:onboarding-visible");
+      setShowOnboarding(stored !== "off");
+    };
+    sync();
+    window.addEventListener("neatcurb:onboarding-change", sync as EventListener);
+    return () =>
+      window.removeEventListener("neatcurb:onboarding-change", sync as EventListener);
   }, []);
 
   const activeJobs = useMemo(() => {
@@ -130,7 +143,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <OnboardingPanel />
+      {showOnboarding ? <OnboardingPanel /> : null}
     </div>
   );
 }

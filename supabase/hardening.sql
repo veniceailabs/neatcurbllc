@@ -3,21 +3,35 @@
 create extension if not exists "pgcrypto";
 create extension if not exists "pg_cron";
 
-alter table profiles
-  add constraint if not exists profiles_role_check
-  check (role in ('admin', 'staff', 'user'));
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'profiles_role_check') then
+    alter table profiles
+      add constraint profiles_role_check
+      check (role in ('admin', 'staff', 'user'));
+  end if;
+end
+$$;
 
-alter table leads
-  add constraint if not exists leads_status_check
-  check (lead_status in ('new', 'draft', 'converted', 'archived'));
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'leads_status_check') then
+    alter table leads
+      add constraint leads_status_check
+      check (lead_status in ('new', 'draft', 'converted', 'archived'));
+  end if;
+end
+$$;
 
-alter table jobs
-  add constraint if not exists jobs_status_check
-  check (status is null or status in ('queued', 'in_progress', 'complete', 'cancelled'));
-
-alter table invoices
-  add constraint if not exists invoices_status_check
-  check (status in ('draft', 'sent', 'paid', 'overdue', 'void'));
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'jobs_status_check') then
+    alter table jobs
+      add constraint jobs_status_check
+      check (status is null or status in ('queued', 'in_progress', 'complete', 'cancelled'));
+  end if;
+end
+$$;
 
 create table if not exists stripe_events (
   event_id text primary key,
@@ -203,7 +217,7 @@ begin
     perform cron.schedule(
       'anchor-daily-merkle-root',
       '10 0 * * *',
-      $$select anchor_daily_merkle_root(current_date - 1);$$
+      $job$select anchor_daily_merkle_root(current_date - 1);$job$
     );
   end if;
 exception when others then
@@ -214,30 +228,12 @@ $$;
 drop policy if exists "Authenticated can read clients" on clients;
 drop policy if exists "Authenticated can read jobs" on jobs;
 drop policy if exists "Authenticated can insert jobs" on jobs;
-drop policy if exists "Authenticated can read routes" on routes;
-drop policy if exists "Authenticated can insert routes" on routes;
-drop policy if exists "Authenticated can read route stops" on route_stops;
-drop policy if exists "Authenticated can insert route stops" on route_stops;
-drop policy if exists "Authenticated can read programs" on programs;
-drop policy if exists "Authenticated can insert programs" on programs;
-drop policy if exists "Authenticated can read program steps" on program_steps;
-drop policy if exists "Authenticated can insert program steps" on program_steps;
-drop policy if exists "Authenticated can insert gps events" on gps_events;
 drop policy if exists "Authenticated can insert audit logs" on audit_logs;
 drop policy if exists "Admins and staff can read clients" on clients;
 drop policy if exists "Admins and staff can read jobs" on jobs;
 drop policy if exists "Admins and staff can insert jobs" on jobs;
 drop policy if exists "Admins and staff can update jobs" on jobs;
 drop policy if exists "Admins can read stripe events" on stripe_events;
-drop policy if exists "Admins and staff can read routes" on routes;
-drop policy if exists "Admins and staff can insert routes" on routes;
-drop policy if exists "Admins and staff can read route stops" on route_stops;
-drop policy if exists "Admins and staff can insert route stops" on route_stops;
-drop policy if exists "Admins and staff can read programs" on programs;
-drop policy if exists "Admins and staff can insert programs" on programs;
-drop policy if exists "Admins and staff can read program steps" on program_steps;
-drop policy if exists "Admins and staff can insert program steps" on program_steps;
-drop policy if exists "Admins and staff can insert gps events" on gps_events;
 drop policy if exists "Admins can insert audit logs" on audit_logs;
 drop policy if exists "Admins can read audit anchors" on audit_anchors;
 
@@ -295,96 +291,6 @@ create policy "Admins can read stripe events"
       select 1 from profiles
       where profiles.id = auth.uid()
         and profiles.role = 'admin'
-    )
-  );
-
-create policy "Admins and staff can read routes"
-  on routes for select
-  using (
-    exists (
-      select 1 from profiles
-      where profiles.id = auth.uid()
-        and profiles.role in ('admin', 'staff')
-    )
-  );
-
-create policy "Admins and staff can insert routes"
-  on routes for insert
-  with check (
-    exists (
-      select 1 from profiles
-      where profiles.id = auth.uid()
-        and profiles.role in ('admin', 'staff')
-    )
-  );
-
-create policy "Admins and staff can read route stops"
-  on route_stops for select
-  using (
-    exists (
-      select 1 from profiles
-      where profiles.id = auth.uid()
-        and profiles.role in ('admin', 'staff')
-    )
-  );
-
-create policy "Admins and staff can insert route stops"
-  on route_stops for insert
-  with check (
-    exists (
-      select 1 from profiles
-      where profiles.id = auth.uid()
-        and profiles.role in ('admin', 'staff')
-    )
-  );
-
-create policy "Admins and staff can read programs"
-  on programs for select
-  using (
-    exists (
-      select 1 from profiles
-      where profiles.id = auth.uid()
-        and profiles.role in ('admin', 'staff')
-    )
-  );
-
-create policy "Admins and staff can insert programs"
-  on programs for insert
-  with check (
-    exists (
-      select 1 from profiles
-      where profiles.id = auth.uid()
-        and profiles.role in ('admin', 'staff')
-    )
-  );
-
-create policy "Admins and staff can read program steps"
-  on program_steps for select
-  using (
-    exists (
-      select 1 from profiles
-      where profiles.id = auth.uid()
-        and profiles.role in ('admin', 'staff')
-    )
-  );
-
-create policy "Admins and staff can insert program steps"
-  on program_steps for insert
-  with check (
-    exists (
-      select 1 from profiles
-      where profiles.id = auth.uid()
-        and profiles.role in ('admin', 'staff')
-    )
-  );
-
-create policy "Admins and staff can insert gps events"
-  on gps_events for insert
-  with check (
-    exists (
-      select 1 from profiles
-      where profiles.id = auth.uid()
-        and profiles.role in ('admin', 'staff')
     )
   );
 

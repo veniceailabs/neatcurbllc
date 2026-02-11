@@ -11,6 +11,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { language } = useLanguage();
   const copy = getCopy(language);
+  const closeMenu = () => setOpen(false);
 
   return (
     <nav className="navbar">
@@ -27,6 +28,7 @@ export default function Navbar() {
         className="nav-toggle"
         type="button"
         aria-label="Toggle navigation"
+        aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
       >
         <span />
@@ -35,16 +37,24 @@ export default function Navbar() {
       </button>
       <div className={`navbar-links ${open ? "open" : ""}`}>
         <div className="navbar-links-main">
-          <a href="/">{copy.nav.home}</a>
-          <a href="/services">{copy.nav.services}</a>
-          <a href="/#areas">{copy.nav.serviceAreas}</a>
-          <a href="/#quote">{copy.nav.requestQuote}</a>
+          <a href="/" onClick={closeMenu}>
+            {copy.nav.home}
+          </a>
+          <a href="/services" onClick={closeMenu}>
+            {copy.nav.services}
+          </a>
+          <a href="/#areas" onClick={closeMenu}>
+            {copy.nav.serviceAreas}
+          </a>
+          <a href="/#quote" onClick={closeMenu}>
+            {copy.nav.requestQuote}
+          </a>
         </div>
         <div className="navbar-links-actions">
-          <a className="btn-secondary" href="/admin/login">
+          <a className="btn-secondary" href="/admin/login" onClick={closeMenu}>
             {copy.nav.login}
           </a>
-          <a className="btn-primary" href="/request-quote">
+          <a className="btn-primary" href="/request-quote" onClick={closeMenu}>
             {copy.nav.requestQuote}
           </a>
           <ThemeToggle />

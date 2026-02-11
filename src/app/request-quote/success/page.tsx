@@ -2,14 +2,13 @@
 
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
-
-const steps = [
-  "Lead Confirmed",
-  "Crew Dispatched (Upon Storm)",
-  "Proof Of Work Delivered"
-];
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
 
 export default function QuoteSuccessPage() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
+
   return (
     <main className="success-shell">
       <motion.section
@@ -25,14 +24,11 @@ export default function QuoteSuccessPage() {
         >
           <CheckCircle2 size={44} />
         </motion.div>
-        <h1>Deposit Confirmed. You&apos;re On The Route.</h1>
-        <p>
-          Your spot is secured. We&apos;ll keep you updated as your service moves
-          through dispatch.
-        </p>
+        <h1>{copy.success.title}</h1>
+        <p>{copy.success.subtitle}</p>
 
         <div className="success-timeline">
-          {steps.map((step, index) => (
+          {copy.success.steps.map((step, index) => (
             <motion.div
               key={step}
               className="success-step"
@@ -48,10 +44,10 @@ export default function QuoteSuccessPage() {
 
         <div className="success-actions">
           <a className="btn-primary" href="/admin/login">
-            Go To Admin Login
+            {copy.success.login}
           </a>
           <a className="btn-secondary" href="/">
-            Back To Home
+            {copy.success.home}
           </a>
         </div>
       </motion.section>

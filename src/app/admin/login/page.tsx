@@ -36,13 +36,11 @@ export default function LoginPage() {
     }
     const reason = query?.get("reason");
     if (reason === "profile_missing") {
-      setError(
-        "Account exists but is not provisioned. Link this user in profiles as admin or staff."
-      );
+      setError(copy.auth.profileMissing);
     } else if (reason === "forbidden") {
-      setError("This account is not authorized for the admin dashboard.");
+      setError(copy.auth.unauthorized);
     }
-  }, [copy.auth.recoveryExpired]);
+  }, [copy.auth.profileMissing, copy.auth.recoveryExpired, copy.auth.unauthorized]);
 
   useEffect(() => {
     const checkExistingSession = async () => {
@@ -103,7 +101,7 @@ export default function LoginPage() {
       if (profileError || !profile) {
         await supabase.auth.signOut();
         setError(
-          "Account is not provisioned yet (missing profile). Link this auth user to the profiles table as admin."
+          copy.auth.profileMissing
         );
         setLoading(false);
         setPhase("unauthenticated");
@@ -112,7 +110,7 @@ export default function LoginPage() {
 
       if (profile.role && profile.role !== "admin" && profile.role !== "staff") {
         await supabase.auth.signOut();
-        setError("This account is not authorized for the admin dashboard.");
+        setError(copy.auth.unauthorized);
         setLoading(false);
         setPhase("unauthenticated");
         return;
@@ -215,8 +213,8 @@ export default function LoginPage() {
               ? phase === "signing-in"
                 ? copy.auth.signingIn
                 : phase === "provision-check"
-                  ? "Checking access..."
-                  : "Redirecting..."
+                  ? copy.auth.checkingAccess
+                  : copy.auth.redirecting
               : copy.auth.signInButton}
           </button>
           <button

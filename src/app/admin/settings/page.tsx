@@ -13,12 +13,15 @@ export default function SettingsPage() {
   const copy = getCopy(language);
   const [instagramHandle, setInstagramHandle] = useState(SITE.instagram.handle);
   const [instagramSaved, setInstagramSaved] = useState(false);
+  const [onboardingVisible, setOnboardingVisible] = useState(true);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("neatcurb-instagram-handle");
     if (saved) {
       setInstagramHandle(saved);
     }
+    const onboarding = window.localStorage.getItem("neatcurb:onboarding-visible");
+    setOnboardingVisible(onboarding !== "off");
   }, []);
 
   const saveInstagram = () => {
@@ -27,6 +30,13 @@ export default function SettingsPage() {
     setInstagramHandle(normalized);
     setInstagramSaved(true);
     window.setTimeout(() => setInstagramSaved(false), 1800);
+  };
+
+  const toggleOnboarding = () => {
+    const next = !onboardingVisible;
+    setOnboardingVisible(next);
+    window.localStorage.setItem("neatcurb:onboarding-visible", next ? "on" : "off");
+    window.dispatchEvent(new CustomEvent("neatcurb:onboarding-change"));
   };
 
   return (
@@ -52,6 +62,19 @@ export default function SettingsPage() {
             onClick={() => setEnabled(!enabled)}
           >
             {enabled ? copy.admin.settings.turnOff : copy.admin.settings.turnOn}
+          </button>
+          <div className="note" style={{ marginTop: "10px" }}>
+            {copy.admin.settings.onboardingOn}
+          </div>
+          <button
+            className="btn-secondary"
+            type="button"
+            style={{ marginTop: "10px" }}
+            onClick={toggleOnboarding}
+          >
+            {onboardingVisible
+              ? copy.admin.settings.hideOnboarding
+              : copy.admin.settings.showOnboarding}
           </button>
         </div>
         <div className="kpi-card">

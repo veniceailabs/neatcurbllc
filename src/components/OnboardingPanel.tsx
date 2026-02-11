@@ -10,7 +10,26 @@ export default function OnboardingPanel() {
 
   return (
     <div className="panel" style={{ marginTop: "18px" }}>
-      <div className="section-title">{copy.admin.onboarding.title}</div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "10px"
+        }}
+      >
+        <div className="section-title">{copy.admin.onboarding.title}</div>
+        <button
+          className="btn-secondary"
+          type="button"
+          onClick={() => {
+            window.localStorage.setItem("neatcurb:onboarding-visible", "off");
+            window.dispatchEvent(new CustomEvent("neatcurb:onboarding-change"));
+          }}
+        >
+          {copy.admin.settings.hideOnboarding}
+        </button>
+      </div>
       <div className="section-sub">{copy.admin.onboarding.subtitle}</div>
       <div className="onboarding-grid" style={{ marginTop: "16px" }}>
         {copy.admin.onboarding.steps.map((step) => (

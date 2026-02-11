@@ -49,9 +49,9 @@ export default function Sidebar() {
           width={140}
           height={105}
         />
-        <span className="pill">Snow Ready</span>
-        <div className="brand-title">Neat Curb Command</div>
-        <div className="brand-sub">Unified Ops + Lead Engine</div>
+        <span className="pill">{copy.adminShell.snowReady}</span>
+        <div className="brand-title">{copy.adminShell.title}</div>
+        <div className="brand-sub">{copy.adminShell.subtitle}</div>
         <div className="brand-phone">(716) 241-1499</div>
       </div>
       <nav className="nav-list">
