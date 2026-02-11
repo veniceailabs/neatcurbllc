@@ -118,7 +118,7 @@ export const COPY = {
       accreditedSince: "Accredited since April 23, 2024",
       readReviews: "Read BBB Reviews",
       profileUrl:
-        "https://www.bbb.org/us/ny/buffalo/profile/landscape-contractors/neat-curb-llc-0041-236025395",
+        "https://www.bbb.org/us/ny/buffalo/profile/landscape-contractors/neat-curb-llc-0041-236025395/leave-a-review",
       reviews: [
         { name: "H.M.", quote: "Neat Curb always gets the job done." },
         { name: "A.D.", quote: "Outstanding experience! Neat Curb LLC is top tier." }
@@ -572,7 +572,7 @@ export const COPY = {
       accreditedSince: "Acreditado desde el 23 de abril de 2024",
       readReviews: "Ver reseñas BBB",
       profileUrl:
-        "https://www.bbb.org/us/ny/buffalo/profile/landscape-contractors/neat-curb-llc-0041-236025395",
+        "https://www.bbb.org/us/ny/buffalo/profile/landscape-contractors/neat-curb-llc-0041-236025395/leave-a-review",
       reviews: [
         { name: "H.M.", quote: "Neat Curb always gets the job done." },
         { name: "A.D.", quote: "Outstanding experience! Neat Curb LLC is top tier." }
