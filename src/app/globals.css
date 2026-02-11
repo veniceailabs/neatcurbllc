@@ -1366,6 +1366,34 @@ html.brand textarea:focus {
   backdrop-filter: blur(var(--panel-blur));
 }
 
+/* Keep copy inside cards across breakpoints and language lengths */
+.hero-card,
+.onboarding-card,
+.info-card,
+.service-card,
+.bbb-card,
+.review-card,
+.kpi-card,
+.quote-card,
+.auth-card,
+.success-card {
+  min-width: 0;
+}
+
+.hero-card :is(h1, h2, h3, h4, p, li, span, strong),
+.onboarding-card :is(h1, h2, h3, h4, p, li, span, strong),
+.info-card :is(h1, h2, h3, h4, p, li, span, strong),
+.service-card :is(h1, h2, h3, h4, p, li, span, strong),
+.bbb-card :is(h1, h2, h3, h4, p, li, span, strong),
+.review-card :is(h1, h2, h3, h4, p, li, span, strong),
+.kpi-card :is(h1, h2, h3, h4, p, li, span, strong),
+.quote-card :is(h1, h2, h3, h4, p, li, span, strong),
+.auth-card :is(h1, h2, h3, h4, p, li, span, strong),
+.success-card :is(h1, h2, h3, h4, p, li, span, strong) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 @media (max-width: 900px) {
   .navbar {
     flex-direction: column;
