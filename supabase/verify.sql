@@ -24,6 +24,17 @@ order by relname;
 
 -- 3) Stripe idempotency table exists
 select to_regclass('public.stripe_events') as stripe_events_table;
+select to_regclass('public.audit_anchors') as audit_anchors_table;
+select to_regclass('public.staff_work_view') as staff_work_view;
+
+-- 3b) Atomic conversion and anchor functions exist
+select
+  p.proname as function_name
+from pg_proc p
+join pg_namespace n on p.pronamespace = n.oid
+where n.nspname = 'public'
+  and p.proname in ('convert_lead_to_client_atomic', 'anchor_daily_merkle_root')
+order by p.proname;
 
 -- 4) Current admin profile link status
 select

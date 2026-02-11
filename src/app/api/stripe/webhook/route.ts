@@ -24,6 +24,14 @@ type LeadRecord = {
   service: string | null;
   pricing_meta: Record<string, unknown> | null;
   lead_status: string | null;
+  client_id: string | null;
+};
+
+type AtomicConversionResult = {
+  client_id: string | null;
+  job_id: string | null;
+  converted: boolean;
+  message: string;
 };
 
 async function sendWelcomeEmail(lead: LeadRecord) {
@@ -102,7 +110,7 @@ export async function POST(request: Request) {
 
   const { data: lead } = await supabaseAdmin
     .from("leads")
-    .select("id,name,email,phone,address,service,pricing_meta,lead_status")
+    .select("id,name,email,phone,address,service,pricing_meta,lead_status,client_id")
     .eq("id", leadId)
     .maybeSingle<LeadRecord>();
 
@@ -115,57 +123,26 @@ export async function POST(request: Request) {
     return NextResponse.json(ok({ requestId }, "Lead missing; stored event."));
   }
 
-  if (lead.lead_status === "converted") {
-    await supabaseAdmin.from("stripe_events").insert({
-      event_id: event.id,
-      type: event.type,
-      payload: event as unknown as Record<string, unknown>
-    });
-    return NextResponse.json(ok({ requestId }, "Lead already converted."));
+  const { data: conversionData, error: conversionError } = await supabaseAdmin.rpc(
+    "convert_lead_to_client_atomic",
+    {
+      p_lead_id: lead.id,
+      p_request_id: requestId
+    }
+  );
+
+  if (conversionError) {
+    return NextResponse.json(
+      fail("CONVERSION_FAILED", conversionError.message, { requestId }),
+      { status: 500 }
+    );
   }
 
-  const propertyClass = (lead.pricing_meta?.propertyClass as string | undefined) || null;
+  const conversion = Array.isArray(conversionData)
+    ? (conversionData[0] as AtomicConversionResult | undefined)
+    : (conversionData as AtomicConversionResult | null);
 
-  const { data: existingClient } = await supabaseAdmin
-    .from("clients")
-    .select("id")
-    .eq("email", lead.email)
-    .eq("phone", lead.phone)
-    .maybeSingle();
-
-  let clientId = existingClient?.id || null;
-  if (!clientId) {
-    const { data: insertedClient } = await supabaseAdmin
-      .from("clients")
-      .insert({
-        name: lead.name,
-        email: lead.email,
-        phone: lead.phone,
-        address: lead.address,
-        type: propertyClass
-      })
-      .select("id")
-      .maybeSingle();
-    clientId = insertedClient?.id || null;
-  }
-
-  await supabaseAdmin
-    .from("leads")
-    .update({
-      lead_status: "converted",
-      converted_at: new Date().toISOString(),
-      client_id: clientId
-    })
-    .eq("id", lead.id);
-
-  if (clientId) {
-    await supabaseAdmin.from("jobs").insert({
-      client_id: clientId,
-      service: "Onboarding/Property Setup",
-      status: "queued",
-      scheduled_date: new Date().toISOString().slice(0, 10)
-    });
-  }
+  const clientId = conversion?.client_id || lead.client_id || null;
 
   await supabaseAdmin.from("payments").insert({
     invoice_id: null,
@@ -176,17 +153,19 @@ export async function POST(request: Request) {
     provider_id: session.payment_intent?.toString() || session.id
   });
 
-  await supabaseAdmin.from("audit_logs").insert({
-    action: "deposit_received",
-    entity: "lead",
-    entity_id: lead.id,
-    metadata: {
-      amount: 100,
-      currency: session.currency || "usd",
-      client_id: clientId,
-      request_id: requestId
+  await supabaseAdmin.from("audit_logs").insert([
+    {
+      action: "deposit_received",
+      entity: "lead",
+      entity_id: lead.id,
+      metadata: {
+        amount: 100,
+        currency: session.currency || "usd",
+        client_id: clientId,
+        request_id: requestId
+      }
     }
-  });
+  ]);
 
   const emailResult = await sendWelcomeEmail(lead);
 
@@ -210,5 +189,14 @@ export async function POST(request: Request) {
     payload: event as unknown as Record<string, unknown>
   });
 
-  return NextResponse.json(ok({ requestId }, "Webhook processed."));
+  return NextResponse.json(
+    ok(
+      {
+        requestId,
+        conversion: conversion?.message || "converted",
+        client_id: clientId
+      },
+      "Webhook processed."
+    )
+  );
 }

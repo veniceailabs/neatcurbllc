@@ -6,26 +6,27 @@ import { supabase } from "@/lib/supabaseClient";
 import { useLanguage } from "@/components/language-context";
 import { getCopy } from "@/lib/i18n";
 
-type Job = {
-  id: string;
-  service: string | null;
+type WorkItem = {
+  work_item_id: string;
+  source: "job" | "lead";
+  name: string | null;
+  phone: string | null;
+  address: string | null;
   status: string | null;
-  scheduled_date: string | null;
-  proof_photo_url: string | null;
 };
 
 export default function WorkOrdersPage() {
   const { language } = useLanguage();
   const copy = getCopy(language);
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const [items, setItems] = useState<WorkItem[]>([]);
   const [busyId, setBusyId] = useState<string | null>(null);
 
   const load = async () => {
     const { data } = await supabase
-      .from("jobs")
-      .select("id,service,status,scheduled_date,proof_photo_url")
-      .order("scheduled_date", { ascending: true });
-    if (data) setJobs(data);
+      .from("staff_work_view")
+      .select("work_item_id,source,name,phone,address,status")
+      .order("status", { ascending: true });
+    if (data) setItems(data as WorkItem[]);
   };
 
   useEffect(() => {
@@ -101,62 +102,61 @@ export default function WorkOrdersPage() {
         subtitle={copy.admin.workOrders.subtitle}
       />
       <div style={{ display: "grid", gap: "12px", marginTop: "16px" }}>
-        {jobs.length === 0 ? (
+        {items.length === 0 ? (
           <div className="kpi-card">
             <div style={{ fontWeight: 700 }}>{copy.admin.workOrders.emptyTitle}</div>
             <div className="note">{copy.admin.workOrders.emptyBody}</div>
           </div>
         ) : (
-          jobs.map((job) => (
-            <div key={job.id} className="kpi-card">
-              <div style={{ fontWeight: 700 }}>{job.service || "Job"}</div>
+          items.map((item) => (
+            <div key={`${item.source}-${item.work_item_id}`} className="kpi-card">
+              <div style={{ fontWeight: 700 }}>
+                {item.source === "job" ? "Work Order" : "Lead Intake"}
+              </div>
+              <div className="note">Name: {item.name || "Unknown"}</div>
+              <div className="note">Phone: {item.phone || "Unknown"}</div>
               <div className="note">
-                {copy.admin.workOrders.date}:{" "}
-                {job.scheduled_date || copy.admin.workOrders.unscheduled}
+                Address: {item.address || "Unknown"}
               </div>
               <div className="note">
-                {copy.admin.workOrders.status}: {job.status || "queued"}
+                {copy.admin.workOrders.status}: {item.status || "queued"}
               </div>
-              {job.proof_photo_url ? (
-                <a
-                  className="note"
-                  href={job.proof_photo_url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {copy.admin.workOrders.viewProof}
-                </a>
-              ) : null}
-              <div style={{ marginTop: "12px", display: "flex", gap: "8px" }}>
-                <button
-                  className="button-primary"
-                  type="button"
-                  disabled={busyId === job.id}
-                  onClick={() => updateStatus(job.id, "in_progress")}
-                >
-                  {copy.admin.workOrders.start}
-                </button>
-                <button
-                  className="button-primary"
-                  type="button"
-                  disabled={busyId === job.id}
-                  onClick={() => updateStatus(job.id, "complete")}
-                >
-                  {copy.admin.workOrders.finish}
-                </button>
-                <label className="button-secondary" style={{ cursor: "pointer" }}>
-                  {copy.admin.workOrders.upload}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    style={{ display: "none" }}
-                    onChange={(event) => {
-                      const file = event.target.files?.[0];
-                      if (file) uploadProof(job.id, file);
-                    }}
-                  />
-                </label>
-              </div>
+              {item.source === "job" ? (
+                <div style={{ marginTop: "12px", display: "flex", gap: "8px" }}>
+                  <button
+                    className="button-primary"
+                    type="button"
+                    disabled={busyId === item.work_item_id}
+                    onClick={() => updateStatus(item.work_item_id, "in_progress")}
+                  >
+                    {copy.admin.workOrders.start}
+                  </button>
+                  <button
+                    className="button-primary"
+                    type="button"
+                    disabled={busyId === item.work_item_id}
+                    onClick={() => updateStatus(item.work_item_id, "complete")}
+                  >
+                    {copy.admin.workOrders.finish}
+                  </button>
+                  <label className="button-secondary" style={{ cursor: "pointer" }}>
+                    {copy.admin.workOrders.upload}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={(event) => {
+                        const file = event.target.files?.[0];
+                        if (file) uploadProof(item.work_item_id, file);
+                      }}
+                    />
+                  </label>
+                </div>
+              ) : (
+                <div className="note" style={{ marginTop: "12px" }}>
+                  Lead is visible for dispatch context only.
+                </div>
+              )}
             </div>
           ))
         )}
