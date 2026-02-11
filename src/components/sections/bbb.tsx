@@ -43,12 +43,13 @@ export default function BbbSection() {
             </div>
           </a>
           <a
-            className="btn-secondary"
+            className="bbb-cta"
             href={copy.bbb.profileUrl}
             target="_blank"
             rel="noreferrer"
           >
-            {copy.bbb.readReviews}
+            <span className="bbb-cta-badge">BBB</span>
+            <span>{copy.bbb.readReviews}</span>
           </a>
         </div>
         <div className="bbb-reviews">
