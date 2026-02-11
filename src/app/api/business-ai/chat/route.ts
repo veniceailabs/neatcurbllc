@@ -155,12 +155,28 @@ Metrics:
     }
 
     if (!response || !response.ok) {
+      const fallbackContent = [
+        "Business AI is temporarily in fallback mode.",
+        `Leads last 7 days: ${last7Leads}`,
+        `Leads previous 7 days: ${prev7Leads}`,
+        `Lead velocity: ${leadVelocity.toFixed(2)}%`,
+        `Unsigned pipeline value: $${unsignedContractValue.toFixed(2)}`,
+        "You can still navigate with quick actions while the engine reconnects."
+      ].join("\n");
+
       return NextResponse.json(
-        fail("AI_UNAVAILABLE", "Business AI engine unavailable.", {
-          requestId,
-          details: lastError
-        }),
-        { status: 503 }
+        ok(
+          {
+            requestId,
+            message: {
+              role: "assistant",
+              content: fallbackContent
+            },
+            degraded: true,
+            details: lastError
+          },
+          "Business AI fallback response."
+        )
       );
     }
 
