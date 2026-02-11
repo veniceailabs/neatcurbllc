@@ -1230,13 +1230,23 @@ html.dark .quote-card {
 
 .nexus-panel {
   width: 320px;
-  background: rgba(255, 255, 255, 0.82);
+  background: linear-gradient(180deg, rgba(10, 16, 14, 0.97), rgba(8, 13, 12, 0.96));
+  color: #eaf4f0;
   border-radius: 20px;
   padding: 16px;
   margin-top: 12px;
   box-shadow: 0 24px 60px rgba(13, 27, 30, 0.2);
-  border: 1px solid rgba(13, 27, 30, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(12px);
+}
+
+.nexus-title {
+  font-weight: 800;
+  color: #f3fbf7;
+}
+
+.nexus-sub {
+  color: rgba(233, 242, 238, 0.78);
 }
 
 .nexus-messages {
@@ -1250,13 +1260,15 @@ html.dark .quote-card {
 .nexus-message {
   padding: 10px 12px;
   border-radius: 12px;
-  background: rgba(78, 199, 236, 0.15);
+  background: rgba(78, 199, 236, 0.12);
+  color: rgba(235, 245, 241, 0.96);
   font-size: 0.9rem;
-  border: 1px solid rgba(78, 199, 236, 0.2);
+  border: 1px solid rgba(78, 199, 236, 0.28);
 }
 
 .nexus-message.user {
-  background: rgba(35, 176, 75, 0.18);
+  background: rgba(35, 176, 75, 0.16);
+  border-color: rgba(35, 176, 75, 0.32);
 }
 
 .nexus-input {
@@ -1285,7 +1297,14 @@ html.dark .quote-card {
   flex: 1;
   padding: 8px 10px;
   border-radius: 10px;
-  border: 1px solid rgba(13, 27, 30, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #f2faf6 !important;
+  caret-color: #f2faf6;
+}
+
+.nexus-input input::placeholder {
+  color: rgba(233, 242, 238, 0.62) !important;
 }
 
 .nexus-input button {
