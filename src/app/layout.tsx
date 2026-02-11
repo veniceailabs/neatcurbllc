@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import AppProviders from "@/components/app-providers";
 
 const localBusinessSchema = {
@@ -94,6 +95,7 @@ export default function RootLayout({
       </head>
       <body>
         <AppProviders>{children}</AppProviders>
+        <Analytics />
       </body>
     </html>
   );
