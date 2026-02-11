@@ -2,7 +2,6 @@
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
 import { useLanguage } from "@/components/language-context";
 import { getCopy } from "@/lib/i18n";
 import {
@@ -28,7 +27,17 @@ type QuoteFormData = {
   propertyClass?: "residential" | "commercial";
   size?: ResidentialSize | CommercialSize;
   accumulation?: Accumulation;
+  honeypot?: string;
 };
+
+const ZIP_HINTS: Array<{ pattern: RegExp; zip: string }> = [
+  { pattern: /\bbuffalo\b/i, zip: "14202" },
+  { pattern: /\bamherst\b/i, zip: "14221" },
+  { pattern: /\bcheektowaga\b/i, zip: "14225" },
+  { pattern: /\btonawanda\b/i, zip: "14150" },
+  { pattern: /\bwest\s+seneca\b/i, zip: "14224" },
+  { pattern: /\bniagara\s+falls\b/i, zip: "14301" }
+];
 
 export default function QuoteForm() {
   const { language } = useLanguage();
@@ -58,25 +67,32 @@ export default function QuoteForm() {
       size,
       accumulation
     });
-    const { error } = await supabase.from("leads").insert({
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      address: data.address || null,
-      service: data.service,
-      message: data.message,
-      estimated_low: estimate.low,
-      estimated_high: estimate.high,
+    const response = await fetch("/api/public/leads", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        address: data.address || null,
+        zip: data.zip || null,
+        service: data.service,
+        message: data.message || null,
+        estimated_low: estimate.low,
+        estimated_high: estimate.high,
+        honeypot: data.honeypot || "",
         pricing_meta: {
           propertyClass,
           size,
           accumulation,
-        serviceDetail: serviceDetail || null,
-        zip: data.zip || null
+          serviceDetail: serviceDetail || null
         }
-      });
+      })
+    });
 
-    if (error) {
+    if (!response.ok) {
       setStatus("error");
       return;
     }
@@ -105,6 +121,14 @@ export default function QuoteForm() {
         <h2>{copy.quote.title}</h2>
       </div>
       <form className="quote-form" onSubmit={handleSubmit(onSubmit)}>
+        <input
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0 }}
+          {...register("honeypot")}
+        />
         <label>
           {copy.quote.name}
           <input {...register("name", { required: true })} />
@@ -280,6 +304,16 @@ export default function QuoteForm() {
                 const match = value.match(/\b\d{5}(?:-\d{4})?\b/);
                 if (match) {
                   setValue("zip", match[0], { shouldDirty: true });
+                }
+              },
+              onBlur: (event) => {
+                const value = (event.target.value as string).trim();
+                if (!value) return;
+                const hasZip = /\b\d{5}(?:-\d{4})?\b/.test(value);
+                if (hasZip) return;
+                const hint = ZIP_HINTS.find((entry) => entry.pattern.test(value));
+                if (hint) {
+                  setValue("zip", hint.zip, { shouldDirty: true });
                 }
               }
             })}

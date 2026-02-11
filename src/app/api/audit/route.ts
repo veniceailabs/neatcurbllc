@@ -1,15 +1,10 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { auditWriteSchema } from "@/lib/validators";
+import { fail, ok, safeRequestId } from "@/lib/api";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-
-type AuditPayload = {
-  action: string;
-  entity?: string;
-  entity_id?: string;
-  metadata?: Record<string, unknown>;
-};
 
 const getBearer = (request: Request) => {
   const auth = request.headers.get("authorization");
@@ -20,19 +15,19 @@ const getBearer = (request: Request) => {
 };
 
 export async function POST(request: Request) {
+  const requestId = safeRequestId();
   if (!supabaseUrl || !supabaseAnonKey) {
     return NextResponse.json(
-      { ok: false, error: "Supabase env missing." },
+      fail("ENV_MISSING", "Supabase env missing.", { requestId }),
       { status: 500 }
     );
   }
 
   const token = getBearer(request);
   if (!token) {
-    return NextResponse.json(
-      { ok: false, error: "Unauthorized." },
-      { status: 401 }
-    );
+    return NextResponse.json(fail("UNAUTHORIZED", "Unauthorized.", { requestId }), {
+      status: 401
+    });
   }
 
   const supabase = createClient(supabaseUrl, supabaseAnonKey, {
@@ -41,10 +36,9 @@ export async function POST(request: Request) {
 
   const { data: userData, error: userError } = await supabase.auth.getUser(token);
   if (userError || !userData?.user) {
-    return NextResponse.json(
-      { ok: false, error: "Invalid session." },
-      { status: 401 }
-    );
+    return NextResponse.json(fail("INVALID_SESSION", "Invalid session.", { requestId }), {
+      status: 401
+    });
   }
 
   const { data: profile } = await supabase
@@ -54,16 +48,19 @@ export async function POST(request: Request) {
     .maybeSingle();
 
   if (profile?.role !== "admin") {
-    return NextResponse.json(
-      { ok: false, error: "Forbidden." },
-      { status: 403 }
-    );
+    return NextResponse.json(fail("FORBIDDEN", "Forbidden.", { requestId }), {
+      status: 403
+    });
   }
 
-  const payload = (await request.json()) as AuditPayload;
-  if (!payload?.action) {
+  const payload = await request.json().catch(() => null);
+  const parsed = auditWriteSchema.safeParse(payload);
+  if (!parsed.success) {
     return NextResponse.json(
-      { ok: false, error: "Action is required." },
+      fail("VALIDATION_FAILED", "Invalid audit payload.", {
+        requestId,
+        issues: parsed.error.issues
+      }),
       { status: 400 }
     );
   }
@@ -71,18 +68,20 @@ export async function POST(request: Request) {
   const { error } = await supabase.from("audit_logs").insert({
     actor_id: userData.user.id,
     actor: profile?.email || userData.user.email || "admin",
-    action: payload.action,
-    entity: payload.entity || null,
-    entity_id: payload.entity_id || null,
-    metadata: payload.metadata || null
+    action: parsed.data.action,
+    entity: parsed.data.entity || null,
+    entity_id: parsed.data.entity_id || null,
+    metadata: {
+      ...(parsed.data.metadata || {}),
+      request_id: requestId
+    }
   });
 
   if (error) {
-    return NextResponse.json(
-      { ok: false, error: error.message },
-      { status: 400 }
-    );
+    return NextResponse.json(fail("INSERT_FAILED", error.message, { requestId }), {
+      status: 400
+    });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json(ok({ requestId }, "Audit entry stored."));
 }

@@ -1,35 +1,65 @@
-# Neat Curb Admin Command Center
+# Neat Curb Operations Hub
 
-This is the Neat Curb LLC admin dashboard app shell built with Next.js + Tailwind CSS.
+Production web + admin platform for Neat Curb LLC.
 
-## Quick start
+Stack:
+- Next.js App Router + TypeScript + Tailwind CSS
+- Supabase (Auth + Postgres + RLS)
+- Stripe (deposit flow + webhook conversion)
+- Resend (transactional email)
+- Optional Twilio (SMS)
+
+## Quick Start
 
 ```bash
 npm install
 npm run dev
 ```
 
-Then open `http://localhost:3000`.
+Open `http://localhost:3000`.
 
-## Key features included
-- Master Admin Dashboard with KPIs, revenue monitor, weather intelligence, and dispatch control.
-- Lead Intake & Pricing Logic using the 2-3 inch snow standard and surcharge rules.
-- Business AI chat widget for revenue, lead, and dispatch prompts (proxy to Going Digital engine via `BUSINESS_AI_ENGINE_URL`).
-- Merkle-audit security utilities with an audit demo page.
-- Public SEO/GEO page with JSON-LD LocalBusiness schema at `/site`.
-- CRM, Schedule, Routes, Invoices, and Marketing placeholder modules ready for data wiring.
-- Brand assets (RGB + CMYK) archived in `brand-assets/`.
+## Core Flows
+- Public landing + quote intake with pricing metadata.
+- Admin login with role gating (`admin`, `staff`) and forced password change support.
+- Lead -> deposit -> converted client pipeline via Stripe webhook.
+- Admin messaging (email/SMS) with audit logging.
+- Merkle-style audit timeline.
 
-## Next steps
-- Connect Supabase for real data.
-- Wire Stripe, Twilio, and Maps APIs.
-- Add authentication and role-based access control.
+## Environment Variables
+Required for build/runtime:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
-## Supabase setup (required for live data)
-1. Create a Supabase project.
-2. Run the SQL in `supabase/schema.sql`.
-3. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to `.env.local`.
-4. Create the admin user `neatcurb@gmail.com` in Supabase Auth.
-5. Run `supabase/seed.sql` to mark the account for a forced password change.
+Recommended for production:
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+- `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `RESEND_API_KEY`
+- `RESEND_FROM_EMAIL`
+- `TWILIO_ACCOUNT_SID`
+- `TWILIO_AUTH_TOKEN`
+- `TWILIO_FROM_NUMBER`
 
-Schema uses these tables: `profiles`, `leads`, `clients`, `jobs`.
+## Database Setup
+Fresh project:
+1. Run `supabase/schema.sql`.
+2. (Optional) run `supabase/seed.sql`.
+
+Existing project upgrades:
+1. Run `supabase/hardening.sql`.
+2. Run `supabase/verify.sql` and confirm checks.
+
+## QA Commands
+```bash
+npm run lint
+npm run build
+npm run test:e2e
+```
+
+## Deployment Notes
+- Primary domain: `https://neatcurbllc.com`
+- Keep `www` as redirect alias.
+- Stripe webhook endpoint:
+  - `https://neatcurbllc.com/api/stripe/webhook`
+
+Release runbook: `docs/release-checklist.md`

@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { ReactNode } from "react";
+import type { Metadata } from "next";
 import AppProviders from "@/components/app-providers";
 
 const localBusinessSchema = {
@@ -45,12 +46,37 @@ const localBusinessSchema = {
   ]
 };
 
-export const metadata = {
+export const metadata: Metadata = {
+  applicationName: "Neat Curb",
   title: {
     default: "Neat Curb",
     template: "%s | Neat Curb"
   },
-  description: "Unified operations dashboard for Neat Curb LLC."
+  description: "Unified operations dashboard for Neat Curb LLC.",
+  metadataBase: new URL("https://neatcurbllc.com"),
+  alternates: {
+    canonical: "/"
+  },
+  icons: {
+    icon: "/brand/neat-curb-logo.svg",
+    shortcut: "/brand/neat-curb-logo.svg",
+    apple: "/brand/neat-curb-logo.svg"
+  },
+  openGraph: {
+    title: "Neat Curb",
+    description: "Western New York snow, lawn, and property maintenance.",
+    url: "https://neatcurbllc.com",
+    siteName: "Neat Curb",
+    type: "website",
+    images: [
+      {
+        url: "/brand/neat-curb-logo.svg",
+        width: 512,
+        height: 512,
+        alt: "Neat Curb logo"
+      }
+    ]
+  }
 };
 
 export default function RootLayout({

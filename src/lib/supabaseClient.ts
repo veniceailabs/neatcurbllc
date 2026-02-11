@@ -2,15 +2,18 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const FALLBACK_URL = "https://localhost.invalid";
+const FALLBACK_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.fallback.fallback";
 
 const createBrowserClient = (): SupabaseClient | null => {
-  if (!supabaseUrl || !supabaseAnonKey) {
+  const missingEnv = !supabaseUrl || !supabaseAnonKey;
+  if (missingEnv) {
     if (typeof window !== "undefined") {
       console.warn("Supabase env is missing. Set NEXT_PUBLIC_SUPABASE_URL/ANON.");
     }
-    return null;
   }
-  return createClient(supabaseUrl, supabaseAnonKey, {
+  return createClient(supabaseUrl || FALLBACK_URL, supabaseAnonKey || FALLBACK_KEY, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
@@ -19,17 +22,4 @@ const createBrowserClient = (): SupabaseClient | null => {
   });
 };
 
-const fallback = new Proxy(
-  {},
-  {
-    get() {
-      return () => {
-        throw new Error(
-          "Supabase env is missing. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY."
-        );
-      };
-    }
-  }
-) as SupabaseClient;
-
-export const supabase = createBrowserClient() ?? fallback;
+export const supabase = createBrowserClient() as SupabaseClient;

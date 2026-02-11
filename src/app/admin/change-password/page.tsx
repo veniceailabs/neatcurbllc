@@ -143,7 +143,11 @@ export default function ChangePasswordPage() {
             />
           </label>
           {error ? <div className="auth-error">{error}</div> : null}
-          <button className="button-primary" type="submit" disabled={loading}>
+          <button
+            className="button-primary"
+            type="submit"
+            disabled={loading || recoveryExpired}
+          >
             {loading ? copy.auth.updating : copy.auth.updatePassword}
           </button>
           <button
@@ -154,6 +158,16 @@ export default function ChangePasswordPage() {
           >
             Back to Sign In
           </button>
+          {recoveryExpired ? (
+            <button
+              className="btn-secondary"
+              type="button"
+              onClick={() => router.replace("/admin/login")}
+              style={{ width: "100%", justifyContent: "center" }}
+            >
+              Send A New Reset Link
+            </button>
+          ) : null}
         </form>
       </div>
     </div>

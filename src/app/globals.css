@@ -1447,3 +1447,285 @@ textarea:focus {
   display: grid;
   gap: 10px;
 }
+
+/* Production hardening layout + readability overrides */
+:root {
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --radius-sm: 12px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --container-width: min(1120px, calc(100vw - 2 * var(--space-6)));
+}
+
+.navbar,
+.hero,
+.trust-bar,
+.section,
+.cta-banner,
+.footer {
+  width: var(--container-width);
+  margin-inline: auto;
+}
+
+.landing-shell {
+  gap: var(--space-8);
+  padding-bottom: var(--space-8);
+}
+
+.navbar {
+  padding: var(--space-3) var(--space-4);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.navbar-brand img {
+  width: 120px;
+}
+
+.navbar-links {
+  gap: var(--space-4);
+  margin-left: var(--space-6);
+}
+
+.navbar-links-main a,
+.navbar-links-actions a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.theme-toggle[data-variant="nav"] {
+  padding: 2px;
+}
+
+.theme-toggle[data-variant="nav"] .theme-pill {
+  min-height: 34px;
+  padding-inline: 8px;
+}
+
+.hero {
+  min-height: 0;
+  padding: var(--space-8) var(--space-4) 0;
+  gap: var(--space-8);
+}
+
+.hero-content h1 {
+  font-size: clamp(1.95rem, 3.5vw, 3rem);
+  line-height: 1.08;
+}
+
+.hero-content p,
+.section-sub {
+  line-height: 1.55;
+}
+
+.hero-actions .btn-primary,
+.hero-actions .btn-secondary {
+  min-height: 44px;
+}
+
+.hero-card {
+  padding: var(--space-6);
+}
+
+.section {
+  padding: 0 var(--space-4);
+  gap: var(--space-6);
+}
+
+.section-header {
+  max-width: 780px;
+}
+
+.section-header h2 {
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  line-height: 1.15;
+}
+
+.service-card h3 {
+  margin: 0;
+  line-height: 1.25;
+}
+
+.service-desc {
+  line-height: 1.5;
+}
+
+.service-list {
+  gap: var(--space-2);
+  padding-left: 18px;
+}
+
+.cta-banner {
+  margin-top: var(--space-8);
+  padding: var(--space-6);
+}
+
+.quote-form {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  padding: var(--space-6);
+}
+
+.quote-form label {
+  gap: var(--space-2);
+  line-height: 1.35;
+}
+
+.quote-form .full {
+  grid-column: 1 / -1;
+}
+
+.quote-form button,
+.auth-form button,
+.btn-primary,
+.btn-secondary,
+input,
+select,
+textarea {
+  min-height: 44px;
+}
+
+.quote-form input,
+.quote-form select,
+.quote-form textarea,
+.form-field input,
+.form-field select,
+.form-field textarea {
+  border-radius: var(--radius-sm) !important;
+  line-height: 1.35;
+}
+
+.quote-form input,
+.quote-form select,
+.quote-form textarea {
+  color: var(--field-fg) !important;
+  background: var(--field-bg) !important;
+}
+
+.quote-form input::placeholder,
+.quote-form textarea::placeholder,
+.auth-form input::placeholder {
+  color: var(--field-placeholder) !important;
+  opacity: 1;
+}
+
+html.light input,
+html.light select,
+html.light textarea {
+  color: #0f1a1d !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+  color: rgba(239, 247, 250, 0.96) !important;
+}
+
+html.brand input,
+html.brand select,
+html.brand textarea {
+  color: rgba(241, 247, 244, 0.96) !important;
+}
+
+select option {
+  color: #0f1a1d;
+  background: #ffffff;
+}
+
+html.dark select option,
+html.brand select option {
+  color: #edf5f4;
+  background: #111b1d;
+}
+
+.auth-form .form-field input {
+  color: #0f1a1d !important;
+  background: rgba(248, 251, 252, 0.95) !important;
+}
+
+@media (max-width: 1023px) and (min-width: 768px) {
+  :root {
+    --container-width: min(960px, calc(100vw - 2 * var(--space-5)));
+  }
+
+  .navbar-links {
+    margin-left: var(--space-4);
+  }
+
+  .quote-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --container-width: calc(100vw - 2 * var(--space-4));
+  }
+
+  .landing-shell {
+    gap: var(--space-6);
+  }
+
+  .navbar {
+    padding: var(--space-3);
+  }
+
+  .navbar-links {
+    top: 64px;
+    right: 0;
+    width: 100%;
+    margin-left: 0;
+    gap: var(--space-3);
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    padding: var(--space-5) 0 0;
+    gap: var(--space-6);
+  }
+
+  .hero-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .grid-3,
+  .grid-4,
+  .bbb-grid,
+  .areas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-banner {
+    margin-top: var(--space-6);
+    border-radius: 18px;
+    padding: var(--space-5);
+  }
+
+  .quote-form {
+    grid-template-columns: 1fr;
+    padding: var(--space-5);
+    gap: var(--space-3);
+  }
+
+  .quote-form textarea {
+    min-height: 110px;
+  }
+
+  .footer {
+    padding: var(--space-6) var(--space-4);
+  }
+}

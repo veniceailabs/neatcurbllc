@@ -9,6 +9,12 @@ export const COPY = {
       requestQuote: "Request Quote",
       login: "Login"
     },
+    trustBar: [
+      "BBB Accredited",
+      "A+ BBB Rating",
+      "Storm Ready Operations",
+      "Founded In 2022"
+    ],
     hero: {
       title: "WNY's Reliable Landscape, Snow & Property Maintenance",
       subtitle:
@@ -411,6 +417,12 @@ export const COPY = {
       requestQuote: "Solicitar Cotización",
       login: "Iniciar Sesión"
     },
+    trustBar: [
+      "Acreditado Por BBB",
+      "Calificación A+ BBB",
+      "Operaciones Listas Para Tormenta",
+      "Fundado En 2022"
+    ],
     hero: {
       title: "Mantenimiento Confiable de Nieve y Propiedades en Western NY",
       subtitle:

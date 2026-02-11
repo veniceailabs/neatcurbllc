@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import ThemeToggle from "@/components/theme-toggle";
 import LanguageToggle from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-context";
@@ -14,7 +15,13 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <img src="/brand/neat-curb-logo-full.svg" alt="Neat Curb LLC logo" />
+        <Image
+          src="/brand/neat-curb-logo-full.svg"
+          alt="Neat Curb LLC logo"
+          width={120}
+          height={90}
+          priority
+        />
       </div>
       <button
         className="nav-toggle"

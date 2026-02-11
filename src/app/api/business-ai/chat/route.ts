@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { chatSchema } from "@/lib/validators";
+import { fail, ok, safeRequestId } from "@/lib/api";
 
 export const runtime = "nodejs";
 
@@ -22,35 +24,42 @@ const getBearer = (request: Request) => {
   return token || null;
 };
 
+const fetchWithTimeout = async (url: string, init: RequestInit, ms: number) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), ms);
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeout);
+  }
+};
+
 export async function POST(request: Request) {
+  const requestId = safeRequestId();
   try {
     if (!supabaseUrl || !supabaseAnonKey) {
       return NextResponse.json(
-        { ok: false, error: "Supabase env missing." },
+        fail("ENV_MISSING", "Supabase env missing.", { requestId }),
         { status: 500 }
       );
     }
 
     const token = getBearer(request);
     if (!token) {
-      return NextResponse.json(
-        { ok: false, error: "Unauthorized." },
-        { status: 401 }
-      );
+      return NextResponse.json(fail("UNAUTHORIZED", "Unauthorized.", { requestId }), {
+        status: 401
+      });
     }
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       global: { headers: { Authorization: `Bearer ${token}` } }
     });
 
-    const { data: userData, error: userError } = await supabase.auth.getUser(
-      token
-    );
+    const { data: userData, error: userError } = await supabase.auth.getUser(token);
     if (userError || !userData?.user) {
-      return NextResponse.json(
-        { ok: false, error: "Invalid session." },
-        { status: 401 }
-      );
+      return NextResponse.json(fail("INVALID_SESSION", "Invalid session.", { requestId }), {
+        status: 401
+      });
     }
 
     const { data: profile } = await supabase
@@ -60,55 +69,72 @@ export async function POST(request: Request) {
       .maybeSingle();
 
     if (profile?.role !== "admin") {
-      return NextResponse.json(
-        { ok: false, error: "Forbidden." },
-        { status: 403 }
-      );
+      return NextResponse.json(fail("FORBIDDEN", "Forbidden.", { requestId }), {
+        status: 403
+      });
     }
 
-    const payload = await request.json();
-    const messages = Array.isArray(payload?.messages) ? payload.messages : null;
-
-    if (!messages) {
+    const payload = await request.json().catch(() => null);
+    const parsed = chatSchema.safeParse(payload);
+    if (!parsed.success) {
       return NextResponse.json(
-        { ok: false, error: "Messages array is required." },
+        fail("VALIDATION_FAILED", "Invalid chat payload.", {
+          requestId,
+          issues: parsed.error.issues
+        }),
         { status: 400 }
       );
     }
 
     const enginePayload = {
-      messages: [{ role: "user", content: BUSINESS_CONTEXT }, ...messages],
+      messages: [{ role: "user", content: BUSINESS_CONTEXT }, ...parsed.data.messages],
       stream: false,
-      max_tokens: payload?.settings?.maxTokens ?? 512,
-      temperature: payload?.settings?.temperature ?? 0.25,
-      top_p: payload?.settings?.topP ?? 0.92
+      max_tokens: parsed.data.settings?.maxTokens ?? 512,
+      temperature: parsed.data.settings?.temperature ?? 0.25,
+      top_p: parsed.data.settings?.topP ?? 0.92
     };
 
-    const response = await fetch(ENGINE_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(enginePayload)
-    });
+    let response: Response | null = null;
+    let lastError: string | null = null;
 
-    if (!response.ok) {
-      const text = await response.text();
+    for (let attempt = 1; attempt <= 2; attempt += 1) {
+      try {
+        response = await fetchWithTimeout(
+          ENGINE_URL,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(enginePayload)
+          },
+          10000
+        );
+        if (response.ok) break;
+        lastError = await response.text();
+      } catch (error) {
+        lastError = error instanceof Error ? error.message : "AI engine request failed.";
+      }
+    }
+
+    if (!response || !response.ok) {
       return NextResponse.json(
-        {
-          ok: false,
-          error: "Business AI engine error.",
-          details: text
-        },
-        { status: response.status }
+        fail("AI_UNAVAILABLE", "Business AI engine unavailable.", {
+          requestId,
+          details: lastError
+        }),
+        { status: 503 }
       );
     }
 
-    const data = await response.json();
-    const message = data?.message || data?.response;
+    const data = await response.json().catch(() => ({}));
+    const message = data?.message || data?.response || null;
 
-    return NextResponse.json({ ok: true, message });
+    return NextResponse.json(ok({ requestId, message }, "Business AI response ready."));
   } catch (error) {
     return NextResponse.json(
-      { ok: false, error: "Business AI request failed." },
+      fail("UNEXPECTED_ERROR", "Business AI request failed.", {
+        requestId,
+        details: error instanceof Error ? error.message : null
+      }),
       { status: 500 }
     );
   }

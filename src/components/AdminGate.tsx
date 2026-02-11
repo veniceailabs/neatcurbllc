@@ -9,7 +9,10 @@ import { TooltipProvider } from "@/components/tooltip-context";
 export default function AdminGate({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [ready, setReady] = useState(false);
+  const isPublicAdminRoute =
+    pathname?.startsWith("/admin/login") ||
+    pathname?.startsWith("/admin/change-password");
+  const [ready, setReady] = useState(Boolean(isPublicAdminRoute));
   const [role, setRole] = useState<AdminRole | null>(null);
 
   useEffect(() => {
@@ -19,7 +22,7 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
       // These routes must be reachable without an existing session:
       // - login: obvious
       // - change-password: recovery links hydrate a session from the URL after load
-      if (pathname === "/admin/login" || pathname === "/admin/change-password") {
+      if (isPublicAdminRoute) {
         setReady(true);
         return;
       }
@@ -29,11 +32,24 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
         router.replace("/admin/login");
       } else {
         const userId = data.session.user.id;
-        const { data: profile } = await supabase
+        const { data: profile, error: profileError } = await supabase
           .from("profiles")
-          .select("role")
+          .select("role,must_change_password")
           .eq("id", userId)
           .maybeSingle();
+        if (profileError || !profile) {
+          await supabase.auth.signOut();
+          router.replace("/admin/login?reason=profile_missing");
+          return;
+        }
+        if (
+          profile.must_change_password &&
+          pathname !== "/admin/change-password" &&
+          pathname !== "/admin/logout"
+        ) {
+          router.replace("/admin/change-password");
+          return;
+        }
         const nextRole = (profile?.role || "user") as AdminRole;
         setRole(nextRole);
         if (nextRole === "staff") {
@@ -42,16 +58,20 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
             return;
           }
         } else if (nextRole !== "admin") {
-          // Avoid a confusing loop where a logged-in-but-unprovisioned user
-          // keeps flashing the dashboard and bouncing back.
           await supabase.auth.signOut();
-          router.replace("/admin/login");
+          router.replace("/admin/login?reason=forbidden");
           return;
         }
         setReady(true);
       }
     };
-    check();
+    check().catch(() => {
+      if (isPublicAdminRoute) {
+        setReady(true);
+        return;
+      }
+      router.replace("/admin/login");
+    });
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
       // Don't bounce users off password recovery/change-password while the session
       // is hydrating from the recovery URL.
@@ -67,7 +87,7 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
       mounted = false;
       sub?.subscription.unsubscribe();
     };
-  }, [router, pathname]);
+  }, [router, pathname, isPublicAdminRoute]);
 
   if (!ready) {
     return (

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLanguage } from "@/components/language-context";
 import { getCopy } from "@/lib/i18n";
 
@@ -17,11 +18,14 @@ export default function BbbSection() {
       <div className="bbb-grid">
         <div className="bbb-card">
           <div className="bbb-meta">
-            <img
+            <Image
               src="https://m.bbb.org/terminuscontent/dist/img/ab-seal-vertical.svg?tx=w_74"
               alt="BBB Accredited Business badge"
               className="bbb-badge"
+              width={74}
+              height={112}
               loading="lazy"
+              unoptimized
             />
             <div>
               <div className="bbb-title">{copy.bbb.accredited}</div>

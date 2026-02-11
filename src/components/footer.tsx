@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Instagram } from "lucide-react";
 import { useLanguage } from "@/components/language-context";
 import { getCopy } from "@/lib/i18n";
@@ -8,6 +9,12 @@ import { SITE } from "@/lib/site";
 export default function Footer() {
   const { language } = useLanguage();
   const copy = getCopy(language);
+  const [instagramHandle, setInstagramHandle] = useState(SITE.instagram.handle);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("neatcurb-instagram-handle");
+    if (saved) setInstagramHandle(saved);
+  }, []);
 
   return (
     <footer className="footer">
@@ -34,12 +41,12 @@ export default function Footer() {
         </p>
         <a
           className="social-link"
-          href={SITE.instagram.url}
+          href={`https://instagram.com/${instagramHandle.replace(/^@/, "")}`}
           target="_blank"
           rel="noreferrer"
         >
           <Instagram size={16} />
-          {copy.footer.instagramLabel} @{SITE.instagram.handle}
+          {copy.footer.instagramLabel} @{instagramHandle.replace(/^@/, "")}
         </a>
       </div>
     </footer>

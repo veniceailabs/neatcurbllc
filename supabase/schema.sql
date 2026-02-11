@@ -5,7 +5,8 @@ create table profiles (
   email text,
   role text default 'user',
   must_change_password boolean default true,
-  primary key (id)
+  primary key (id),
+  constraint profiles_role_check check (role in ('admin', 'staff', 'user'))
 );
 
 create table clients (
@@ -35,6 +36,10 @@ create table leads (
   created_at timestamp default now()
 );
 
+alter table leads
+  add constraint leads_status_check
+  check (lead_status in ('new', 'draft', 'converted', 'archived'));
+
 create table jobs (
   id uuid default uuid_generate_v4() primary key,
   client_id uuid references clients(id),
@@ -47,6 +52,10 @@ create table jobs (
   proof_geo jsonb,
   created_at timestamp default now()
 );
+
+alter table jobs
+  add constraint jobs_status_check
+  check (status is null or status in ('queued', 'in_progress', 'complete', 'cancelled'));
 
 create table estimates (
   id uuid default uuid_generate_v4() primary key,
@@ -78,6 +87,10 @@ create table invoices (
   created_at timestamp default now()
 );
 
+alter table invoices
+  add constraint invoices_status_check
+  check (status in ('draft', 'sent', 'paid', 'overdue', 'void'));
+
 create table invoice_items (
   id uuid default uuid_generate_v4() primary key,
   invoice_id uuid references invoices(id),
@@ -96,6 +109,13 @@ create table payments (
   provider text,
   provider_id text,
   created_at timestamp default now()
+);
+
+create table stripe_events (
+  event_id text primary key,
+  type text not null,
+  processed_at timestamp default now(),
+  payload jsonb
 );
 
 create table products (
@@ -229,6 +249,7 @@ alter table estimate_items enable row level security;
 alter table invoices enable row level security;
 alter table invoice_items enable row level security;
 alter table payments enable row level security;
+alter table stripe_events enable row level security;
 alter table products enable row level security;
 alter table expenses enable row level security;
 alter table routes enable row level security;
@@ -266,17 +287,52 @@ create policy "Public can insert leads"
   on leads for insert
   with check (true);
 
-create policy "Authenticated can read clients"
+create policy "Admins and staff can read clients"
   on clients for select
-  using (auth.role() = 'authenticated');
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
 
-create policy "Authenticated can read jobs"
+create policy "Admins and staff can read jobs"
   on jobs for select
-  using (auth.role() = 'authenticated');
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
 
-create policy "Authenticated can insert jobs"
+create policy "Admins and staff can insert jobs"
   on jobs for insert
-  with check (auth.role() = 'authenticated');
+  with check (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
+
+create policy "Admins and staff can update jobs"
+  on jobs for update
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  )
+  with check (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
 
 create policy "Admins can read estimates"
   on estimates for select
@@ -418,37 +474,85 @@ create policy "Admins can insert expenses"
     )
   );
 
-create policy "Authenticated can read routes"
+create policy "Admins and staff can read routes"
   on routes for select
-  using (auth.role() = 'authenticated');
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
 
-create policy "Authenticated can insert routes"
+create policy "Admins and staff can insert routes"
   on routes for insert
-  with check (auth.role() = 'authenticated');
+  with check (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
 
-create policy "Authenticated can read route stops"
+create policy "Admins and staff can read route stops"
   on route_stops for select
-  using (auth.role() = 'authenticated');
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
 
-create policy "Authenticated can insert route stops"
+create policy "Admins and staff can insert route stops"
   on route_stops for insert
-  with check (auth.role() = 'authenticated');
+  with check (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
 
-create policy "Authenticated can read programs"
+create policy "Admins and staff can read programs"
   on programs for select
-  using (auth.role() = 'authenticated');
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
 
-create policy "Authenticated can insert programs"
+create policy "Admins and staff can insert programs"
   on programs for insert
-  with check (auth.role() = 'authenticated');
+  with check (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
 
-create policy "Authenticated can read program steps"
+create policy "Admins and staff can read program steps"
   on program_steps for select
-  using (auth.role() = 'authenticated');
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
 
-create policy "Authenticated can insert program steps"
+create policy "Admins and staff can insert program steps"
   on program_steps for insert
-  with check (auth.role() = 'authenticated');
+  with check (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
 
 create policy "Admins can read gps events"
   on gps_events for select
@@ -460,9 +564,15 @@ create policy "Admins can read gps events"
     )
   );
 
-create policy "Authenticated can insert gps events"
+create policy "Admins and staff can insert gps events"
   on gps_events for insert
-  with check (auth.role() = 'authenticated');
+  with check (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role in ('admin', 'staff')
+    )
+  );
 
 create policy "Admins can read client portal users"
   on client_portal_users for select
@@ -554,9 +664,15 @@ create policy "Admins can read audit logs"
     )
   );
 
-create policy "Authenticated can insert audit logs"
+create policy "Admins can insert audit logs"
   on audit_logs for insert
-  with check (auth.role() = 'authenticated');
+  with check (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role = 'admin'
+    )
+  );
 
 create policy "Admins can read messages"
   on messages for select
@@ -567,6 +683,21 @@ create policy "Admins can read messages"
         and profiles.role = 'admin'
     )
   );
+
+create policy "Admins can read stripe events"
+  on stripe_events for select
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role = 'admin'
+    )
+  );
+
+create index if not exists idx_leads_created_at on leads(created_at desc);
+create index if not exists idx_jobs_scheduled_date on jobs(scheduled_date);
+create index if not exists idx_jobs_status on jobs(status);
+create index if not exists idx_messages_client_id on messages(client_id);
 
 create policy "Admins can insert messages"
   on messages for insert

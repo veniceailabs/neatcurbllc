@@ -1,21 +1,26 @@
-import { ShieldCheck, MapPinned, CloudSnow, Building2 } from "lucide-react";
+"use client";
 
-const items = [
-  { icon: Building2, label: "Commercial & Residential" },
-  { icon: ShieldCheck, label: "Fully Insured" },
-  { icon: CloudSnow, label: "Storm Monitoring" },
-  { icon: MapPinned, label: "Western NY Local" }
-];
+import { ShieldCheck, MapPinned, CloudSnow, BadgeCheck } from "lucide-react";
+import { useLanguage } from "@/components/language-context";
+import { getCopy } from "@/lib/i18n";
+
+const icons = [BadgeCheck, ShieldCheck, CloudSnow, MapPinned];
 
 export default function TrustBar() {
+  const { language } = useLanguage();
+  const copy = getCopy(language);
+
   return (
     <section className="trust-bar">
-      {items.map(({ icon: Icon, label }) => (
+      {copy.trustBar.map((label, index) => {
+        const Icon = icons[index];
+        return (
         <div key={label} className="trust-item">
           <Icon size={20} />
           <span>{label}</span>
         </div>
-      ))}
+        );
+      })}
     </section>
   );
 }

@@ -20,11 +20,11 @@ export default function Hero() {
             {copy.hero.secondaryCta}
           </a>
         </div>
-        <div className="hero-phone">{copy.hero.phone}</div>
       </div>
       <div className="hero-card">
         <div className="hero-card-title">{copy.hero.cardTitle}</div>
         <p>{copy.hero.cardBody}</p>
+        <div className="hero-phone">{copy.hero.phone}</div>
         <div className="hero-card-metrics">
           {copy.hero.metrics.map((metric) => (
             <div key={metric.label}>

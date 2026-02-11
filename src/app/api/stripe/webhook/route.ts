@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { headers } from "next/headers";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
+import { fail, ok, safeRequestId } from "@/lib/api";
 
 export const runtime = "nodejs";
 
@@ -22,6 +23,7 @@ type LeadRecord = {
   address: string | null;
   service: string | null;
   pricing_meta: Record<string, unknown> | null;
+  lead_status: string | null;
 };
 
 async function sendWelcomeEmail(lead: LeadRecord) {
@@ -38,9 +40,9 @@ async function sendWelcomeEmail(lead: LeadRecord) {
       to: lead.email,
       subject: "Welcome to the Neat Curb Route",
       html: `<p>Hi ${lead.name || "there"},</p>
-        <p>Your $100 deposit is confirmed. You’re officially secured on the Neat Curb route.</p>
-        <p>We’ll follow up with scheduling details shortly.</p>
-        <p>— Neat Curb LLC</p>`
+        <p>Your $100 deposit is confirmed. You are officially secured on the Neat Curb route.</p>
+        <p>We will follow up with scheduling details shortly.</p>
+        <p>- Neat Curb LLC</p>`
     })
   });
 
@@ -52,9 +54,10 @@ async function sendWelcomeEmail(lead: LeadRecord) {
 }
 
 export async function POST(request: Request) {
+  const requestId = safeRequestId();
   if (!stripe || !webhookSecret) {
     return NextResponse.json(
-      { ok: false, error: "Webhook not configured." },
+      fail("WEBHOOK_NOT_CONFIGURED", "Webhook not configured.", { requestId }),
       { status: 500 }
     );
   }
@@ -65,50 +68,86 @@ export async function POST(request: Request) {
   let event: Stripe.Event;
   try {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-  } catch (error) {
-    return NextResponse.json(
-      { ok: false, error: "Invalid signature." },
-      { status: 400 }
-    );
+  } catch {
+    return NextResponse.json(fail("INVALID_SIGNATURE", "Invalid signature.", { requestId }), {
+      status: 400
+    });
   }
 
   if (event.type !== "checkout.session.completed") {
-    return NextResponse.json({ ok: true });
+    return NextResponse.json(ok({ requestId }, "Ignored event type."));
+  }
+
+  const supabaseAdmin = getSupabaseAdmin();
+  const { data: existingEvent } = await supabaseAdmin
+    .from("stripe_events")
+    .select("event_id")
+    .eq("event_id", event.id)
+    .maybeSingle();
+
+  if (existingEvent) {
+    return NextResponse.json(ok({ requestId }, "Event already processed."));
   }
 
   const session = event.data.object as Stripe.Checkout.Session;
   const leadId = session.metadata?.lead_id;
   if (!leadId) {
-    return NextResponse.json({ ok: true });
+    await supabaseAdmin.from("stripe_events").insert({
+      event_id: event.id,
+      type: event.type,
+      payload: event as unknown as Record<string, unknown>
+    });
+    return NextResponse.json(ok({ requestId }, "Missing lead id; stored event."));
   }
 
-  const supabaseAdmin = getSupabaseAdmin();
   const { data: lead } = await supabaseAdmin
     .from("leads")
-    .select("id,name,email,phone,address,service,pricing_meta")
+    .select("id,name,email,phone,address,service,pricing_meta,lead_status")
     .eq("id", leadId)
     .maybeSingle<LeadRecord>();
 
   if (!lead) {
-    return NextResponse.json({ ok: true });
+    await supabaseAdmin.from("stripe_events").insert({
+      event_id: event.id,
+      type: event.type,
+      payload: event as unknown as Record<string, unknown>
+    });
+    return NextResponse.json(ok({ requestId }, "Lead missing; stored event."));
   }
 
-  const propertyClass =
-    (lead.pricing_meta?.["propertyClass"] as string | undefined) || null;
+  if (lead.lead_status === "converted") {
+    await supabaseAdmin.from("stripe_events").insert({
+      event_id: event.id,
+      type: event.type,
+      payload: event as unknown as Record<string, unknown>
+    });
+    return NextResponse.json(ok({ requestId }, "Lead already converted."));
+  }
 
-  const { data: client } = await supabaseAdmin
+  const propertyClass = (lead.pricing_meta?.propertyClass as string | undefined) || null;
+
+  const { data: existingClient } = await supabaseAdmin
     .from("clients")
-    .insert({
-      name: lead.name,
-      email: lead.email,
-      phone: lead.phone,
-      address: lead.address,
-      type: propertyClass
-    })
     .select("id")
+    .eq("email", lead.email)
+    .eq("phone", lead.phone)
     .maybeSingle();
 
-  const clientId = client?.id || null;
+  let clientId = existingClient?.id || null;
+  if (!clientId) {
+    const { data: insertedClient } = await supabaseAdmin
+      .from("clients")
+      .insert({
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+        address: lead.address,
+        type: propertyClass
+      })
+      .select("id")
+      .maybeSingle();
+    clientId = insertedClient?.id || null;
+  }
 
   await supabaseAdmin
     .from("leads")
@@ -128,14 +167,24 @@ export async function POST(request: Request) {
     });
   }
 
+  await supabaseAdmin.from("payments").insert({
+    invoice_id: null,
+    amount: 100,
+    method: "card",
+    status: "succeeded",
+    provider: "stripe",
+    provider_id: session.payment_intent?.toString() || session.id
+  });
+
   await supabaseAdmin.from("audit_logs").insert({
     action: "deposit_received",
     entity: "lead",
     entity_id: lead.id,
     metadata: {
       amount: 100,
-      currency: "usd",
-      client_id: clientId
+      currency: session.currency || "usd",
+      client_id: clientId,
+      request_id: requestId
     }
   });
 
@@ -149,11 +198,17 @@ export async function POST(request: Request) {
       to_address: lead.email,
       from_address: resendFrom || null,
       subject: "Welcome to the Neat Curb Route",
-      body: "Your $100 deposit is confirmed. You’re secured on the route.",
+      body: "Your $100 deposit is confirmed. You are secured on the route.",
       status: emailResult?.ok ? "sent" : "failed",
       provider_id: emailResult?.ok ? emailResult.id : null
     });
   }
 
-  return NextResponse.json({ ok: true });
+  await supabaseAdmin.from("stripe_events").insert({
+    event_id: event.id,
+    type: event.type,
+    payload: event as unknown as Record<string, unknown>
+  });
+
+  return NextResponse.json(ok({ requestId }, "Webhook processed."));
 }

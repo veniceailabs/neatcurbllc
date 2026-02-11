@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useLanguage } from "@/components/language-context";
 import { getCopy } from "@/lib/i18n";
+
+export const dynamic = "force-dynamic";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,6 +21,9 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
   const [recovering, setRecovering] = useState(false);
+  const [phase, setPhase] = useState<
+    "unauthenticated" | "signing-in" | "provision-check" | "redirecting"
+  >("unauthenticated");
 
   const needsConfirm = (errorMessage: string | null) =>
     Boolean(errorMessage && errorMessage.toLowerCase().includes("not confirmed"));
@@ -27,13 +33,47 @@ export default function LoginPage() {
     if (err && String(err).toLowerCase().includes("otp_expired")) {
       setError(copy.auth.recoveryExpired);
     }
+    const reason = params.get("reason");
+    if (reason === "profile_missing") {
+      setError(
+        "Account exists but is not provisioned. Link this user in profiles as admin or staff."
+      );
+    } else if (reason === "forbidden") {
+      setError("This account is not authorized for the admin dashboard.");
+    }
   }, [params, copy.auth.recoveryExpired]);
+
+  useEffect(() => {
+    const checkExistingSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      const session = data.session;
+      if (!session) return;
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role,must_change_password")
+        .eq("id", session.user.id)
+        .maybeSingle();
+
+      if (!profile) return;
+      if (profile.must_change_password) {
+        router.replace("/admin/change-password");
+        return;
+      }
+      if (profile.role === "admin" || profile.role === "staff") {
+        router.replace("/admin");
+      }
+    };
+
+    void checkExistingSession();
+  }, [router]);
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
     setNotice(null);
     setLoading(true);
+    setPhase("signing-in");
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -44,11 +84,13 @@ export default function LoginPage() {
       const status = (error as unknown as { status?: number }).status;
       setError(status ? `${error.message} (${status})` : error.message);
       setLoading(false);
+      setPhase("unauthenticated");
       return;
     }
 
     const userId = data.user?.id;
     if (userId) {
+      setPhase("provision-check");
       const { data: profile, error: profileError } = await supabase
         .from("profiles")
         .select("role,must_change_password")
@@ -63,6 +105,7 @@ export default function LoginPage() {
           "Account is not provisioned yet (missing profile). Link this auth user to the profiles table as admin."
         );
         setLoading(false);
+        setPhase("unauthenticated");
         return;
       }
 
@@ -70,9 +113,11 @@ export default function LoginPage() {
         await supabase.auth.signOut();
         setError("This account is not authorized for the admin dashboard.");
         setLoading(false);
+        setPhase("unauthenticated");
         return;
       }
 
+      setPhase("redirecting");
       if (profile?.must_change_password) {
         router.replace("/admin/change-password");
       } else {
@@ -130,10 +175,13 @@ export default function LoginPage() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <img
+        <Image
           src="/brand/neat-curb-logo-full.svg"
           alt="Neat Curb LLC logo"
           className="auth-logo"
+          width={120}
+          height={90}
+          priority
         />
         <div className="auth-title">{copy.auth.signIn}</div>
         <div className="auth-sub">{copy.auth.adminAccess}</div>
@@ -162,7 +210,13 @@ export default function LoginPage() {
           {error ? <div className="auth-error">{error}</div> : null}
           {notice ? <div className="auth-notice">{notice}</div> : null}
           <button className="button-primary" type="submit" disabled={loading}>
-            {loading ? copy.auth.signingIn : copy.auth.signInButton}
+            {loading
+              ? phase === "signing-in"
+                ? copy.auth.signingIn
+                : phase === "provision-check"
+                  ? "Checking access..."
+                  : "Redirecting..."
+              : copy.auth.signInButton}
           </button>
           <button
             className="btn-secondary"

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
+import { fail, ok, safeRequestId } from "@/lib/api";
+import { stripeDepositSchema } from "@/lib/validators";
 
 export const runtime = "nodejs";
 
@@ -12,19 +14,22 @@ const stripe = stripeSecret
   : null;
 
 export async function POST(request: Request) {
+  const requestId = safeRequestId();
   if (!stripe) {
     return NextResponse.json(
-      { ok: false, error: "Stripe or Supabase admin key missing." },
+      fail("STRIPE_NOT_CONFIGURED", "Stripe is not configured.", { requestId }),
       { status: 500 }
     );
   }
 
-  const payload = await request.json();
-  const leadId = payload?.lead_id;
-
-  if (!leadId) {
+  const payload = await request.json().catch(() => null);
+  const parsed = stripeDepositSchema.safeParse(payload);
+  if (!parsed.success) {
     return NextResponse.json(
-      { ok: false, error: "lead_id is required." },
+      fail("VALIDATION_FAILED", "lead_id is required.", {
+        requestId,
+        issues: parsed.error.issues
+      }),
       { status: 400 }
     );
   }
@@ -33,14 +38,13 @@ export async function POST(request: Request) {
   const { data: lead, error } = await supabaseAdmin
     .from("leads")
     .select("id,name,email,service")
-    .eq("id", leadId)
+    .eq("id", parsed.data.lead_id)
     .maybeSingle();
 
   if (error || !lead) {
-    return NextResponse.json(
-      { ok: false, error: "Lead not found." },
-      { status: 404 }
-    );
+    return NextResponse.json(fail("LEAD_NOT_FOUND", "Lead not found.", { requestId }), {
+      status: 404
+    });
   }
 
   const session = await stripe.checkout.sessions.create({
@@ -67,5 +71,5 @@ export async function POST(request: Request) {
     cancel_url: `${baseUrl}/request-quote?deposit=cancel`
   });
 
-  return NextResponse.json({ ok: true, url: session.url });
+  return NextResponse.json(ok({ url: session.url, requestId }, "Checkout session created."));
 }

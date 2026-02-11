@@ -13,22 +13,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1
     },
     {
-      url: `${baseUrl}/site`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.9
-    },
-    {
       url: `${baseUrl}/services`,
       lastModified,
       changeFrequency: "weekly",
-      priority: 0.8
+      priority: 0.85
     },
     {
       url: `${baseUrl}/request-quote`,
       lastModified,
       changeFrequency: "weekly",
       priority: 0.8
+    },
+    {
+      url: `${baseUrl}/admin/login`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.4
     }
   ];
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "@/components/theme-toggle";
 import LanguageToggle from "@/components/language-toggle";
@@ -41,10 +42,12 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="brand-block">
-        <img
+        <Image
           src="/brand/neat-curb-logo-full.svg"
           alt="Neat Curb LLC full color logo"
           className="brand-logo"
+          width={140}
+          height={105}
         />
         <span className="pill">Snow Ready</span>
         <div className="brand-title">Neat Curb Command</div>
