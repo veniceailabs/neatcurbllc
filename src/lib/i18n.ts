@@ -116,7 +116,7 @@ export const COPY = {
       founded: "Founded in 2022",
       rating: "A+ Rating",
       accreditedSince: "Accredited since April 23, 2024",
-      readReviews: "Read BBB Reviews",
+      readReviews: "Leave A BBB Review",
       profileUrl:
         "https://www.bbb.org/us/ny/buffalo/profile/landscape-contractors/neat-curb-llc-0041-236025395/leave-a-review",
       reviews: [
@@ -570,7 +570,7 @@ export const COPY = {
       founded: "Fundada en 2022",
       rating: "Calificación A+",
       accreditedSince: "Acreditado desde el 23 de abril de 2024",
-      readReviews: "Ver reseñas BBB",
+      readReviews: "Dejar Reseña En BBB",
       profileUrl:
         "https://www.bbb.org/us/ny/buffalo/profile/landscape-contractors/neat-curb-llc-0041-236025395/leave-a-review",
       reviews: [
