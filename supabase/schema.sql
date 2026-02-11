@@ -470,6 +470,23 @@ create policy "Public can insert leads"
   on leads for insert
   with check (true);
 
+create policy "Admins can update leads"
+  on leads for update
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role = 'admin'
+    )
+  )
+  with check (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role = 'admin'
+    )
+  );
+
 create policy "Admins and staff can read clients"
   on clients for select
   using (

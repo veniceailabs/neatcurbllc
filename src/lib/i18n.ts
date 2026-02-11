@@ -264,11 +264,22 @@ export const COPY = {
         subtitle:
           "Live lead intake with automated follow-ups and conversion tracking.",
         active: "active",
+        searchPlaceholder: "Search by name, address, or service...",
         emptyTitle: "No leads yet",
         emptyBody: "New leads will appear here in real time.",
+        noResults: "No matching leads",
+        noResultsBody: "Try a different search term.",
+        manualLead: "Create Manual Lead",
+        editLead: "Lead Detail",
         service: "Service",
         detail: "Detail",
         address: "Address",
+        phone: "Phone",
+        status: "Status",
+        statusNew: "New",
+        statusContacted: "Contacted",
+        statusConverted: "Converted",
+        statusArchived: "Archived",
         estimate: "Estimate",
         message: "Message"
       },
@@ -336,6 +347,13 @@ export const COPY = {
         statusSent: "Message sent.",
         email: "Email",
         sms: "SMS"
+      },
+      common: {
+        save: "Save",
+        cancel: "Cancel",
+        archive: "Archive",
+        call: "Call",
+        email: "Email"
       },
       workOrders: {
         title: "Work Orders",
@@ -706,11 +724,22 @@ export const COPY = {
         subtitle:
           "Captación en vivo con seguimiento automático y conversión.",
         active: "activos",
+        searchPlaceholder: "Buscar por nombre, dirección o servicio...",
         emptyTitle: "Sin prospectos aún",
         emptyBody: "Los nuevos prospectos aparecerán aquí en tiempo real.",
+        noResults: "Sin resultados",
+        noResultsBody: "Prueba con otra búsqueda.",
+        manualLead: "Crear Prospecto Manual",
+        editLead: "Detalle Del Prospecto",
         service: "Servicio",
         detail: "Detalle",
         address: "Dirección",
+        phone: "Teléfono",
+        status: "Estado",
+        statusNew: "Nuevo",
+        statusContacted: "Contactado",
+        statusConverted: "Convertido",
+        statusArchived: "Archivado",
         estimate: "Estimado",
         message: "Mensaje"
       },
@@ -780,6 +809,13 @@ export const COPY = {
         statusSent: "Mensaje enviado.",
         email: "Email",
         sms: "SMS"
+      },
+      common: {
+        save: "Guardar",
+        cancel: "Cancelar",
+        archive: "Archivar",
+        call: "Llamar",
+        email: "Correo"
       },
       workOrders: {
         title: "Órdenes de Trabajo",

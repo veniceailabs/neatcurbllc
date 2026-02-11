@@ -229,6 +229,7 @@ drop policy if exists "Authenticated can read clients" on clients;
 drop policy if exists "Authenticated can read jobs" on jobs;
 drop policy if exists "Authenticated can insert jobs" on jobs;
 drop policy if exists "Authenticated can insert audit logs" on audit_logs;
+drop policy if exists "Admins can update leads" on leads;
 drop policy if exists "Admins and staff can read clients" on clients;
 drop policy if exists "Admins and staff can read jobs" on jobs;
 drop policy if exists "Admins and staff can insert jobs" on jobs;
@@ -254,6 +255,23 @@ create policy "Admins and staff can read jobs"
       select 1 from profiles
       where profiles.id = auth.uid()
         and profiles.role in ('admin', 'staff')
+    )
+  );
+
+create policy "Admins can update leads"
+  on leads for update
+  using (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role = 'admin'
+    )
+  )
+  with check (
+    exists (
+      select 1 from profiles
+      where profiles.id = auth.uid()
+        and profiles.role = 'admin'
     )
   );
 
