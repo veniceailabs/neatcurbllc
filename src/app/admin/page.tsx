@@ -289,10 +289,18 @@ export default function DashboardPage() {
             dashboard.
           </div>
           <div className="bizbox-hero-actions">
-            <Link href="/admin/lead-intake" className="button-primary">
+            <Link
+              href="/admin/lead-intake"
+              className="button-primary"
+              aria-label="Open admin quote workflow"
+            >
               Start Quote Workflow
             </Link>
-            <Link href="/admin/business-os" className="bizbox-link">
+            <Link
+              href="/admin/business-os"
+              className="bizbox-link"
+              aria-label="Open admin NeatCurbOS overview"
+            >
               Open NeatCurbOS
             </Link>
             <a
@@ -300,10 +308,16 @@ export default function DashboardPage() {
               className="bizbox-link"
               target="_blank"
               rel="noreferrer"
+              aria-label="Open admin operator guide pdf"
             >
               Open Operator Guide (PDF)
             </a>
-            <button type="button" className="bizbox-ghost-button" onClick={openBusinessAi}>
+            <button
+              type="button"
+              className="bizbox-ghost-button"
+              onClick={openBusinessAi}
+              aria-label="Open admin business ai panel"
+            >
               Open Business AI
             </button>
           </div>
