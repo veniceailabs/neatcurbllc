@@ -35,15 +35,6 @@ type AddressSuggestion = {
   zip?: string;
 };
 
-const ZIP_HINTS: Array<{ pattern: RegExp; zip: string }> = [
-  { pattern: /\bbuffalo\b/i, zip: "14202" },
-  { pattern: /\bamherst\b/i, zip: "14221" },
-  { pattern: /\bcheektowaga\b/i, zip: "14225" },
-  { pattern: /\btonawanda\b/i, zip: "14150" },
-  { pattern: /\bwest\s+seneca\b/i, zip: "14224" },
-  { pattern: /\bniagara\s+falls\b/i, zip: "14301" }
-];
-
 export default function QuoteForm() {
   const { language } = useLanguage();
   const copy = getCopy(language);
@@ -119,7 +110,10 @@ export default function QuoteForm() {
     const normalized = value.trim().toLowerCase();
     if (!normalized) return;
     const matched = addressSuggestions.find(
-      (entry) => entry.label.toLowerCase() === normalized
+      (entry) =>
+        entry.label.toLowerCase() === normalized ||
+        entry.label.toLowerCase().startsWith(normalized) ||
+        normalized.startsWith(entry.label.toLowerCase())
     );
     if (matched?.zip) {
       setValue("zip", matched.zip, { shouldDirty: true });
@@ -398,11 +392,9 @@ export default function QuoteForm() {
                 const value = (event.target.value as string).trim();
                 if (!value) return;
                 applyZipFromSuggestion(value);
-                const hasZip = /\b\d{5}(?:-\d{4})?\b/.test(value);
-                if (hasZip) return;
-                const hint = ZIP_HINTS.find((entry) => entry.pattern.test(value));
-                if (hint) {
-                  setValue("zip", hint.zip, { shouldDirty: true });
+                const match = value.match(/\b\d{5}(?:-\d{4})?\b/);
+                if (match) {
+                  setValue("zip", match[0], { shouldDirty: true });
                 }
               }
             })}

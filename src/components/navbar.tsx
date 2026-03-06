@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import ThemeToggle from "@/components/theme-toggle";
 import LanguageToggle from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-context";
@@ -16,13 +17,15 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Image
-          src="/brand/neat-curb-logo-full.png"
-          alt="Neat Curb LLC logo"
-          width={120}
-          height={90}
-          priority
-        />
+        <Link href="/" aria-label="Go to home page" onClick={closeMenu}>
+          <Image
+            src="/brand/neat-curb-logo-full.png"
+            alt="Neat Curb LLC logo"
+            width={120}
+            height={90}
+            priority
+          />
+        </Link>
       </div>
       <button
         className="nav-toggle"

@@ -105,17 +105,17 @@ export async function GET(request: Request) {
     );
   }
 
-  const queryWithState =
-    /\bnew\s+york\b/i.test(query) || /\bny\b/i.test(query)
-      ? query
-      : `${query}, New York`;
-
   const url = new URL("https://nominatim.openstreetmap.org/search");
   url.searchParams.set("format", "jsonv2");
   url.searchParams.set("addressdetails", "1");
-  url.searchParams.set("limit", "6");
-  url.searchParams.set("countrycodes", "us");
-  url.searchParams.set("q", queryWithState);
+  url.searchParams.set("limit", "8");
+  url.searchParams.set("dedupe", "1");
+  url.searchParams.set("q", query);
+
+  const acceptLanguage = request.headers.get("accept-language");
+  if (acceptLanguage) {
+    url.searchParams.set("accept-language", acceptLanguage);
+  }
 
   const response = await fetch(url.toString(), {
     headers: {
