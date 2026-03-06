@@ -496,11 +496,14 @@ html.dark .nav-toggle span {
 .hero-badge-link {
   text-decoration: none;
   color: inherit;
-  transition: transform 0.15s ease;
+  transition: box-shadow 0.2s ease;
 }
 
-.hero-badge-link:hover {
-  transform: translateY(-1px);
+.hero-badge-link:hover,
+.hero-badge-link:focus-visible {
+  box-shadow:
+    0 14px 30px rgba(13, 27, 30, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.72);
 }
 
 .hero-badge-icon {
@@ -2575,27 +2578,20 @@ html.brand select option {
 .info-card,
 .bbb-card,
 .review-card,
-.area-chip,
-.cta-banner {
+.area-chip {
   transition:
-    transform 0.25s ease,
-    box-shadow 0.3s ease,
+    box-shadow 0.22s ease,
     border-color 0.3s ease,
-    background-color 0.3s ease,
-    filter 0.3s ease;
+    background-color 0.3s ease;
 }
 
 .scroll-highlight-target {
   transition-delay: var(--highlight-delay, 0ms);
-  transform: translateY(10px);
-  opacity: 0.9;
-  filter: saturate(0.9);
+  opacity: 1;
 }
 
 .scroll-highlight-target.is-inview {
-  transform: translateY(0);
   opacity: 1;
-  filter: saturate(1);
 }
 
 .scroll-highlight-target.is-inview:is(
@@ -2633,9 +2629,8 @@ html.brand select option {
       .review-card,
       .area-chip
     ):focus-within {
-    transform: translateY(-4px);
     border-color: rgba(35, 176, 75, 0.45);
-    box-shadow: 0 18px 38px rgba(13, 27, 30, 0.22);
+    box-shadow: 0 16px 34px rgba(13, 27, 30, 0.2);
   }
 }
 
@@ -2691,8 +2686,7 @@ html.brand
   .info-card,
   .bbb-card,
   .review-card,
-  .area-chip,
-  .cta-banner {
+  .area-chip {
     transition: none;
   }
 }

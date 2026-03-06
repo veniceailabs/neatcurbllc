@@ -4,11 +4,6 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 const INTERACTIVE_TARGETS = [
-  ".hero",
-  ".trust-bar",
-  "main > .section",
-  "main > .cta-banner",
-  ".footer",
   ".hero-badge",
   ".hero-card",
   ".hero-card-metrics > div",
@@ -57,13 +52,15 @@ export default function SiteInteractivity() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
           const target = entry.target as HTMLElement;
-          target.classList.toggle("is-inview", entry.isIntersecting);
+          target.classList.add("is-inview");
+          observer.unobserve(target);
         });
       },
       {
-        threshold: 0.18,
-        rootMargin: "0px 0px -8% 0px"
+        threshold: 0.22,
+        rootMargin: "0px 0px -10% 0px"
       }
     );
 
