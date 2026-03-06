@@ -2,14 +2,11 @@
 
 import { useEffect } from "react";
 import { useTheme } from "next-themes";
-import { usePathname } from "next/navigation";
 
 export default function WeatherEffects() {
   const { theme } = useTheme();
-  const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname.startsWith("/admin") || pathname.startsWith("/sign")) return;
     if (theme !== "brand") return;
 
     const handleClick = (event: MouseEvent) => {
@@ -33,7 +30,7 @@ export default function WeatherEffects() {
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  }, [theme, pathname]);
+  }, [theme]);
 
   return null;
 }
