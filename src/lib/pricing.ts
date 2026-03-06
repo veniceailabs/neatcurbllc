@@ -29,12 +29,10 @@ export type LawnCareDetail =
   | "Fall Leaf Cleanup"
   | "Mulch Install"
   | "Hedge Trimming"
-  | "Gutter Cleaning"
   | "Aeration & Overseeding"
   | "Storm Cleanup";
 
 export type PropertyMaintenanceDetail =
-  | "Gutter Cleaning"
   | "Storm Cleanup"
   | "Branch & Debris Removal"
   | "Lot Sweeping";
@@ -197,8 +195,6 @@ export function getPublicEstimate(input: PublicQuoteInput): Range {
         return { low: 300, high: 700 };
       case "Hedge Trimming":
         return { low: 120, high: 250 };
-      case "Gutter Cleaning":
-        return { low: 150, high: 300 };
       case "Aeration & Overseeding":
         return { low: 120, high: 300 };
       case "Storm Cleanup":
@@ -210,8 +206,6 @@ export function getPublicEstimate(input: PublicQuoteInput): Range {
 
   if (input.service === "Property Maintenance") {
     switch (input.serviceDetail) {
-      case "Gutter Cleaning":
-        return { low: 150, high: 300 };
       case "Storm Cleanup":
         return { low: 150, high: 400 };
       case "Branch & Debris Removal":

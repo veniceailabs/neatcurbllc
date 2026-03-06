@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLanguage } from "@/components/language-context";
 import { getCopy } from "@/lib/i18n";
 
@@ -10,6 +11,42 @@ export default function Hero() {
   return (
     <section className="hero" id="top">
       <div className="hero-content">
+        <div className="hero-badges">
+          <div className="hero-badge" aria-label={copy.hero.badge.title}>
+            <Image
+              src="/brand/ny-mwbe-official-certified.svg"
+              alt={copy.hero.badge.alt}
+              className="hero-badge-icon"
+              width={64}
+              height={64}
+              priority
+            />
+            <div>
+              <strong>{copy.hero.badge.title}</strong>
+              <span>{copy.hero.badge.subtitle}</span>
+            </div>
+          </div>
+          <a
+            className="hero-badge hero-badge-link"
+            href={copy.bbb.profileUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={copy.hero.bbbBadge.title}
+          >
+            <Image
+              src="/brand/bbb-accredited-badge.png"
+              alt={copy.hero.bbbBadge.alt}
+              className="hero-badge-icon hero-badge-icon-bbb"
+              width={64}
+              height={64}
+              priority
+            />
+            <div>
+              <strong>{copy.hero.bbbBadge.title}</strong>
+              <span>{copy.hero.bbbBadge.subtitle}</span>
+            </div>
+          </a>
+        </div>
         <h1>{copy.hero.title}</h1>
         <p>{copy.hero.subtitle}</p>
         <div className="hero-actions">

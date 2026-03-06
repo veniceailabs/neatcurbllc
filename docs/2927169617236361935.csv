@@ -1,0 +1,507 @@
+Invoice Headers
+id,billing_country,billing_address_state,billing_address_line1,billing_address_line2,billing_city,billing_zip_code,billing_customer_name,company_country,company_address_state,company_address_line1,company_address_line2,company_city,company_zip_code,company_name,invoice_num,invoice_date,discount,message,comment,status,invoice_type,created_at,updated_at,payment_term,past_due_amount,service_date,is_inactive,batch_stamp,ready_for_batch_email,paid_date,deactivation_date,active_status,stripe_processing_time,lob_letter_eid,alias_name,estimate_deposit_amount
+61379574,United States,NY,780 Fillmore Ave,"",Buffalo ,14212,Broadway Fillmore Neighborhood Housing Services (Stephen Karnath),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1134,2026-02-26 00:00:00 -0500,,Neat Curb LLC Terms and Conditions for Commercial Property,"Seasonal Lawn Maintenance Package:
+Mowing, String Trimming, Blow and Edging, and Small Trash pick up.
+
+Service Period: April 1st, 2026 to October 1st, 2026
+
+Locations and Pricing:
+- Broadway Fillmore Offices and Apartments (780/782 Fillmore): $1350.00
+- Cigar Factory Apartments (591/595 Fillmore): $1630.00
+Total Contract: $2980.00
+
+Agreed payment schedule:
+- 40% ($1192.00) due April 1st
+- 40% ($1192.00) due July 1st
+- 20% ($596.00) due September 1st
+",Pending Payment,Invoice,2026-02-26 00:17:14 -0500,2026-02-26 13:15:11 -0500,Due On Receipt,,,,,,,,Active,,,,
+60105315,United States,NY,449 Winspear Avenue,"",Buffalo,14215,William Beam,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1133,2025-12-06 00:00:00 -0500,,Neat Curb LLC Terms and Conditions for Residential Property,"Areas of Service:
+
+Driveway (Partial)
+Sidewalk
+Stairs
+
+Salt Included.
+
+
+
+In the event of snow storm of 6 in or more there will be an additional cost of $95 per event.
+
+In the event of an ice storm when removal of snow isn't necessary there will be an additional cost of $20 per event to spread ice melt/salt.
+
+",Paid,Invoice,2025-12-06 16:30:55 -0500,2026-01-07 15:02:12 -0500,Due On Receipt,,,,,,2026-01-07 15:02:12 -0500,,Active,,,,
+60105293,United States,NY,255 Rachel Vincent Way ,"",Buffalo,14216,Gwen Eldridge,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1132,2025-12-06 00:00:00 -0500,,Neat Curb LLC Terms and Conditions for Residential Property,"
+
+",Paid,Invoice,2025-12-06 16:28:49 -0500,2025-12-06 16:30:34 -0500,Due On Receipt,,,,,,2025-12-06 16:30:34 -0500,,Active,,,,
+59891653,United States,NY,97 Niagara Falls Boulevard,"",Buffalo,14214,Lorraines,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1130,2025-11-30 00:00:00 -0500,,Thank You For Your Business!,"",Paid,Invoice,2025-11-30 10:14:31 -0500,2025-11-30 10:20:13 -0500,Net 30,,,,,,2025-11-30 10:20:13 -0500,,Active,,,,
+59594697,United States,NY,95 Perry Suite 403,"",Buffalo,14203,Erie County Industrial Development Agency (Taila Huff),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1129,2025-11-13 00:00:00 -0500,,Thank for your Business,"Scope Of Work:
+
+- Cutting less than an acre at total of $4764.28. This job will take approximately 2 working days as long as weather permits.
+
+- The quote includes two or three operators for an effective and efficient cut in a timely manner.
+
+- Included is all necessary items needed to complete the job, as in fuel to mobilize equipment back and forth to the jobsite.
+
+*** At the time of agreement 50% of total amount is due and upon completion the remaining 50% is due.***
+
+Thank you for the opportunity to quote this job.
+
+Sincerely Yours,
+
+Corey E Kirkwood,
+Owner 
+Neat Curb LLC
+
+",Paid,Invoice,2025-11-13 19:42:24 -0500,2025-12-17 15:34:30 -0500,Net 30,,,,,,2025-12-17 15:34:30 -0500,,Active,,,,
+58331979,United States,NY,1786 Main Street,"",Buffalo,14208,Monroe Apartment Building  (Derek King),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1127,2025-11-01 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property,"Snow Service begins Nov 1st 2025 -  April 1st 2026 (included plowing, blowing, salting):
+
+Sidewalks on the North Side of Lafayette
+Sidewalks on Main Street in front of the building
+The Courtyard
+The garbage carousel  
+The parking lot (including sidewalks)
+
+
+Terms:
+50% ($3200) due upon execution of agreement; Remaining 50% due on or before Feb 2  ($3200)
+
+
+
+ 
+",Paid,Invoice,2025-10-02 20:01:19 -0400,2026-02-03 22:56:36 -0500,Net 30,,,,,,2026-02-03 22:56:36 -0500,,Active,,,,
+58331462,United States,NY,95 Perry Suite 403,"",Buffalo,14203,Erie County Industrial Development Agency (Taila Huff),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1126,2025-10-02 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property,"",Paid,Invoice,2025-10-02 19:49:38 -0400,2025-10-18 21:53:29 -0400,Net 30,,,,,,2025-10-18 21:53:29 -0400,,Active,,,,
+57881425,United States,NY,390 Cambridge Ave,"",Buffalo,14215,Bruce  Barrett,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1125,2025-09-24 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Residential Property,"Snow Season Nov-1-25  to Apr-1-25 paid 9/24 cash
+",Paid,Invoice,2025-09-24 18:42:34 -0400,2025-09-24 18:44:52 -0400,Net 30,,,,,,2025-09-24 18:43:20 -0400,,Active,,,,
+56794337,United States,NY,25 Broadway 6th Floor,"",New York ,10004,Cogent Communications (Tex  Johnson),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1123,2025-08-25 00:00:00 -0400,,Thank You For Your Business!,"Services Included:
+Lawn maintenance inside and outside of fencing
+$440 per visit 2x a month
+Sept - 2 cuts, Oct - 2 cuts, Nov - 1 cut
+
+Prior to start of service half of total amount will be due upon agreement.",Pending Payment,Invoice,2025-08-25 21:09:16 -0400,2025-10-18 21:51:54 -0400,Net 30,,,true,,,,,Inactive,,,,
+56577181,United States,NY,95 Perry Suite 403,"",Buffalo,14203,Erie County Industrial Development Agency (Taila Huff),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1122,2025-08-17 00:00:00 -0400,,Thank for your Business,"Scope Of Work:
+
+- Cutting 65 acres at $198.26 an acre at total of $12,886.88. This job will take approximately 5 working days as long as weather permits.
+
+- Equipment used on site are two Kubota SVL 65 and two 6Ft Brush Cutter model RBV 72 or RBV 78.
+
+- The quote includes two operators for an effective and efficient cut in a timely manner.
+
+- Included is all necessary items needed to complete the job, as in fuel to mobilize equipment back and forth to the jobsite.
+
+*** At the time of agreement 50% of total amount is due and upon completion the remaining 50% is due.***
+
+Thank you for the opportunity to quote this job.
+
+Sincerely Yours,
+
+Corey E Kirkwood, Owner 
+Neat Curb LLC
+
+",Paid,Invoice,2025-08-17 19:31:40 -0400,2025-09-10 20:00:44 -0400,Net 30,,,,,,2025-09-10 20:00:44 -0400,,Active,,,,
+56561949,United States,NY,23 Daisey Place,"",Buffalo,14208,Tricia Willis - Kerney,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1121,2025-08-16 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Residential Property,"- Added 23 to front of house.
+- grass cut in front and rear
+- trimmed bushes
+- cut hanging wires
+- cleaned debris in driveway and in lawn 
+- covered broken glass block window
+- covered broken kitchen window
+- covered hole in rear of house
+ ",Paid,Invoice,2025-08-16 18:45:03 -0400,2025-08-25 21:22:38 -0400,Net 30,,,,,,2025-08-25 21:22:38 -0400,,Active,,,,
+55753301,United States,NY,141 Lewis Street,"",Buffalo,14206,Love Alive Fellowship (Antionette  Kenner),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1115,2025-12-01 00:00:00 -0500,,Neat Curb LLC Terms and Conditions for Commercial Property," Full Seasonal Services  for 140 and 141 Lewis
+
+1. front sidewalk of church, 
+2.left alleyway toward rear of building, 
+3.handicap ramp, sidewalk at right side of building also small parking area, 
+4.parking lot in the rear of building
+
+Snow Services until April 1 2026 - No Salt Provided 
+
+Total $2425.00
+
+
+
+Snow services 140 Lewis St
+
+Services included snow on sidewalk of Lewis and Lyman and side door of Lyman, also the driveway with two garage doors.
+
+Total $970.00
+
+ 
+Payment total terms as agreed -
+1 - 50% ($1697.50) due upon execution of agreement
+2 -  ($16976.50) on Feb 2nd",Pending Payment,Invoice,2025-07-30 08:41:23 -0400,2025-12-01 21:33:18 -0500,Net 30,,,,,,,,Active,,,,
+55752967,United States,NY,780 Fillmore Ave,"",Buffalo ,14212,Broadway Fillmore Neighborhood Housing Services (Stephen Karnath),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1114,2025-07-30 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property,"Seasonal Bi weekly Lawn Maintenance include:
+Mowing & String Trimming
+
+From time of agreement to Oct 1st 2025:
+
+Per event $500.00 for 4 visits.
+
+Total $2000
+ 
+",Pending Payment,Invoice,2025-07-30 08:24:20 -0400,2025-10-24 22:20:37 -0400,Due On Receipt,,,true,,,,,Inactive,,,,
+55636909,United States,NY,780 Fillmore Ave,"",Buffalo ,14212,Broadway Fillmore Neighborhood Housing Services (Stephen Karnath),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1113,2025-10-22 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property," Full Seasonal Services include Plowing entrance of parking lot and toward the right in parking lot including dumpster area.
+
+Snow Services from Nov 1 2025 to  April 1 2026
+
+Payment terms as agreed -
+
+1st  50% ($1250.00) due upon execution of agreement
+2nd  25% ($625) on Jan 1st
+3rd  25% ($625) no later than March 1st
+
+ ",Paid,Invoice,2025-07-26 21:51:51 -0400,2026-02-25 22:50:50 -0500,Due On Receipt,,,,,,2026-02-25 22:50:50 -0500,,Active,,,,
+55636609,United States,NY,780 Fillmore Ave,"",Buffalo ,14212,Broadway Fillmore Neighborhood Housing Services (Stephen Karnath),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1112,2025-10-22 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property,"Seasonal Services include Snow blower, Snow shoveling and Deicing (salt included) : sidewalk, doorsteps, and clearance path in parking lot for garbage bins. 
+
+Maximum amount of visits are limited to no more than 18 visits for each property for the season.
+Pricing per event after 18 visits will be $ 100.00
+
+
+
+Pricing based on previous season snowfall. 
+
+50% ($1190) due upon execution of agreement; 
+25% ($595) on  Jan 1, 
+25% ($595) March 1st 
+
+
+Service Dates are  Nov 1st 2025 to April 1st 2026 includes properties below:
+
+595 Fillmore  Ave - Cigar Factory Apartments - $1404.00
+780 and 782 Fillmore Ave - Office and Apartments - $976.00
+ ",Paid,Invoice,2025-07-26 21:20:12 -0400,2026-02-25 22:52:09 -0500,Due On Receipt,,,,,,2026-02-25 22:52:09 -0500,,Active,,,,
+55282489,United States,NY,1786 Main Street,"",Buffalo,14208,Monroe Apartment Building  (Brandi Barrett),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1111,2025-07-14 00:00:00 -0400,,"","Lawn Maintenance at rear and side of building. 
+
+Service was completed as June 22 2025.",Paid,Invoice,2025-07-14 06:58:34 -0400,2025-07-26 19:11:50 -0400,Net 30,,,,,,2025-07-26 19:11:50 -0400,,Active,,,,
+55181120,United States,NY,1786 Main Street,"",Buffalo,14208,Monroe Apartment Building  (Brandi Barrett),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1110,2025-07-14 00:00:00 -0400,,"","Lawn Maintenance around perimeter of Monroe Apt Building. (Seasonal Services until 10/1/25)
+
+Services Include: 
+
+7/16/25 to 10/1/25
+Bi-weekly Maintenance (Mow, Trim, & Blow) $580
+Equipment Rental (Brushcutter) $150
+Weed Killer $80
+",Paid,Invoice,2025-07-09 23:19:48 -0400,2025-07-26 19:15:41 -0400,Net 30,,,,,,2025-07-26 19:15:41 -0400,,Active,,,,
+55179602,United States,NY,285 Peach Street,"",Buffalo,14204,KeKe Ferguson,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1109,2025-07-09 00:00:00 -0400,,Thank You For Your Business!,"",Paid,Invoice,2025-07-09 22:33:34 -0400,2025-08-25 21:59:03 -0400,Net 30,,,,,,2025-08-25 21:59:03 -0400,,Active,,,,
+55179275,United States,NY,390 Cambridge Ave,"",Buffalo,14215,Bruce  Barrett,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1108,2025-07-09 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Residential Property,"June 1 - Oct 1 2024
+$800 paid cash
+
+",Paid,Invoice,2025-07-09 22:22:08 -0400,2025-09-17 19:11:59 -0400,Net 30,,,,,,2025-09-17 19:11:59 -0400,,Active,,,,
+54982555,United States,NY,143 Genesee Street,"",Buffalo,14203,Taila Huff,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1107,2025-07-03 00:00:00 -0400,,"","",Paid,Invoice,2025-07-03 18:32:03 -0400,2025-07-26 19:28:39 -0400,Net 30,,,,,,2025-07-26 19:28:39 -0400,,Active,,,,
+54320179,United States,NY,29 Laurel Street,"",Buffalo,14209,Beyond Child Care LLC (Maretha  Daniels),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1103,2025-06-20 00:00:00 -0400,,Thank You For Your Business!,"One Time event Lawn Maintenance Services for:
+92,107, and 114 Laurel St
+
+",Paid,Invoice,2025-06-20 23:01:14 -0400,2025-08-25 21:23:34 -0400,Net 30,,,,,,2025-08-25 21:23:34 -0400,,Active,,,,
+54280227,United States,NY,1786 Main Street,"",Buffalo,14208,Monroe Building  (Brand  Barrett),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1102,2025-06-19 00:00:00 -0400,,"","Refresh mulch in the four garden beds on Lafayette St. Add fabric and mulch to rear backyard of 113 (Marcus) Labor, Materials ,Delivery included.
+
+
+At the time of agreement 50% of total is due and upon completion remaining 50% will be due.
+
+",Paid,Invoice,2025-06-19 15:28:36 -0400,2025-07-26 19:12:23 -0400,Net 30,,,,,,2025-07-26 19:12:23 -0400,,Active,,,,
+54280218,United States,NY,1786 Main Street,"",Buffalo,14208,Monroe Building  (Brand  Barrett),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1101,2025-06-19 00:00:00 -0400,,"","Lawn Maintenance at rear and side of building. 
+
+Service was completed as June 22 2025.",Pending Payment,Invoice,2025-06-19 15:28:12 -0400,2025-07-26 19:09:55 -0400,Net 30,,,true,,,,,Inactive,,,,
+54280098,United States,NY,25 Kenova ,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1100,2025-06-20 00:00:00 -0400,,Thank You For Your Business!,"",Paid,Invoice,2025-06-19 15:23:47 -0400,2025-07-16 20:15:26 -0400,Net 30,,,,,,2025-07-16 20:15:26 -0400,,Active,,,,
+52934312,United States,NY,255 Rachel Vincent Way ,"",Buffalo,14216,Gwen Eldridge,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1096,2025-05-13 00:00:00 -0400,,Thank You For Your Business!,"",Paid,Invoice,2025-05-13 20:55:43 -0400,2025-05-27 07:37:57 -0400,Net 30,,,,,,2025-05-27 07:37:57 -0400,,Active,,,,
+52933489,United States,NY,25 Kenova ,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1094,2025-05-13 00:00:00 -0400,,Thank You For Your Business!,"",Paid,Invoice,2025-05-13 20:27:40 -0400,2025-05-16 21:26:48 -0400,Net 30,,,,,,2025-05-16 21:26:48 -0400,,Active,,,,
+52933045,United States,NY,56 Lasalle Avenue,"",Buffalo,14214,Tommy,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1093,2025-05-13 00:00:00 -0400,,Thank You For Your Business!,"",Paid,Invoice,2025-05-13 20:13:30 -0400,2025-05-13 20:19:29 -0400,Net 30,,,,,,2025-05-13 20:19:29 -0400,,Active,,,,
+52873886,United States,NY,141 Lewis Street,"",Buffalo,14206,Love Alive Fellowship (Antionette  Kenner),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1092,2025-05-11 00:00:00 -0400,,Thank You For Your Business!,"",Paid,Invoice,2025-05-11 21:55:07 -0400,2025-05-11 21:59:58 -0400,Net 30,,,,,,2025-05-11 21:59:58 -0400,,Active,,,,
+51632207,United States,NY,780 Fillmore Ave,"",Buffalo ,14212,Broadway Fillmore Neighborhood Housing Services (Stephen Karnath),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1089,2025-04-02 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property,"Seasonal Lawn Maintenance include:
+Mowing, String Trimming, Blow and Edging
+small trash pick up.
+
+From May 1st 2025 to Oct 1st 2025
+
+Broadway Fillmore Offices and Apartments - 780/782 Fillmore  $1270.00
+Cigar Factory Apartments - 591/595 Fillmore - $1530.00
+
+Agreed payment schedule as follows:
+
+(40%) $1120.00 Due at the time of agreement
+(40%) $1120.00 due on Aug 1st 
+(20%) $560.00 due on Oct 1st
+ 
+",Paid,Invoice,2025-04-02 16:53:36 -0400,2025-10-18 21:50:14 -0400,Due On Receipt,,,,,,2025-10-18 21:50:14 -0400,,Active,,,,
+50581531,United States,NY,4 Villa Moraine Drive,"",Cheektowaga,14225,Tammy  Simon,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1086,2025-02-05 00:00:00 -0500,,Neat Curb LLC Terms and Conditions for Residential Property,"Driveway, Walkway, and Stairs 
+Snow Season ends 4/1/25
+",Paid,Invoice,2025-02-05 13:40:35 -0500,2025-04-02 16:57:47 -0400,Net 30,,,true,,,2025-04-02 16:56:51 -0400,,Inactive,,,,
+50335608,United States,NY,25 Kenova ,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1083,2025-01-22 00:00:00 -0500,,Thank You For Your Business!,"",Paid,Invoice,2025-01-22 09:11:27 -0500,2025-01-22 12:44:31 -0500,Net 30,,,,,,2025-01-22 12:44:31 -0500,,Active,,,,
+50250296,United States,NY,390 Cambridge Ave,"",Buffalo,14215,Bruce  Barrett,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1082,2025-01-14 00:00:00 -0500,,Neat Curb LLC Terms and Conditions for Residential Property,"
+
+",Paid,Invoice,2025-01-14 15:57:17 -0500,2025-01-14 15:58:54 -0500,Net 30,,,,,,2025-01-14 15:58:54 -0500,,Active,,,,
+50041199,United States,NY,255 Rachel Vincent Way ,"",Buffalo,14216,Gwen Eldridge,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1081,2024-12-31 00:00:00 -0500,,Neat Curb LLC Terms and Conditions for Residential Property,"",Paid,Invoice,2024-12-31 14:42:04 -0500,2025-01-10 18:32:30 -0500,Due On Receipt,,,,,,2025-01-10 18:32:30 -0500,,Active,,,,
+49878973,United States,NY,141 Lewis Street,"",Buffalo,14206,Love Alive Fellowship,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1078,2024-12-18 00:00:00 -0500,,Neat Curb LLC Terms and Conditions for Commercial Property," Full Seasonal Services include including: 
+
+1.stairs and front sidewalk of church, 
+2.left alleyway toward rear of building, 
+3.handicap ramp, sidewalk at right side of building also small parking area, 
+4.parking lot in the rear of building
+
+Snow Services until April 1 2025
+
+Payment terms as agreed -
+1.50% ($1165.00) due upon execution of agreement
+2.25% ($582.50) on Jan 30th
+3 25% ($582.50) no later than March 30th
+
+Total $2330.00
+
+
+
+**Revised Invoice for additional snow services 140 Lewis St**
+
+Services included snow on sidewalk of Lewis and Lyman and side door of Lyman, also the driveway with two garage doors.
+
+Total $970.00
+1.50% ($485.00) due upon execution of agreement
+2.50% ($485.00) on Feb 28th
+
+
+ ",Paid,Invoice,2024-12-18 10:40:19 -0500,2025-05-27 07:48:48 -0400,Net 90,,,,,,2025-05-27 07:48:48 -0400,,Active,,,,
+49878104,United States,NY,780 Fillmore Ave,"",Buffalo ,14212,Broadway Fillmore Neighborhood Housing Services (Stephen Karnath),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1077,2024-12-18 00:00:00 -0500,0.0,Neat Curb LLC Terms and Conditions for Commercial Property," Full Seasonal Services include Plowing entrance of parking and toward the right in parking lot including dumpster area.
+
+Snow Services until April 1 2025
+
+Payment terms as agreed -
+
+1st  50% ($1155.00) due upon execution of agreement
+2nd  25% ($577.50) on Jan 30th
+3rd  25% ($577.50) no later than March 30th 
+
+Total $2310.00
+ ",Paid,Invoice,2024-12-18 09:24:15 -0500,2025-04-02 16:51:58 -0400,Due On Receipt,,,,,,2025-04-02 16:51:58 -0400,,Active,,,,
+49133213,United States,NY,780 Fillmore Ave,"",Buffalo ,14212,Broadway Fillmore Neighborhood Housing Services (Stephen Karnath),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1074,2024-11-06 00:00:00 -0500,,Neat Curb LLC Terms and Conditions for Commercial Property,"Seasonal Services include Snow blower, Snow shoveling and Deicing (salt included) : sidewalk, doorsteps, and clearance path in parking lot for garbage bins. 
+
+Maximum amount of visits are limited to no more than 20 visits for each property for the season.
+Pricing per event after 20 visits will be $ 100.00
+
+
+
+Pricing based on previous season snowfall. 
+
+50% ($1107.50) due upon execution of agreement; 25% ($553.75.00) on  Jan 15, and  Final 25% ($553.75) no later than April 1th 
+
+
+From Nov 1st 2024 to April 1st 2024 includes properties below:
+
+595 Fillmore  Ave - Cigar Factory Apartments - $1305.00
+780 and 782 Fillmore Ave - Office and Apartments - Total for 780 and 782 - $910.00
+ ",Paid,Invoice,2024-11-06 12:11:27 -0500,2025-04-02 16:44:04 -0400,Net 90,,,,,,2025-04-02 16:44:04 -0400,,Active,,,,
+46397133,United States,NY,25 Kenova ,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1062,2024-08-14 00:00:00 -0400,,Thank You For Your Business!,"$45 Per Visit charge listed below:
+$15 weed killer 
+
+Services include String Trimmer and Blower for grass.
+Weed Killer Applied 
+
+",Paid,Invoice,2024-08-13 20:49:48 -0400,2024-08-31 17:41:07 -0400,Net 30,,,,,,2024-08-31 17:41:07 -0400,,Active,,,,
+46397087,United States,NY,25 Kenova ,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1061,2024-08-14 00:00:00 -0400,,Thank You For Your Business!,"$ 135 Per Event charge listed below:
+
+Services include Mow, Blower, String Trimming, and Edging,  2 bushes Hedge Trimmed at 61 Victoria Ave 14214.
+
+",Paid,Invoice,2024-08-13 20:47:00 -0400,2024-08-31 17:41:21 -0400,Net 30,,,,,,2024-08-31 17:41:21 -0400,,Active,,,,
+46071807,United States,NY,390 Cambridge Ave,"",Buffalo,14215,Bruce  Barrett,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1059,2024-08-03 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Residential Property,"June 1 - Oct 1 2024
+$800 paid cash
+
+",Paid,Invoice,2024-08-03 09:32:24 -0400,2024-08-03 09:34:10 -0400,Net 30,,,,,,2024-08-03 09:34:10 -0400,,Active,,,,
+45307432,United States,NY,61 Victoria Ave,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1058,2024-07-13 00:00:00 -0400,,Thank You For Your Business!,"$ 135 Per Event charge listed below:
+
+Services include Mow, Blower, String Trimming, and Edging,  2 bushes Hedge Trimmed at 61 Victoria Ave 14214.
+
+",Paid,Invoice,2024-07-13 14:37:40 -0400,2024-08-03 09:26:42 -0400,Net 30,,,,,,2024-08-03 09:26:42 -0400,,Active,,,,
+45307409,United States,NY,146 Jewett Street,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1057,2024-07-13 00:00:00 -0400,,Thank You For Your Business!,"$45 Per Visit charge listed below:
+
+Services include String Trimmer and Blower for grass.
+
+",Paid,Invoice,2024-07-13 14:34:45 -0400,2024-08-03 09:27:03 -0400,Net 30,,,,,,2024-08-03 09:27:03 -0400,,Active,,,,
+45211030,United States,NY,390 Cambridge Ave,"",Buffalo,14215,Bruce  Barrett,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1054,2024-07-09 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Residential Property,"June 1 - Oct 1 2024
+$800 paid cash
+
+",Pending Payment,Invoice,2024-07-09 18:10:06 -0400,2024-12-19 17:58:36 -0500,Net 30,,,true,,,,,Inactive,,,,
+44958833,United States,NY,2969 Bailey Avenue,2970 Bailey Avenue,Buffalo,14215,Daci Development LLC (Evanette Veira),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1053,2024-10-02 00:00:00 -0400,,Thank You For Your Business!,"Services include String Trimmer, Mow, and Blower
+",Paid,Invoice,2024-07-01 22:46:58 -0400,2025-07-09 23:44:07 -0400,Net 30,,,,,,2024-10-02 19:08:09 -0400,,Active,,,,
+44306031,United States,NY,29 Laurel Street,"",Buffalo,14209,Beyond Child Care LLC (Maretha  Daniels),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1052,2024-06-24 00:00:00 -0400,,Thank You For Your Business!,"Bi Weekly Services Include:
+Mow, Trim, Blow
+
+Lawn Maintenance Services for:
+27,29, 33, and 92 Laurel St
+
+",Paid,Invoice,2024-06-14 19:51:17 -0400,2024-06-24 20:52:23 -0400,Net 30,,,,,,2024-06-24 20:52:23 -0400,,Active,,,,
+44305872,United States,NY,29 Laurel Street,"",Buffalo,14209,Beyond Child Care LLC (Maretha  Daniels),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1051,2024-06-08 00:00:00 -0400,,Thank You For Your Business!,"String Trimmer, Blow, Hedege Trim 
+Weed Killer applied 1 Gal
+
+All Services for;
+27,29, 33 Laurel St",Paid,Invoice,2024-06-14 19:40:37 -0400,2024-06-14 19:45:14 -0400,Net 30,,,,,,2024-06-14 19:44:43 -0400,,Active,,,,
+44305655,United States,NY,29 Laurel Street,"",Buffalo,14209,Beyond Child Care LLC (Maretha  Daniels),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1050,2024-06-09 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Residential Property," Lawn Maintenance include:
+Mowing, String Trimming, Blow for Overgrowth
+ 92 Laurel St.
+
+
+
+",Paid,Invoice,2024-06-14 19:31:14 -0400,2024-06-14 19:49:47 -0400,Net 30,,,,,,2024-06-14 19:32:14 -0400,,Active,,,,
+43603261,United States,NY,146 Jewett Ave,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1046,2024-06-22 00:00:00 -0400,,Thank You For Your Business!,"$40 Per Visit charge listed below:
+
+Services include String Trimmer and Blower for grass.
+
+",Paid,Invoice,2024-05-30 22:00:32 -0400,2024-06-24 20:54:12 -0400,Net 30,,,,,,2024-06-24 20:54:12 -0400,,Active,,,,
+43601841,United States,NY,146 Jewett Ave,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1045,2024-05-30 00:00:00 -0400,,Thank You For Your Business!,"$ 135 Per Event charge listed below:
+
+Services include Mow, Blower, String Trimming, and Edging,  2 bushes Hedge Trimmed at 61 Victoria Ave 14214.
+
+",Paid,Invoice,2024-05-30 21:48:09 -0400,2024-06-24 20:54:49 -0400,Net 30,,,,,,2024-06-24 20:54:49 -0400,,Active,,,,
+43421046,United States,NY,146 Jewett Ave,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1044,2024-05-25 00:00:00 -0400,,Thank You For Your Business!,"Date of Service 5/23/2024
+
+Services include mow, trim, blow, trimmed 2 bushes and edging  at 61 Victoria Ave 14214.
+
+There 2.9% fee added to the total amount when using payment with a credit card.
+
+mow, trim, blow, trimmed 2 bushes and edging  $150.00
+credit card fee 2.9%
+total $154.35",Paid,Invoice,2024-05-25 16:54:15 -0400,2024-05-28 15:54:00 -0400,Net 30,,,,,,2024-05-28 15:54:00 -0400,,Active,,,,
+43417448,United States,NY,146 Jewett Ave,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1043,2024-05-25 00:00:00 -0400,,Thank You For Your Business!,"Date of Service 5/23/2024
+Services include grass and weeds cut with weed eater on strip on grass.
+
+There 2.9% fee added to the total amount when using payment with a credit card.
+
+Tree Branch Removal (Window) $30
+Weed Eater $50.00
++credit card fee 2.9%
+
+total $82.32  ",Paid,Invoice,2024-05-25 12:57:51 -0400,2024-05-28 15:52:33 -0400,Net 30,,,,,,2024-05-28 15:52:33 -0400,,Active,,,,
+43005193,United States,NY,146 Jewett Ave,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1040,2024-05-08 00:00:00 -0400,,Thank You For Your Business!,"Date of Service 5/8/2024
+
+Services include mow, trim, blow, trimmed 2 bushes and edging  on overgrowth at 61 Victoria Ave 14214.
+
+There 2.9% fee added to the total amount when using payment with a credit card.
+
+mow, trim, blow, trimmed 2 bushes and edging  $150.00
+credit card fee 2.9%
+total $154.35",Paid,Invoice,2024-05-08 21:58:17 -0400,2024-05-16 22:39:07 -0400,Net 30,,,,,,2024-05-16 22:39:07 -0400,,Active,,,,
+42870854,United States,NY,146 Jewett Ave,"",Buffalo,14214,Anthony  Williams,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1038,2024-05-04 00:00:00 -0400,,Thank You For Your Business!,"Date of Service 5/4/2024
+Services include grass and weeds cut with weed eater on strip on grass.
+
+There 2.9% fee added to the total amount when using payment with a credit card.
+
+Weed Eater $40.00
+credit card fee 2.9%
+total $41.16  ",Paid,Invoice,2024-05-04 22:07:05 -0400,2024-05-08 22:05:17 -0400,Net 30,,,,,,2024-05-08 22:05:17 -0400,,Active,,,,
+42160478,United States,NY,780 Fillmore Ave,"",Buffalo ,14212,Broadway Fillmore Neighborhood Housing Services (Stephen Karnath),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1036,2024-04-16 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property,"Seasonal Lawn Maintenance include:
+Mowing, String Trimming, Blow and Edging
+Trash pick up.
+
+From April 16th 2024 to Oct 1st 2024
+
+Broadway Fillmore Offices and Apartments - 780/782 Fillmore  $1120.00
+Cigar Factory Apartments - 591/595 Fillmore - $1440.00
+
+Agreed payment schedule as follows:
+
+(40%) $1024.00 Due at the time of agreement
+(40%) $1024.00 due on Aug 1st 
+(20%) $512.00 due on Oct 1st
+ 
+",Paid,Invoice,2024-04-16 19:48:58 -0400,2024-10-02 19:20:11 -0400,Net 90,,,,,,2024-10-02 19:20:11 -0400,,Active,,,,
+40036341,United States,NY,170 Florida Street,"",Buffalo ,14208,Preservation Studios LLC (Derek  King),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1031,2023-08-06 00:00:00 -0400,,,Debris removal.,Paid,Invoice,2023-12-02 18:59:52 -0500,2023-12-02 20:08:14 -0500,Net 30,,,,,,2023-12-02 19:00:47 -0500,,Active,,,,
+40035969,United States,NY,350 Masten Ave ,"",Buffalo ,14209,African American Cultural Center (Leah Daniels),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1030,2023-12-01 00:00:00 -0500,,Neat Curb LLC Terms and Conditions for Commercial Property,"Leaf Cleanup. Trash Pick-up, Ice Removal  -  One Day Event
+Date of Work Completed 11/30/203",Paid,Invoice,2023-12-02 18:19:39 -0500,2024-01-14 10:20:42 -0500,Net 30,,2023-11-30 00:00:00 -0500,,,,2024-01-14 10:20:42 -0500,,Active,,,,
+39624315,United States,NY,350 Masten Ave ,"",Buffalo ,14209,African American Cultural Center (Leah Daniels),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1026,2023-11-09 00:00:00 -0500,,Neat Curb LLC Terms and Conditions for Commercial Property,"Leaf Cleanup on property and lot.
+Date of Work Completed 11/8/203",Paid,Invoice,2023-11-09 18:23:42 -0500,2023-12-01 21:43:09 -0500,Net 30,,,,,,2023-12-01 21:43:09 -0500,,Active,,,,
+39158315,United States,NY,350 Masten Ave ,"",Buffalo ,14209,African American Cultural Center (Leah D),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1023,2023-11-07 00:00:00 -0500,,Neat Curb LLC Terms and Conditions for Commercial Property,"Seasonal Services include Snow blower and/or Compact Snowplow, Snow shoveling and Deicing (salt included) : storefront, sidewalk, and clearance Lot. 
+
+Maximum amount of visits are limited to no more than 22 visits for each property for the season.
+
+50% due upon execution of agreement; 25% on  Jan 15, and  Final 25%  no later than April 5th 
+
+From Nov 1st 2023 to April 1st 2024 includes properties below:
+
+
+
+ ",Paid,Invoice,2023-10-26 17:20:41 -0400,2024-05-04 22:23:12 -0400,Net 30,,2023-12-05 00:00:00 -0500,,,,2024-05-04 22:23:12 -0400,,Active,,,,
+39006340,United States,NY,780 Fillmore Ave,"",Buffalo ,14212,Broadway Fillmore Neighborhood Housing Services (Stephen Karnath),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1021,2023-10-19 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property,"Seasonal Services include Snow blower, Snow shoveling and Deicing (salt included) : sidewalk, doorsteps, and clearance path in parking lot for garbage bins. 
+
+Maximum amount of visits are limited to no more than 22 visits for each property for the season.
+
+Pricing based on previous season snowfall. 
+
+50% due upon execution of agreement; 25% on  Jan 15, and  Final 25%  no later than April 5th 
+
+From Nov 1st 2023 to April 1st 2024 includes properties below:
+
+Cigar Factory Apartments - $1250.00
+780 and 782 Fillmore Ave - Total for both $720.00
+ ",Paid,Invoice,2023-10-18 21:11:22 -0400,2024-04-14 20:08:09 -0400,Due On Receipt,,,,,,2024-04-14 20:08:09 -0400,,Active,,,,
+39006303,United States,NY,465 Franklin Street,"",Buffalo,14202,Melissa,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1020,2023-10-19 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property,"Seasonal Services include Snow Blower, Snow Shoveling and Deicing (salt included) :  Driveway (Franklin and Woodbury Alley)
+
+$195.00 per hour for 24 visits. (Any visits after 24 will be $175 hour)
+Ice Melt 3 to 4 bags for the season at $120
+
+
+Maximum amount of visits are limited to no more than 24 visits for each property for the season.
+
+From Nov 1st 2023 to April 1st 2024 
+
+50% due upon execution of agreement; 25% on  Jan 15, and  Final 25%  no later than April 5th ",Pending Payment,Invoice,2023-10-18 21:08:28 -0400,2023-10-29 22:36:54 -0400,Net 30,,,true,,,,,Inactive,,,,
+38964225,United States,NY,497 Colvin Ave ,"",Buffalo ,14216,Jay,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1019,2023-10-29 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Residential Property,"Seasonal Services include Snow blower, Snow shoveling and Deicing (salt included) : sidewalk, doorsteps, and driveway.
+
+Maximum amount of visits are limited to no more than 20 visits for each property for the season.
+
+From Nov 15th 2023 to April 1st 2024 
+
+50% due upon execution of agreement; 25% on  Jan 15, and  Final 25%  no later than April 5th ",Pending Payment,Invoice,2023-10-16 22:22:07 -0400,2023-12-02 18:49:39 -0500,Net 30,,,true,,,,,Inactive,,,,
+38731709,United States,NY,350 Masten Ave ,"",Buffalo ,14209,African American Cultural Center (Leah),United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1017,2023-10-05 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property,"Total time for Services 3.5 hours at $80 per hour.
+Hedge Trimming - 2.0 hrs
+Lawn Cutting & String Trimmer 1.5hrs
+
+Services include as follows:
+Cut grass at front of building to curb on toward Glenwood Ave
+Cut patch of grass in front on left side of building
+Hedge Trimming of shrubs
+Pick up small around front of building 
+String trim loose grass in front of building 
+All grass trimming will be cleaned from the ground
+",Paid,Invoice,2023-10-05 19:06:53 -0400,2023-10-16 23:06:49 -0400,Net 30,,,,,,2023-10-16 23:06:49 -0400,,Active,,,,
+38704027,United States,NY,1325 Michigan St ,"",Buffalo ,14209,Marj  McAllister,United States,NY,PO Box 106,,Buffalo,14201,Neat Curb LLC,1016,2023-10-04 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property,"Seasonal services for lawncare consist of Mowing, String Trimming, Blow all areas of the grass and trash pick up and debris removal in rear and front of the property below. From June 1st 2023 to Oct 1st 2023.
+
+1325 Michigan St.  - $1150
+Adjacent Lot - $400
+
+
+
+",Paid,Invoice,2023-10-04 21:37:43 -0400,2023-10-04 21:38:22 -0400,Net 30,,,,,,2023-10-04 21:38:22 -0400,,Active,,,,
+34931509,United States,NY,159 Highgate Avenue,"",Buffalo,14214,Rakeshia Whitt,United States,NY,229 W Genesee Street Unit 106,,Buffalo,14202,Neat Curb LLC,1014,2023-06-07 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property,"Seasonal services for lawncare consist of Mowing, String Trimming, Blow all areas of the grass and trash pick up and debris removal in side, front, and backyard of the property below. From June 14th 2023 to Oct 1st 2023.
+
+Weekly Maintenance $850.00 
+Bi - Weekly Maintenance - $575.00
+",Pending Payment,Invoice,2023-06-07 16:39:15 -0400,2023-12-02 20:39:31 -0500,Net 30,,,true,,,,,Inactive,,,,
+34328794,United States,NY,780 Fillmore Ave,"",Buffalo ,14212,Broadway Fillmore Neighborhood Housing Services (Stephen Karnath),United States,NY,229 W Genesee Street Unit 106,,Buffalo,14202,Neat Curb LLC,1011,2023-05-25 00:00:00 -0400,,Neat Curb LLC Terms and Conditions for Commercial Property,"Seasonal services for lawncare consist of Mowing, String Trimming, Blow all areas of the grass and trash pick up on the properties below. From May 8th 2022 to Oct 1st 2023.
+
+780 and 782 Fillmore  $960.00
+595 Fillmore - $1080.00 
+ 
+
+
+
+",Paid,Invoice,2023-05-25 18:03:24 -0400,2023-10-19 19:09:05 -0400,Due On Receipt,,,,,,2023-10-19 19:09:05 -0400,,Active,,,,
+31454936,United States,NY,191 East North Street,"",Buffalo,14204,Heart of the City Neighborhoods Inc (Stephanie  Simeon),United States,NY,229 W Genesee St  Unit 106,,Buffalo,14202,Neat Curb LLC,1008,2022-12-12 00:00:00 -0500,,Thank You For Your Business!,"Home Cleaning 
+Property - 285 Peach Street Buffalo NY 14204 Lower Unit
+Rooms - 3
+
+The cleaning services included are as follows: removal of construction debris and trash, sanitize, dust, and vacuum rooms, walls, doors, hardwood floors, and ceiling. The windows and blinds will also be cleaned.
+
+
+
+
+",Pending Payment,Invoice,2022-12-12 12:24:12 -0500,2023-07-09 12:23:54 -0400,Due On Receipt,,,true,,,,,Inactive,,,,
+30173992,United States,NY,40 Pansy Place,"",Buffalo ,14208,George Johnson,United States,NY,285 Peach Street,,Buffalo,14204,Neat Curb LLC,1006,2022-10-11 00:00:00 -0400,,Thank You For Your Business!,"As follows:
+Labor Cost $20.00 Per Hour on all Repairs. Total amount due $
+
+Installed Ceiling Tile: 1 hours of Labor, Material $15.00 - Total $35.00
+Removed Safety Bars: 2 hours of Labor - Material $105.00 - Total $145.00
+Installed Overflow Pipe: 1 hour of Labor - Material $10.00 - Total $30.00
+Replace & Install Stair Tread: 3 hours of Labor - Material $160.00 - Total $220.00
+Install Breaker Panel: 1 hour of Labor - Material $30",Paid,Invoice,2022-10-03 18:13:08 -0400,2023-10-05 20:36:29 -0400,Due On Receipt,,,,,,2023-10-05 20:36:29 -0400,,Active,,,,
+30170679,United States,NY,40 Pansy Place,"",Buffalo ,14208,George Johnson,United States,NY,285 Peach Street,,Buffalo,14204,Neat Curb LLC,1005,2022-10-03 00:00:00 -0400,,Thank You For Your Business!,"As follows:
+Installed Ceiling Tile: Labor $20.00 , Material $5.00
+Removed Safety Bars: Labor $20.00 , Material $60.00
+Installed Overflow Pipe: Labor $20.00 , Material $10.00
+Replace and Install Stair Tread: Labor $40.00 , Material $85.00
+Install Breaker Panel: Labor $20.00, Material $30?",Paid,Invoice,2022-10-03 17:14:55 -0400,2025-06-20 22:58:09 -0400,Due On Receipt,,,false,,,2022-10-03 18:10:32 -0400,,Active,,,,

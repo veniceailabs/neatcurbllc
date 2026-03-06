@@ -6,6 +6,13 @@ import { supabase } from "@/lib/supabaseClient";
 import { AdminProvider, type AdminRole } from "@/components/admin-context";
 import { TooltipProvider } from "@/components/tooltip-context";
 
+const OWNER_RECOVERY_ALLOWLIST = new Set([
+  "neatcurb@gmail.com",
+  "andrakennerjr@going-digital.org"
+]);
+
+const normalizeEmail = (value?: string | null) => (value || "").trim().toLowerCase();
+
 export default function AdminGate({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -17,6 +24,15 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let mounted = true;
+    const runOwnerRescue = async (email: string) => {
+      if (!OWNER_RECOVERY_ALLOWLIST.has(email)) return;
+      await fetch("/api/public/account-rescue", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+    };
+
     const check = async () => {
       setReady(false);
       // These routes must be reachable without an existing session:
@@ -32,11 +48,24 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
         router.replace("/admin/login");
       } else {
         const userId = data.session.user.id;
-        const { data: profile, error: profileError } = await supabase
+        const userEmail = normalizeEmail(data.session.user.email);
+        let { data: profile, error: profileError } = await supabase
           .from("profiles")
           .select("role,must_change_password")
           .eq("id", userId)
           .maybeSingle();
+
+        if ((profileError || !profile) && OWNER_RECOVERY_ALLOWLIST.has(userEmail)) {
+          await runOwnerRescue(userEmail);
+          const retry = await supabase
+            .from("profiles")
+            .select("role,must_change_password")
+            .eq("id", userId)
+            .maybeSingle();
+          profile = retry.data;
+          profileError = retry.error;
+        }
+
         if (profileError || !profile) {
           await supabase.auth.signOut();
           router.replace("/admin/login?reason=profile_missing");
@@ -58,6 +87,20 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
             return;
           }
         } else if (nextRole !== "admin") {
+          if (OWNER_RECOVERY_ALLOWLIST.has(userEmail)) {
+            await runOwnerRescue(userEmail);
+            const retryRole = await supabase
+              .from("profiles")
+              .select("role,must_change_password")
+              .eq("id", userId)
+              .maybeSingle();
+            const patchedRole = (retryRole.data?.role || "user") as AdminRole;
+            if (patchedRole === "admin" || patchedRole === "staff") {
+              setRole(patchedRole);
+              setReady(true);
+              return;
+            }
+          }
           await supabase.auth.signOut();
           router.replace("/admin/login?reason=forbidden");
           return;

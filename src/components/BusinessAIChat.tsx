@@ -59,6 +59,20 @@ export default function BusinessAIChat() {
   }, [open]);
 
   useEffect(() => {
+    const handleOpenRequest = () => setOpen(true);
+    window.addEventListener(
+      "neatcurb:business-ai-open",
+      handleOpenRequest as EventListener
+    );
+    return () => {
+      window.removeEventListener(
+        "neatcurb:business-ai-open",
+        handleOpenRequest as EventListener
+      );
+    };
+  }, []);
+
+  useEffect(() => {
     window.localStorage.setItem(
       HISTORY_KEY,
       JSON.stringify(messages.slice(-MAX_LOCAL_MESSAGES))
@@ -81,6 +95,10 @@ export default function BusinessAIChat() {
     const normalized = text.trim().toLowerCase();
     const map: Record<string, { label: string; href: string }> = {
       dashboard: { label: "Dashboard", href: "/admin" },
+      "business os": { label: "NeatCurbOS", href: "/admin/business-os" },
+      neatcurbos: { label: "NeatCurbOS", href: "/admin/business-os" },
+      "biz in a box": { label: "NeatCurbOS", href: "/admin/business-os" },
+      "biz-in-a-box": { label: "NeatCurbOS", href: "/admin/business-os" },
       leads: { label: "Leads", href: "/admin/leads" },
       clients: { label: "Clients", href: "/admin/clients" },
       jobs: { label: "Jobs", href: "/admin/jobs" },
@@ -102,6 +120,7 @@ export default function BusinessAIChat() {
   const quickActions = useMemo(
     () => [
       { label: "Dashboard", href: "/admin" },
+      { label: "NeatCurbOS", href: "/admin/business-os" },
       { label: "Leads", href: "/admin/leads" },
       { label: "Clients", href: "/admin/clients" },
       { label: "Messages", href: "/admin/messages" },

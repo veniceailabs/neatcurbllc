@@ -51,7 +51,8 @@ create table if not exists audit_anchors (
 alter table stripe_events enable row level security;
 alter table audit_anchors enable row level security;
 
-create or replace view staff_work_view as
+create or replace view staff_work_view
+with (security_invoker = true) as
   select
     jobs.id as work_item_id,
     'job'::text as source,
@@ -85,7 +86,7 @@ returns table (
 )
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_lead leads%rowtype;

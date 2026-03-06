@@ -9,6 +9,13 @@ import { getCopy } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
+const OWNER_RECOVERY_ALLOWLIST = new Set([
+  "neatcurb@gmail.com",
+  "andrakennerjr@going-digital.org"
+]);
+
+const normalizeEmail = (value?: string | null) => (value || "").trim().toLowerCase();
+
 export default function LoginPage() {
   const router = useRouter();
   const { language } = useLanguage();
@@ -20,12 +27,26 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
   const [recovering, setRecovering] = useState(false);
+  const [magicLoading, setMagicLoading] = useState(false);
+  const [rescueLoading, setRescueLoading] = useState(false);
   const [phase, setPhase] = useState<
     "unauthenticated" | "signing-in" | "provision-check" | "redirecting"
   >("unauthenticated");
 
   const needsConfirm = (errorMessage: string | null) =>
     Boolean(errorMessage && errorMessage.toLowerCase().includes("not confirmed"));
+  const isOwnerRecoveryEmail = OWNER_RECOVERY_ALLOWLIST.has(normalizeEmail(email));
+
+  const runOwnerRescue = async (targetEmail: string) => {
+    const normalized = normalizeEmail(targetEmail);
+    if (!OWNER_RECOVERY_ALLOWLIST.has(normalized)) return false;
+    const response = await fetch("/api/public/account-rescue", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: normalized })
+    });
+    return response.ok;
+  };
 
   useEffect(() => {
     const query =
@@ -48,11 +69,22 @@ export default function LoginPage() {
       const session = data.session;
       if (!session) return;
 
-      const { data: profile } = await supabase
+      const sessionEmail = normalizeEmail(session.user.email);
+      let { data: profile } = await supabase
         .from("profiles")
         .select("role,must_change_password")
         .eq("id", session.user.id)
         .maybeSingle();
+
+      if (!profile && OWNER_RECOVERY_ALLOWLIST.has(sessionEmail)) {
+        await runOwnerRescue(sessionEmail);
+        const retry = await supabase
+          .from("profiles")
+          .select("role,must_change_password")
+          .eq("id", session.user.id)
+          .maybeSingle();
+        profile = retry.data;
+      }
 
       if (!profile) return;
       if (profile.must_change_password) {
@@ -99,16 +131,52 @@ export default function LoginPage() {
       // If the profile row isn't linked yet, the admin gate will bounce the user.
       // Fail fast with a clear message instead of "flashing" the dashboard.
       if (profileError || !profile) {
+        const recovered = await runOwnerRescue(email);
+        if (recovered) {
+          const retry = await supabase
+            .from("profiles")
+            .select("role,must_change_password")
+            .eq("id", userId)
+            .maybeSingle();
+          if (retry.data) {
+            setPhase("redirecting");
+            if (retry.data.must_change_password) {
+              router.replace("/admin/change-password");
+            } else {
+              router.replace("/admin");
+            }
+            setLoading(false);
+            return;
+          }
+        }
+
         await supabase.auth.signOut();
-        setError(
-          copy.auth.profileMissing
-        );
+        setError(copy.auth.profileMissing);
         setLoading(false);
         setPhase("unauthenticated");
         return;
       }
 
       if (profile.role && profile.role !== "admin" && profile.role !== "staff") {
+        const recovered = await runOwnerRescue(email);
+        if (recovered) {
+          const retry = await supabase
+            .from("profiles")
+            .select("role,must_change_password")
+            .eq("id", userId)
+            .maybeSingle();
+          if (retry.data?.role === "admin" || retry.data?.role === "staff") {
+            setPhase("redirecting");
+            if (retry.data.must_change_password) {
+              router.replace("/admin/change-password");
+            } else {
+              router.replace("/admin");
+            }
+            setLoading(false);
+            return;
+          }
+        }
+
         await supabase.auth.signOut();
         setError(copy.auth.unauthorized);
         setLoading(false);
@@ -156,6 +224,9 @@ export default function LoginPage() {
 
     // Use the current origin so Supabase redirects back to the exact host
     // the user is on (www vs apex). Make sure both are in Supabase Redirect URLs.
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("neatcurb:last-login-email", email);
+    }
     const redirectTo = `${window.location.origin}/admin/change-password`;
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo
@@ -171,11 +242,50 @@ export default function LoginPage() {
     setRecovering(false);
   };
 
+  const handleMagicLink = async () => {
+    setError(null);
+    setNotice(null);
+    setMagicLoading(true);
+
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("neatcurb:last-login-email", email);
+    }
+
+    const redirectTo = `${window.location.origin}/admin/login`;
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: redirectTo }
+    });
+
+    if (error) {
+      setError(error.message);
+      setMagicLoading(false);
+      return;
+    }
+
+    setNotice("Magic sign-in link sent. Open it immediately from your inbox.");
+    setMagicLoading(false);
+  };
+
+  const handleOwnerRescue = async () => {
+    setError(null);
+    setNotice(null);
+    setRescueLoading(true);
+    const rescued = await runOwnerRescue(email);
+    if (!rescued) {
+      setError("Owner rescue unavailable for this email.");
+      setRescueLoading(false);
+      return;
+    }
+    setNotice("Owner account rescue applied. Try signing in again now.");
+    setRescueLoading(false);
+  };
+
   return (
     <div className="auth-page">
       <div className="auth-card">
         <Image
-          src="/brand/neat-curb-logo-full.svg"
+          src="/brand/neat-curb-logo-full.png"
           alt="Neat Curb LLC logo"
           className="auth-logo"
           width={120}
@@ -226,6 +336,26 @@ export default function LoginPage() {
           >
             {recovering ? copy.auth.signingIn : copy.auth.sendRecovery}
           </button>
+          <button
+            className="btn-secondary"
+            type="button"
+            disabled={magicLoading}
+            onClick={handleMagicLink}
+            style={{ width: "100%", justifyContent: "center" }}
+          >
+            {magicLoading ? copy.auth.signingIn : "Send Magic Sign-In Link"}
+          </button>
+          {isOwnerRecoveryEmail ? (
+            <button
+              className="btn-secondary"
+              type="button"
+              disabled={rescueLoading}
+              onClick={handleOwnerRescue}
+              style={{ width: "100%", justifyContent: "center" }}
+            >
+              {rescueLoading ? copy.auth.signingIn : "Owner Account Rescue"}
+            </button>
+          ) : null}
           {needsConfirm(error) ? (
             <button
               className="btn-secondary"

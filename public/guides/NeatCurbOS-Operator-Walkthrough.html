@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NeatCurbOS - Operator Walkthrough</title>
+  <style>
+    :root {
+      --bg: #060b09;
+      --panel: #0d151c;
+      --panel-soft: #111d26;
+      --text: #eaf3f8;
+      --muted: #99adbb;
+      --green: #23b04b;
+      --deep-green: #016b37;
+      --sky: #4ec7ec;
+      --blue: #4776ba;
+      --orange: #f68c1e;
+      --red: #ef4e23;
+      --yellow: #ffb71b;
+      --line: rgba(78, 199, 236, 0.16);
+      --line-strong: rgba(78, 199, 236, 0.3);
+    }
+
+    @page {
+      size: Letter;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    html {
+      background: #060b09;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(78, 199, 236, 0.18), transparent 42%),
+        radial-gradient(circle at 85% 8%, rgba(35, 176, 75, 0.14), transparent 40%),
+        linear-gradient(160deg, #050805 0%, #09110b 55%, #070d08 100%);
+      line-height: 1.42;
+      font-size: 11pt;
+      min-height: 100vh;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 8.1in;
+      margin: 0 auto;
+      display: grid;
+      gap: 10px;
+    }
+
+    .cover {
+      border: none;
+      border-radius: 18px;
+      padding: 18px;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(71, 118, 186, 0.2), transparent 45%),
+        linear-gradient(145deg, rgba(8, 16, 24, 0.96), rgba(10, 23, 18, 0.94));
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      page-break-inside: avoid;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .logo {
+      height: 44px;
+      width: auto;
+      max-width: 260px;
+      filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(78, 199, 236, 0.45);
+      background: rgba(78, 199, 236, 0.14);
+      color: #d9f5ff;
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28pt;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+    }
+
+    h1 span { color: var(--sky); }
+
+    h2 {
+      margin: 0;
+      font-size: 16pt;
+      line-height: 1.2;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 12.5pt;
+      line-height: 1.25;
+      color: #e8f6ff;
+    }
+
+    p { margin: 0; color: var(--text); }
+
+    .muted { color: var(--muted); }
+
+    .big-note {
+      margin-top: 10px;
+      border-left: 4px solid var(--green);
+      background: rgba(35, 176, 75, 0.1);
+      padding: 9px 11px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .card {
+      border: none;
+      background: var(--panel);
+      border-radius: 14px;
+      padding: 10px;
+      page-break-inside: auto;
+    }
+
+    .soft {
+      background: var(--panel-soft);
+    }
+
+    .toc a {
+      color: #d3edfb;
+      text-decoration: none;
+    }
+
+    ul {
+      margin: 6px 0 0;
+      padding-left: 18px;
+    }
+
+    li { margin: 3px 0; color: #dbebf5; }
+
+    .section {
+      border: none;
+      border-radius: 14px;
+      padding: 12px;
+      background:
+        linear-gradient(150deg, rgba(8, 14, 20, 0.92), rgba(9, 24, 18, 0.88));
+      display: grid;
+      gap: 8px;
+      page-break-inside: auto;
+    }
+
+    .kicker {
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9cc8dd;
+      font-weight: 700;
+    }
+
+    .path {
+      display: inline-flex;
+      align-items: center;
+      border: none;
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: rgba(78, 199, 236, 0.1);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 9pt;
+      color: #d8f1ff;
+      width: fit-content;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 9pt;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .pill.green { background: rgba(35, 176, 75, 0.16); border-color: rgba(35, 176, 75, 0.45); }
+    .pill.blue { background: rgba(78, 199, 236, 0.16); border-color: rgba(78, 199, 236, 0.45); }
+    .pill.orange { background: rgba(246, 140, 30, 0.16); border-color: rgba(246, 140, 30, 0.45); }
+    .pill.red { background: rgba(239, 78, 35, 0.16); border-color: rgba(239, 78, 35, 0.45); }
+
+    .ops-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10pt;
+    }
+
+    .ops-table th,
+    .ops-table td {
+      border: 1px solid var(--line);
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .ops-table th {
+      color: #bfe5f8;
+      background: rgba(78, 199, 236, 0.09);
+      font-weight: 700;
+    }
+
+    .warn {
+      border-left: 4px solid var(--orange);
+      background: rgba(246, 140, 30, 0.12);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-weight: 600;
+    }
+
+    .footer {
+      margin-top: 4px;
+      border-top: 1px solid var(--line);
+      padding-top: 8px;
+      font-size: 9pt;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .page-break {
+      page-break-before: auto;
+      break-before: auto;
+    }
+
+    @media print {
+      html,
+      body {
+        background:
+          radial-gradient(circle at 20% 0%, rgba(78, 199, 236, 0.18), transparent 42%),
+          radial-gradient(circle at 85% 8%, rgba(35, 176, 75, 0.14), transparent 40%),
+          linear-gradient(160deg, #050805 0%, #09110b 55%, #070d08 100%) !important;
+      }
+
+      .section,
+      .card { break-inside: auto; }
+
+      .cover { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="cover">
+      <div class="logo-wrap">
+        <img class="logo" alt="Neat Curb" src="file:///Users/DRA/apps/Neat%20Curb%20(LLC)/neat-curb-admin/public/brand/neat-curb-logo-full.svg" />
+        <span class="badge">Operator Guide</span>
+      </div>
+
+      <h1>Command Center Guide<br /><span>NeatCurbOS Walkthrough</span></h1>
+      <p class="muted" style="margin-top:10px; max-width: 6.4in;">
+        Simple, step-by-step instructions to run Neat Curb daily operations in the admin dashboard,
+        even if you are not technical.
+      </p>
+
+      <div class="big-note">
+        Main website: <strong>https://neatcurbllc.com</strong><br />
+        Admin login: <strong>https://neatcurbllc.com/admin/login</strong>
+      </div>
+
+      <div class="grid-2" style="margin-top:12px;">
+        <div class="card soft">
+          <h3>5-Minute Daily Start</h3>
+          <ul>
+            <li>Log in to admin.</li>
+            <li>Open <strong>Dashboard</strong>.</li>
+            <li>Review the NeatCurbOS cards.</li>
+            <li>Check new leads + queued jobs.</li>
+            <li>Send follow-up messages.</li>
+          </ul>
+        </div>
+        <div class="card soft">
+          <h3>What This Guide Covers</h3>
+          <ul>
+            <li>Dashboard overview</li>
+            <li>NeatCurbOS module (all 6 pillars)</li>
+            <li>Daily / storm-day workflow</li>
+            <li>Common issues and fixes</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>Version: 2026-02-21</span>
+        <span>Prepared for Neat Curb Operations</span>
+      </div>
+    </section>
+
+    <section class="section toc">
+      <div class="kicker">Quick Navigation</div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Core Admin Pages</h3>
+          <ul>
+            <li><span class="path">/admin</span> Dashboard</li>
+            <li><span class="path">/admin/leads</span> Lead pipeline</li>
+            <li><span class="path">/admin/clients</span> CRM</li>
+            <li><span class="path">/admin/jobs</span> Scheduling + status</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Revenue + Communication</h3>
+          <ul>
+            <li><span class="path">/admin/lead-intake</span> Quote workflow</li>
+            <li><span class="path">/admin/invoices</span> Billing</li>
+            <li><span class="path">/admin/messages</span> Email/SMS</li>
+            <li><span class="path">/admin/audit</span> Activity log</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="kicker">NeatCurbOS Module (Embedded in Dashboard)</div>
+      <h2>How to Use Each Card</h2>
+      <p class="muted">This module lives inside Dashboard and is your main control board.</p>
+
+      <table class="ops-table">
+        <thead>
+          <tr>
+            <th>Pillar</th>
+            <th>What It Means</th>
+            <th>What To Click</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Fleet & Rig Management</strong></td>
+            <td>See active and queued work so crews stay moving.</td>
+            <td>Open <span class="path">/admin/jobs</span> and <span class="path">/admin/work-orders</span></td>
+          </tr>
+          <tr>
+            <td><strong>Instant Quoting</strong></td>
+            <td>Create fast, margin-aware estimates from lead details.</td>
+            <td>Open <span class="path">/admin/lead-intake</span> then confirm in <span class="path">/admin/leads</span></td>
+          </tr>
+          <tr>
+            <td><strong>Smart Scheduling</strong></td>
+            <td>Move jobs from queued to in-progress to complete.</td>
+            <td>Use <span class="path">/admin/jobs</span> and crew updates in <span class="path">/admin/work-orders</span></td>
+          </tr>
+          <tr>
+            <td><strong>Customer & Lead CRM</strong></td>
+            <td>Track leads, converted clients, and communications.</td>
+            <td>Use <span class="path">/admin/clients</span> + <span class="path">/admin/messages</span></td>
+          </tr>
+          <tr>
+            <td><strong>Financial Visibility</strong></td>
+            <td>Watch invoice pipeline and paid revenue totals.</td>
+            <td>Review <span class="path">/admin/invoices</span> + <span class="path">/admin/audit</span></td>
+          </tr>
+          <tr>
+            <td><strong>AI Assistant</strong></td>
+            <td>Use Business AI for quick navigation and ops prompts.</td>
+            <td>Click <strong>Open NeatCurbOS</strong> or <strong>Open Business AI</strong> from Dashboard.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warn">
+        Tip: If you are unsure where to go, start at <strong>Dashboard → NeatCurbOS card → click a shortcut</strong>.
+      </div>
+    </section>
+
+    <section class="section page-break">
+      <div class="kicker">Daily Operations</div>
+      <h2>Simple Operating Rhythm</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Morning (15 min)</h3>
+          <ul>
+            <li>Open Dashboard.</li>
+            <li>Check active and queued jobs.</li>
+            <li>Review new leads.</li>
+            <li>Send first follow-ups.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Midday (10 min)</h3>
+          <ul>
+            <li>Update job statuses.</li>
+            <li>Convert hot leads.</li>
+            <li>Confirm crew ETAs.</li>
+            <li>Reply to customer messages.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>End of Day (20 min)</h3>
+          <ul>
+            <li>Close completed jobs.</li>
+            <li>Upload proof in work orders.</li>
+            <li>Check invoice status.</li>
+            <li>Review audit log quickly.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <span class="pill green">Lead Status: new → contacted → converted</span>
+        <span class="pill blue">Job Status: queued → in_progress → complete</span>
+        <span class="pill orange">Invoices: draft/sent need follow-up</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="kicker">Storm-Day Playbook</div>
+      <h2>When Snow Hits</h2>
+      <ol style="margin:0; padding-left: 18px; display:grid; gap:7px;">
+        <li>Open <span class="path">/admin</span> and click <strong>Activate Snow Ready</strong>.</li>
+        <li>Go to <span class="path">/admin/jobs</span> and confirm queued snow jobs.</li>
+        <li>Use <span class="path">/admin/work-orders</span> to track crew start/finish.</li>
+        <li>Send updates from <span class="path">/admin/messages</span> to priority clients.</li>
+        <li>At day end, close completed jobs and check <span class="path">/admin/audit</span>.</li>
+      </ol>
+    </section>
+
+    <section class="section">
+      <div class="kicker">Top 5 Tasks</div>
+      <h2>Exactly What To Do</h2>
+      <table class="ops-table">
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Steps</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>New lead came in</strong></td>
+            <td>Open <span class="path">/admin/leads</span> → review details → set status to contacted.</td>
+          </tr>
+          <tr>
+            <td><strong>Create a fast quote</strong></td>
+            <td>Open <span class="path">/admin/lead-intake</span> → enter service/address/details → submit quote data.</td>
+          </tr>
+          <tr>
+            <td><strong>Schedule service</strong></td>
+            <td>Open <span class="path">/admin/jobs</span> → set scheduled date and status queued/in_progress.</td>
+          </tr>
+          <tr>
+            <td><strong>Send customer update</strong></td>
+            <td>Open <span class="path">/admin/messages</span> → pick client → send SMS/email template.</td>
+          </tr>
+          <tr>
+            <td><strong>Close job with proof</strong></td>
+            <td>Open <span class="path">/admin/work-orders</span> → finish job → upload proof photo.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <div class="kicker">Troubleshooting</div>
+      <h2>If Something Looks Wrong</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Cannot log in</h3>
+          <ul>
+            <li>Use <span class="path">/admin/login</span>.</li>
+            <li>Use <strong>Send Magic Sign-In Link</strong> first.</li>
+            <li>If needed, use <strong>Owner Account Rescue</strong> (for owner emails).</li>
+            <li>If still needed, use password reset.</li>
+            <li>Try a private browser window.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>No data on dashboard</h3>
+          <ul>
+            <li>Refresh browser once.</li>
+            <li>Check internet is stable.</li>
+            <li>Check <span class="path">/admin/audit</span> for recent activity.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Messages not sending</h3>
+          <ul>
+            <li>Confirm client phone/email exists.</li>
+            <li>Try the other channel (SMS vs email).</li>
+            <li>Re-open Messages page and resend.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Jobs not updating</h3>
+          <ul>
+            <li>Confirm job was saved in Jobs page.</li>
+            <li>Check staff view in Work Orders.</li>
+            <li>Verify status values are valid.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="big-note" style="margin-top:0;">
+        Rule of thumb: If unsure, go back to <strong>Dashboard</strong> and use the NeatCurbOS card shortcuts.
+      </div>
+
+      <div class="footer">
+        <span>Neat Curb Command Center</span>
+        <span>Dark Mode Training Guide</span>
+        <span>Date: 2026-02-21</span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

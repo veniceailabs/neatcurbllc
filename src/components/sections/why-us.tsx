@@ -11,6 +11,7 @@ export default function WhyUs() {
     <section className="section">
       <div className="section-header">
         <h2>{copy.whyUs.title}</h2>
+        <p className="section-sub">{copy.whyUs.subtitle}</p>
       </div>
       <div className="grid-4">
         {copy.whyUs.items.map((item) => (

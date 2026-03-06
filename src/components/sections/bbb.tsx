@@ -26,13 +26,12 @@ export default function BbbSection() {
           >
             <div className="bbb-meta">
               <Image
-                src="https://m.bbb.org/terminuscontent/dist/img/ab-seal-vertical.svg?tx=w_74"
+                src="/brand/bbb-accredited-badge.png"
                 alt="BBB Accredited Business badge"
                 className="bbb-badge"
-                width={74}
-                height={112}
+                width={92}
+                height={92}
                 loading="lazy"
-                unoptimized
               />
               <div>
                 <div className="bbb-title">{copy.bbb.accredited}</div>

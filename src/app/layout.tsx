@@ -3,20 +3,29 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import AppProviders from "@/components/app-providers";
+import { SITE } from "@/lib/site";
+
+const SITE_URL = "https://www.neatcurbllc.com";
+const BRAND_NAME = "Neat Curb LLC";
+const DEFAULT_DESCRIPTION =
+  "NYS MBE-certified snow removal, lawn care, and property maintenance for residential and commercial properties across Western New York.";
 
 const localBusinessSchema = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  name: "Neat Curb LLC",
-  url: "https://www.neatcurbllc.com",
+  "@type": "ProfessionalService",
+  "@id": `${SITE_URL}/#localbusiness`,
+  name: BRAND_NAME,
+  legalName: BRAND_NAME,
+  url: SITE_URL,
+  image: `${SITE_URL}/brand/neat-curb-logo.png`,
+  logo: `${SITE_URL}/brand/neat-curb-logo.png`,
   hasMap: "https://maps.google.com/?q=229+West+Genesee+St+Buffalo+NY+14202",
   geo: {
     "@type": "GeoCoordinates",
     latitude: 42.8864,
     longitude: -78.8784
   },
-  description:
-    "Snow removal and property maintenance in Western New York with reliable seasonal and commercial service.",
+  description: DEFAULT_DESCRIPTION,
   areaServed: [
     {
       "@type": "City",
@@ -60,7 +69,15 @@ const localBusinessSchema = {
     "Ice management",
     "Lawn maintenance",
     "Leaf cleanup",
-    "Property maintenance"
+    "Property maintenance",
+    "Landscape design and installation"
+  ],
+  knowsAbout: [
+    "NAICS 561730",
+    "Residential groundskeeping",
+    "Commercial property maintenance",
+    "Seasonal cleanup",
+    "Snow plow services"
   ],
   address: {
     "@type": "PostalAddress",
@@ -71,7 +88,16 @@ const localBusinessSchema = {
     postalCode: "14202",
     addressCountry: "US"
   },
-  telephone: "716-241-1499",
+  telephone: "+1-716-241-1499",
+  email: "neatcurb@gmail.com",
+  sameAs: [SITE.instagram.url, SITE.dot.url],
+  additionalType: "https://www.naics.com/naics-code-description/?code=561730",
+  identifier: {
+    "@type": "PropertyValue",
+    propertyID: "NAICS",
+    value: "561730"
+  },
+  priceRange: "$$",
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
@@ -90,36 +116,80 @@ const localBusinessSchema = {
   ]
 };
 
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: BRAND_NAME,
+  inLanguage: ["en-US", "es-US"],
+  publisher: {
+    "@type": "Organization",
+    name: BRAND_NAME,
+    logo: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}/brand/neat-curb-logo.png`
+    }
+  }
+};
+
 export const metadata: Metadata = {
-  applicationName: "Neat Curb",
+  applicationName: BRAND_NAME,
   title: {
-    default: "Neat Curb",
-    template: "%s | Neat Curb"
+    default: `${BRAND_NAME} | WNY Snow, Lawn & Property Maintenance`,
+    template: `%s | ${BRAND_NAME}`
   },
-  description: "Unified operations dashboard for Neat Curb LLC.",
-  metadataBase: new URL("https://neatcurbllc.com"),
+  description: DEFAULT_DESCRIPTION,
+  metadataBase: new URL(SITE_URL),
+  keywords: [
+    "NYS MBE landscaping",
+    "WNY snow removal",
+    "Buffalo lawn care",
+    "property maintenance Western New York",
+    "commercial snow plowing Buffalo",
+    "seasonal cleanup services"
+  ],
+  category: "Business",
   alternates: {
     canonical: "/"
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1
+    }
+  },
   icons: {
-    icon: "/brand/neat-curb-logo.svg",
-    shortcut: "/brand/neat-curb-logo.svg",
-    apple: "/brand/neat-curb-logo.svg"
+    icon: "/brand/neat-curb-logo.png",
+    shortcut: "/brand/neat-curb-logo.png",
+    apple: "/brand/neat-curb-logo.png"
   },
   openGraph: {
-    title: "Neat Curb",
-    description: "Western New York snow, lawn, and property maintenance.",
-    url: "https://neatcurbllc.com",
-    siteName: "Neat Curb",
+    title: `${BRAND_NAME} | WNY Snow, Lawn & Property Maintenance`,
+    description: DEFAULT_DESCRIPTION,
+    url: SITE_URL,
+    siteName: BRAND_NAME,
+    locale: "en_US",
     type: "website",
     images: [
       {
-        url: "/brand/neat-curb-logo.svg",
+        url: "/brand/neat-curb-logo-full.png",
         width: 512,
         height: 512,
         alt: "Neat Curb logo"
       }
     ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${BRAND_NAME} | WNY Snow, Lawn & Property Maintenance`,
+    description: DEFAULT_DESCRIPTION,
+    images: ["/brand/neat-curb-logo-full.png"]
   }
 };
 
@@ -134,6 +204,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
       <body>

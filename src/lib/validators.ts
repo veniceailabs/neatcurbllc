@@ -57,3 +57,16 @@ export const publicLeadSchema = z.object({
   pricing_meta: z.record(z.unknown()).optional(),
   honeypot: z.string().optional()
 });
+
+export const publicChatSchema = z.object({
+  message: z.string().trim().min(1).max(500),
+  history: z
+    .array(
+      z.object({
+        role: z.enum(["user", "assistant"]),
+        content: z.string().trim().min(1).max(1200)
+      })
+    )
+    .max(12)
+    .optional()
+});

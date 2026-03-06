@@ -13,10 +13,15 @@ import Tooltip from "@/components/Tooltip";
 const navItems = [
   { href: "/", key: "home" },
   { href: "/admin", key: "dashboard" },
+  { href: "/admin/business-os", key: "businessOs" },
+  { href: "/admin/import-data", key: "importData" },
   { href: "/admin/leads", key: "leads" },
   { href: "/admin/clients", key: "clients" },
   { href: "/admin/jobs", key: "jobs" },
   { href: "/admin/invoices", key: "invoices" },
+  { href: "/admin/expenses", key: "expenses" },
+  { href: "/admin/documents",    key: "documents"    },
+  { href: "/admin/video-editor", key: "videoEditor"  },
   { href: "/admin/lead-intake", key: "leadIntake" },
   { href: "/admin/messages", key: "messages" },
   { href: "/admin/settings", key: "settings" }
@@ -43,7 +48,7 @@ export default function Sidebar() {
     <aside className="sidebar">
       <div className="brand-block">
         <Image
-          src="/brand/neat-curb-logo-full.svg"
+          src="/brand/neat-curb-logo-full.png"
           alt="Neat Curb LLC full color logo"
           className="brand-logo"
           width={140}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLanguage } from "@/components/language-context";
 import { getCopy } from "@/lib/i18n";
 import {
@@ -30,6 +30,11 @@ type QuoteFormData = {
   honeypot?: string;
 };
 
+type AddressSuggestion = {
+  label: string;
+  zip?: string;
+};
+
 const ZIP_HINTS: Array<{ pattern: RegExp; zip: string }> = [
   { pattern: /\bbuffalo\b/i, zip: "14202" },
   { pattern: /\bamherst\b/i, zip: "14221" },
@@ -42,7 +47,13 @@ const ZIP_HINTS: Array<{ pattern: RegExp; zip: string }> = [
 export default function QuoteForm() {
   const { language } = useLanguage();
   const copy = getCopy(language);
-  const { register, handleSubmit, reset, setValue } = useForm<QuoteFormData>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors }
+  } = useForm<QuoteFormData>({
     defaultValues: { service: "Snow Removal", zip: "" }
   });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
@@ -57,6 +68,63 @@ export default function QuoteForm() {
   >("residential");
   const [size, setSize] = useState<ResidentialSize | CommercialSize>("medium");
   const [accumulation, setAccumulation] = useState<Accumulation>("2-3");
+  const [addressQuery, setAddressQuery] = useState("");
+  const [addressSuggestions, setAddressSuggestions] = useState<AddressSuggestion[]>([]);
+
+  useEffect(() => {
+    const query = addressQuery.trim();
+    if (query.length < 3) {
+      setAddressSuggestions([]);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeout = setTimeout(async () => {
+      try {
+        const response = await fetch(
+          `/api/public/address-autocomplete?q=${encodeURIComponent(query)}`,
+          { signal: controller.signal }
+        );
+        const payload = await response.json().catch(() => null);
+        if (!response.ok || !payload?.ok) {
+          setAddressSuggestions([]);
+          return;
+        }
+        const suggestions = Array.isArray(payload?.data?.suggestions)
+          ? payload.data.suggestions
+          : [];
+        setAddressSuggestions(
+          suggestions
+            .map((entry: { label?: string; zip?: string | null }) => ({
+              label: String(entry?.label || "").trim(),
+              zip: typeof entry?.zip === "string" ? entry.zip : undefined
+            }))
+            .filter((entry: AddressSuggestion) => entry.label.length > 0)
+            .slice(0, 6)
+        );
+      } catch (error) {
+        if ((error as Error).name !== "AbortError") {
+          setAddressSuggestions([]);
+        }
+      }
+    }, 250);
+
+    return () => {
+      clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [addressQuery]);
+
+  const applyZipFromSuggestion = (value: string) => {
+    const normalized = value.trim().toLowerCase();
+    if (!normalized) return;
+    const matched = addressSuggestions.find(
+      (entry) => entry.label.toLowerCase() === normalized
+    );
+    if (matched?.zip) {
+      setValue("zip", matched.zip, { shouldDirty: true });
+    }
+  };
 
   const onSubmit = async (data: QuoteFormData) => {
     setStatus("sending");
@@ -131,15 +199,35 @@ export default function QuoteForm() {
         />
         <label>
           {copy.quote.name}
-          <input {...register("name", { required: true })} />
+          <input
+            autoComplete="name"
+            {...register("name", { required: "Please enter your name." })}
+          />
+          {errors.name ? <span className="field-error">{errors.name.message}</span> : null}
         </label>
         <label>
           {copy.quote.email}
-          <input type="email" {...register("email", { required: true })} />
+          <input
+            type="email"
+            autoComplete="email"
+            {...register("email", { required: "Please enter a valid email." })}
+          />
+          {errors.email ? <span className="field-error">{errors.email.message}</span> : null}
         </label>
         <label>
           {copy.quote.phone}
-          <input type="tel" {...register("phone", { required: true })} />
+          <input
+            type="tel"
+            autoComplete="tel"
+            {...register("phone", {
+              required: "Please enter a callback number.",
+              pattern: {
+                value: /^[0-9()+\-\s.]{7,22}$/,
+                message: "Please enter a valid phone number."
+              }
+            })}
+          />
+          {errors.phone ? <span className="field-error">{errors.phone.message}</span> : null}
         </label>
         <label>
           {copy.quote.serviceNeeded}
@@ -238,11 +326,8 @@ export default function QuoteForm() {
               <option value="Fall Leaf Cleanup">{copy.quote.lawnOptions[1]}</option>
               <option value="Mulch Install">{copy.quote.lawnOptions[2]}</option>
               <option value="Hedge Trimming">{copy.quote.lawnOptions[3]}</option>
-              <option value="Gutter Cleaning">{copy.quote.lawnOptions[4]}</option>
-              <option value="Aeration & Overseeding">
-                {copy.quote.lawnOptions[5]}
-              </option>
-              <option value="Storm Cleanup">{copy.quote.lawnOptions[6]}</option>
+              <option value="Aeration & Overseeding">{copy.quote.lawnOptions[4]}</option>
+              <option value="Storm Cleanup">{copy.quote.lawnOptions[5]}</option>
             </select>
           </label>
         ) : null}
@@ -258,12 +343,11 @@ export default function QuoteForm() {
               }}
             >
               <option value="">{copy.quote.selectService}</option>
-              <option value="Gutter Cleaning">{copy.quote.maintenanceOptions[0]}</option>
-              <option value="Storm Cleanup">{copy.quote.maintenanceOptions[1]}</option>
+              <option value="Storm Cleanup">{copy.quote.maintenanceOptions[0]}</option>
               <option value="Branch & Debris Removal">
-                {copy.quote.maintenanceOptions[2]}
+                {copy.quote.maintenanceOptions[1]}
               </option>
-              <option value="Lot Sweeping">{copy.quote.maintenanceOptions[3]}</option>
+              <option value="Lot Sweeping">{copy.quote.maintenanceOptions[2]}</option>
             </select>
           </label>
         ) : null}
@@ -298,9 +382,13 @@ export default function QuoteForm() {
         <label>
           {copy.quote.address}
           <input
+            list="quote-address-suggestions"
+            autoComplete="street-address"
             {...register("address", {
               onChange: (event) => {
                 const value = event.target.value as string;
+                setAddressQuery(value);
+                applyZipFromSuggestion(value);
                 const match = value.match(/\b\d{5}(?:-\d{4})?\b/);
                 if (match) {
                   setValue("zip", match[0], { shouldDirty: true });
@@ -309,6 +397,7 @@ export default function QuoteForm() {
               onBlur: (event) => {
                 const value = (event.target.value as string).trim();
                 if (!value) return;
+                applyZipFromSuggestion(value);
                 const hasZip = /\b\d{5}(?:-\d{4})?\b/.test(value);
                 if (hasZip) return;
                 const hint = ZIP_HINTS.find((entry) => entry.pattern.test(value));
@@ -319,10 +408,29 @@ export default function QuoteForm() {
             })}
             placeholder={copy.quote.addressPlaceholder}
           />
+          <datalist id="quote-address-suggestions">
+            {addressSuggestions.map((suggestion, suggestionIndex) => (
+              <option
+                key={`${suggestion.label}-${suggestionIndex}`}
+                value={suggestion.label}
+              />
+            ))}
+          </datalist>
         </label>
         <label>
           {copy.quote.zip}
-          <input {...register("zip")} placeholder={copy.quote.zipPlaceholder} />
+          <input
+            autoComplete="postal-code"
+            inputMode="numeric"
+            {...register("zip", {
+              pattern: {
+                value: /^\d{5}(?:-\d{4})?$/,
+                message: "Use ZIP format 12345 or 12345-6789."
+              }
+            })}
+            placeholder={copy.quote.zipPlaceholder}
+          />
+          {errors.zip ? <span className="field-error">{errors.zip.message}</span> : null}
         </label>
         <label className="full">
           {copy.quote.message}

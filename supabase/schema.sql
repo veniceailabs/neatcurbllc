@@ -250,7 +250,8 @@ create table audit_anchors (
   anchored_at timestamp default now()
 );
 
-create or replace view staff_work_view as
+create or replace view staff_work_view
+with (security_invoker = true) as
   select
     jobs.id as work_item_id,
     'job'::text as source,
@@ -282,7 +283,7 @@ returns table (
 )
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_lead leads%rowtype;
@@ -920,3 +921,63 @@ create policy "Admins can insert messages"
   );
 
 grant select on staff_work_view to authenticated;
+
+-- ─── Documents & E-Signature ────────────────────────────────────────────────
+create table if not exists nc_documents (
+  id            uuid default uuid_generate_v4() primary key,
+  title         text not null,
+  template_type text not null,
+  body_html     text,
+  fields        jsonb,
+  status        text default 'draft',
+  created_by    text,
+  created_at    timestamp default now(),
+  updated_at    timestamp default now(),
+  constraint nc_documents_status_check check (
+    status in ('draft','sent','partially_signed','signed','voided')
+  )
+);
+
+create table if not exists nc_document_signatures (
+  id             uuid default uuid_generate_v4() primary key,
+  document_id    uuid references nc_documents(id) on delete cascade,
+  signer_name    text not null,
+  signer_email   text not null,
+  signing_token  text unique not null,
+  status         text default 'pending',
+  signature_data text,
+  typed_name     text,
+  signed_at      timestamp,
+  last_notified_at timestamp,
+  created_at     timestamp default now(),
+  unique(document_id, signer_email),
+  constraint nc_sig_status_check check (status in ('pending','signed','declined'))
+);
+
+create index if not exists idx_nc_documents_status on nc_documents(status);
+create index if not exists idx_nc_documents_created_at on nc_documents(created_at desc);
+create index if not exists idx_nc_doc_sigs_document on nc_document_signatures(document_id);
+create index if not exists idx_nc_doc_sigs_token on nc_document_signatures(signing_token);
+
+alter table nc_documents enable row level security;
+alter table nc_document_signatures enable row level security;
+
+create policy "Admins can manage nc_documents"
+  on nc_documents for all
+  using (exists (select 1 from profiles where profiles.id = auth.uid() and profiles.role = 'admin'))
+  with check (exists (select 1 from profiles where profiles.id = auth.uid() and profiles.role = 'admin'));
+
+create policy "Service role full access nc_documents"
+  on nc_documents for all
+  using (auth.role() = 'service_role')
+  with check (auth.role() = 'service_role');
+
+create policy "Admins can manage nc_document_signatures"
+  on nc_document_signatures for all
+  using (exists (select 1 from profiles where profiles.id = auth.uid() and profiles.role = 'admin'))
+  with check (exists (select 1 from profiles where profiles.id = auth.uid() and profiles.role = 'admin'));
+
+create policy "Service role full access nc_document_signatures"
+  on nc_document_signatures for all
+  using (auth.role() = 'service_role')
+  with check (auth.role() = 'service_role');

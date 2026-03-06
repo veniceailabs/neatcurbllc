@@ -19,6 +19,13 @@ const getBearer = (request: Request) => {
 
 export async function POST(request: Request) {
   const requestId = safeRequestId();
+  const token = getBearer(request);
+
+  if (!token) {
+    return NextResponse.json(fail("UNAUTHORIZED", "Unauthorized.", { requestId }), {
+      status: 401
+    });
+  }
 
   if (!supabaseUrl || !supabaseAnonKey) {
     return NextResponse.json(
@@ -31,13 +38,6 @@ export async function POST(request: Request) {
       fail("SMS_NOT_CONFIGURED", "Twilio is not configured.", { requestId }),
       { status: 500 }
     );
-  }
-
-  const token = getBearer(request);
-  if (!token) {
-    return NextResponse.json(fail("UNAUTHORIZED", "Unauthorized.", { requestId }), {
-      status: 401
-    });
   }
 
   const supabase = createClient(supabaseUrl, supabaseAnonKey, {

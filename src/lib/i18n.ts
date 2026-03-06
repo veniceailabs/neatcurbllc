@@ -10,15 +10,25 @@ export const COPY = {
       login: "Login"
     },
     trustBar: [
-      "BBB Accredited",
-      "A+ BBB Rating",
+      "Official NYS MBE Certified",
+      "BBB Accredited Business",
       "Storm Ready Operations",
-      "Founded In 2022"
+      "In-House Crews"
     ],
     hero: {
       title: "WNY's Reliable Landscape, Snow & Property Maintenance",
       subtitle:
         "Residential and Commercial Snow Removal, Lawn Care, and Property Services you can count on year-round.",
+      badge: {
+        title: "Official NYS MBE Certified",
+        subtitle: "Minority Business Enterprise (MBE)",
+        alt: "Official New York State MBE certified badge"
+      },
+      bbbBadge: {
+        title: "BBB Accredited",
+        subtitle: "A+ Rating",
+        alt: "BBB Accredited Business badge"
+      },
       primaryCta: "Request a Quote",
       secondaryCta: "Call Now",
       phone: "(716) 241-1499",
@@ -67,7 +77,7 @@ export const COPY = {
           desc:
             "Detail Work Handled By A Reliable Crew So Owners Stay In The Loop And Sites Stay Clean.",
           items: [
-            "Gutter Cleaning",
+            "Seasonal Site Cleanup",
             "Storm Cleanup",
             "Branch & Debris Removal",
             "Lot Sweeping (Commercial)"
@@ -77,6 +87,8 @@ export const COPY = {
     },
     whyUs: {
       title: "Why Property Owners Choose Neat Curb",
+      subtitle:
+        "Neat Curb LLC provides professional exterior maintenance and landscaping for residential and commercial properties. We deliver year-round property maintenance, seasonal leaf and debris cleanup, and winter snow plow plus ice management under NAICS 561730, with all projects managed in-house for consistent quality.",
       items: [
         {
           title: "Reliable Service",
@@ -105,6 +117,7 @@ export const COPY = {
         "Tonawanda",
         "West Seneca",
         "Niagara Falls",
+        "Finger Lakes Region",
         "Surrounding Areas"
       ]
     },
@@ -165,12 +178,10 @@ export const COPY = {
         "Fall Leaf Cleanup",
         "Mulch Install",
         "Hedge & Bush Trimming",
-        "Gutter Cleaning",
         "Aeration & Overseeding",
         "Storm Cleanup"
       ],
       maintenanceOptions: [
-        "Gutter Cleaning",
         "Storm Cleanup",
         "Branch & Debris Removal",
         "Lot Sweeping"
@@ -199,6 +210,7 @@ export const COPY = {
       email: "neatcurb@gmail.com",
       serviceArea: "Western NY",
       instagramLabel: "Instagram",
+      dotLabel: "DOT Card",
       links: {
         services: "Services",
         requestQuote: "Request Quote",
@@ -437,15 +449,20 @@ export const COPY = {
     adminNav: {
       home: "Home",
       dashboard: "Dashboard",
+      businessOs: "NeatCurbOS",
+      importData: "Import Data",
       leads: "Leads",
       clients: "Clients",
       jobs: "Jobs",
       invoices: "Invoices",
-      leadIntake: "Lead Intake",
-      messages: "Messages",
-      settings: "Settings",
-      workOrders: "Work Orders",
-      logout: "Logout"
+      expenses: "Expenses",
+      documents:   "Documents",
+      videoEditor: "Video Editor",
+      leadIntake:  "Lead Intake",
+      messages:    "Messages",
+      settings:    "Settings",
+      workOrders:  "Work Orders",
+      logout:      "Logout"
     },
     adminShell: {
       snowReady: "Snow Ready",
@@ -474,15 +491,25 @@ export const COPY = {
       login: "Iniciar Sesión"
     },
     trustBar: [
-      "Acreditado Por BBB",
-      "Calificación A+ BBB",
+      "Certificación Oficial MBE de NYS",
+      "Empresa Acreditada por BBB",
       "Operaciones Listas Para Tormenta",
-      "Fundado En 2022"
+      "Cuadrillas Internas"
     ],
     hero: {
       title: "Mantenimiento Confiable de Nieve y Propiedades en Western NY",
       subtitle:
         "Remoción de nieve residencial y comercial, cuidado de césped y servicios de propiedad en los que puede confiar todo el año.",
+      badge: {
+        title: "Certificación Oficial MBE del Estado de NY",
+        subtitle: "Empresa de Minorías (MBE)",
+        alt: "Insignia oficial de certificación MBE del Estado de Nueva York"
+      },
+      bbbBadge: {
+        title: "Acreditado por BBB",
+        subtitle: "Calificación A+",
+        alt: "Insignia de empresa acreditada por BBB"
+      },
       primaryCta: "Solicitar Cotización",
       secondaryCta: "Llamar Ahora",
       phone: "(716) 241-1499",
@@ -531,7 +558,7 @@ export const COPY = {
           desc:
             "Trabajo Detallado Con Un Equipo Confiable Y Comunicación Directa.",
           items: [
-            "Limpieza de Canaletas",
+            "Limpieza Estacional del Sitio",
             "Limpieza por Tormenta",
             "Retiro de Ramas y Escombros",
             "Barrido de Lotes (Comercial)"
@@ -541,6 +568,8 @@ export const COPY = {
     },
     whyUs: {
       title: "Por Qué los Propietarios Eligen Neat Curb",
+      subtitle:
+        "Neat Curb LLC ofrece mantenimiento exterior y paisajismo profesional para propiedades residenciales y comerciales. Brindamos mantenimiento de propiedad todo el año, limpieza estacional de hojas y escombros, y seguridad invernal con arado de nieve y control de hielo bajo NAICS 561730, con ejecución interna para garantizar calidad consistente.",
       items: [
         {
           title: "Servicio Confiable",
@@ -571,6 +600,7 @@ export const COPY = {
         "Tonawanda",
         "West Seneca",
         "Niagara Falls",
+        "Región de Finger Lakes",
         "Áreas Cercanas"
       ]
     },
@@ -636,12 +666,10 @@ export const COPY = {
         "Limpieza de Hojas",
         "Instalación de Mulch",
         "Poda de Setos y Arbustos",
-        "Limpieza de Canaletas",
         "Aireación y Resiembra",
         "Limpieza por Tormenta"
       ],
       maintenanceOptions: [
-        "Limpieza de Canaletas",
         "Limpieza por Tormenta",
         "Retiro de Ramas y Escombros",
         "Barrido de Lotes"
@@ -670,6 +698,7 @@ export const COPY = {
       email: "neatcurb@gmail.com",
       serviceArea: "Western NY",
       instagramLabel: "Instagram",
+      dotLabel: "Tarjeta DOT",
       links: {
         services: "Servicios",
         requestQuote: "Solicitar Cotización",
@@ -911,11 +940,16 @@ export const COPY = {
     adminNav: {
       home: "Inicio",
       dashboard: "Tablero",
+      businessOs: "NeatCurbOS",
+      importData: "Importar Datos",
       leads: "Prospectos",
       clients: "Clientes",
       jobs: "Trabajos",
-      invoices: "Facturas",
-      leadIntake: "Captación",
+      invoices:    "Facturas",
+      expenses: "Gastos",
+      documents:   "Documentos",
+      videoEditor: "Editor de Video",
+      leadIntake:  "Captación",
       messages: "Mensajes",
       settings: "Ajustes",
       workOrders: "Órdenes",

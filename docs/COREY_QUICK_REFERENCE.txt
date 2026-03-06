@@ -1,0 +1,98 @@
+╔════════════════════════════════════════════════════════════════╗
+║                                                                ║
+║   NEAT CURB YARDBOOK IMPORT - COREY'S QUICK REFERENCE        ║
+║                                                                ║
+╚════════════════════════════════════════════════════════════════╝
+
+🚀 SUPER QUICK START (20 minutes)
+
+STEP 1: EXPORT FROM YARDBOOK
+─────────────────────────────
+[ ] Log into Yardbook
+[ ] Go to Export/Settings
+[ ] Download these 4 files:
+    □ customers.csv
+    □ invoices.csv
+    □ payments.csv
+    □ expenses.csv
+
+
+STEP 2: IMPORT INTO NEAT CURB ADMIN
+─────────────────────────────────────
+[ ] Open Neat Curb Admin Dashboard
+[ ] Click "Import Data" in left sidebar
+[ ] You'll see 4 buttons:
+
+    ┌─────────────────────┐
+    │ Import Customers    │  ← Upload customers.csv
+    └─────────────────────┘
+    ┌─────────────────────┐
+    │ Import Invoices     │  ← Upload invoices.csv
+    └─────────────────────┘
+    ┌─────────────────────┐
+    │ Import Payments     │  ← Upload payments.csv
+    └─────────────────────┘
+    ┌─────────────────────┐
+    │ Import Expenses     │  ← Upload expenses.csv
+    └─────────────────────┘
+
+[ ] For each button:
+    1. Click the button
+    2. Click upload area → select CSV file
+    3. Click "Parse CSV"
+    4. Click "Import X Records"
+    5. Wait for success message ✓
+
+
+STEP 3: VERIFY YOUR DATA
+─────────────────────────
+[ ] Go to "Clients" → should see your customers
+[ ] Go to "Expenses" → should see your expense totals
+[ ] Go back to "Import Data" → check import history
+
+
+✅ DONE!
+────────
+Your data is now in Neat Curb. You can start using it immediately.
+
+
+WHAT IF SOMETHING GOES WRONG?
+──────────────────────────────
+❓ Import doesn't work
+→ Make sure you selected a CSV file (not Excel)
+→ Try importing a smaller test file first
+
+❓ Wrong file format
+→ Make sure it's actually a .csv file
+→ Re-export from Yardbook and try again
+
+❓ Data looks wrong
+→ Check that amounts match your records
+→ Look at import history to confirm it imported
+→ You can re-import the same file multiple times
+
+
+NEED HELP?
+──────────
+If something doesn't work:
+1. Try again - sometimes it's just a temporary network hiccup
+2. Check the error message - it usually tells you what's wrong
+3. Re-export from Yardbook and try importing again
+
+
+REMEMBER:
+─────────
+✓ All your Yardbook data stays in Yardbook
+✓ This just creates a copy in Neat Curb
+✓ You can import multiple times
+✓ Duplicates are automatically skipped
+
+
+═══════════════════════════════════════════════════════════════════
+
+BOOKMARK THIS FOR EASY REFERENCE:
+Import Data page: /admin/import-data
+Customers page: /admin/clients
+Expenses page: /admin/expenses
+
+═══════════════════════════════════════════════════════════════════

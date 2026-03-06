@@ -1,0 +1,72 @@
+╔════════════════════════════════════════════════════════════════╗
+║                                                                ║
+║   🚀 YOUR YARDBOOK DATA IS READY TO IMPORT - COREY!          ║
+║                                                                ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+HERE'S WHAT YOU NEED TO DO (2 STEPS):
+
+STEP 1: Log Into Your Admin Dashboard
+───────────────────────────────────────
+Go to: https://neatcurbllc.com/admin
+
+
+STEP 2: Click "Import Data" in the Left Sidebar
+────────────────────────────────────────────────
+You'll see a button that says:
+
+    🚀 Import All Yardbook Data
+
+Click it. That's it!
+
+
+WHAT HAPPENS NEXT:
+──────────────────
+✅ Your customers will appear in "Clients"
+✅ Your invoices will be imported
+✅ Your payments will be imported
+✅ Your expenses will appear in "Expenses"
+
+You'll see how many records were imported.
+
+
+VERIFY YOUR DATA:
+─────────────────
+After importing, check:
+  • Go to "Clients" → See your customers
+  • Go to "Expenses" → See your expense totals
+  • Check that amounts look correct
+
+
+THAT'S IT! 🎉
+──────────────
+Your Yardbook data is now in Neat Curb.
+You have all the same features plus MORE.
+
+
+WHAT IF SOMETHING GOES WRONG?
+──────────────────────────────
+The import is automatic. If it fails:
+  1. Try again - sometimes it's just slow
+  2. Check your internet connection
+  3. If it still doesn't work, let us know
+
+
+QUESTIONS?
+───────────
+Everything you need to know is in the dashboard.
+The import is designed to be super simple.
+
+Just click the button and let it do its thing!
+
+
+═══════════════════════════════════════════════════════════════════
+
+BOOKMARK THESE PAGES:
+  • Admin Dashboard: https://neatcurbllc.com/admin
+  • Import Data: https://neatcurbllc.com/admin/import-data
+  • Your Customers: https://neatcurbllc.com/admin/clients
+  • Your Expenses: https://neatcurbllc.com/admin/expenses
+
+═══════════════════════════════════════════════════════════════════

@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.neatcurbllc.com";
-  const lastModified = new Date();
+  const lastModified = new Date("2026-03-06T00:00:00.000Z");
 
   return [
     {
@@ -23,12 +23,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "weekly",
       priority: 0.8
-    },
-    {
-      url: `${baseUrl}/admin/login`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.4
     }
   ];
 }

@@ -16,6 +16,9 @@ export default function ChangePasswordPage() {
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
   const [recoveryExpired, setRecoveryExpired] = useState(false);
+  const [recoveryEmail, setRecoveryEmail] = useState("");
+  const [recoverySending, setRecoverySending] = useState(false);
+  const [recoveryNotice, setRecoveryNotice] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -24,8 +27,16 @@ export default function ChangePasswordPage() {
       // If the URL hash indicates an expired/invalid recovery link, do not bounce away.
       // Let the user see a clear message and go request a fresh link.
       if (typeof window !== "undefined") {
+        const savedEmail = window.localStorage.getItem("neatcurb:last-login-email");
+        if (savedEmail) {
+          setRecoveryEmail(savedEmail);
+        }
         const hash = window.location.hash || "";
-        if (hash.toLowerCase().includes("error_code=otp_expired")) {
+        const search = window.location.search || "";
+        const recoveryError =
+          hash.toLowerCase().includes("error_code=otp_expired") ||
+          search.toLowerCase().includes("error_code=otp_expired");
+        if (recoveryError) {
           setRecoveryExpired(true);
           setChecking(false);
           return;
@@ -66,6 +77,30 @@ export default function ChangePasswordPage() {
       sub.subscription.unsubscribe();
     };
   }, [router]);
+
+  const handleSendFreshRecovery = async () => {
+    setError(null);
+    setRecoveryNotice(null);
+    if (!recoveryEmail.trim()) {
+      setError("Enter your account email first.");
+      return;
+    }
+    setRecoverySending(true);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("neatcurb:last-login-email", recoveryEmail.trim());
+    }
+    const redirectTo = `${window.location.origin}/admin/change-password`;
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(recoveryEmail, {
+      redirectTo
+    });
+    if (resetError) {
+      setError(resetError.message);
+      setRecoverySending(false);
+      return;
+    }
+    setRecoveryNotice("Fresh reset link sent. Open the newest email immediately.");
+    setRecoverySending(false);
+  };
 
   const handleUpdate = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -111,6 +146,30 @@ export default function ChangePasswordPage() {
         {recoveryExpired ? (
           <div className="auth-error">
             Recovery link expired. Go back to Sign In and send a fresh reset email.
+          </div>
+        ) : null}
+        {recoveryExpired ? (
+          <div style={{ display: "grid", gap: "8px", marginBottom: "8px" }}>
+            <label className="form-field">
+              Account Email
+              <input
+                type="email"
+                value={recoveryEmail}
+                onChange={(event) => setRecoveryEmail(event.target.value)}
+                autoComplete="email"
+                placeholder="you@company.com"
+              />
+            </label>
+            <button
+              className="btn-secondary"
+              type="button"
+              onClick={handleSendFreshRecovery}
+              disabled={recoverySending}
+              style={{ width: "100%", justifyContent: "center" }}
+            >
+              {recoverySending ? copy.auth.signingIn : "Send Fresh Reset Link"}
+            </button>
+            {recoveryNotice ? <div className="auth-notice">{recoveryNotice}</div> : null}
           </div>
         ) : null}
         <form onSubmit={handleUpdate} className="auth-form">

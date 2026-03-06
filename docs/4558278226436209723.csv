@@ -1,0 +1,1 @@
+id,amount,expense_date,paid_to,category,payment_method,check_number,note,created_at,updated_at,attachment_file_name,attachment_content_type,attachment_file_size,attachment_updated_at,activity_id,tax_amount,plaid_transaction_id,job_description,expense_date_formatted

@@ -17,7 +17,7 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar-brand">
         <Image
-          src="/brand/neat-curb-logo-full.svg"
+          src="/brand/neat-curb-logo-full.png"
           alt="Neat Curb LLC logo"
           width={120}
           height={90}
